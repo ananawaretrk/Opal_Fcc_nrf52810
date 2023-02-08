@@ -254,7 +254,7 @@ static int battTime = 900000;
 static uint16_t waitTH = 3;
 static ble_gap_scan_params_t const m_scan_params =
 {
-    .active = 1,
+    .active = 0,
     .filter_policy = BLE_GAP_SCAN_FP_ACCEPT_ALL,
     .scan_phys = BLE_GAP_PHY_1MBPS,
     .interval = (uint16_t)SCAN_INTERVAL,
@@ -809,7 +809,18 @@ void nus_data_handler(ble_nus_evt_t * p_evt)
         sleepTime = (int)((int)(p_evt->params.rx_data.p_data[9])*1000);
         MODE = p_evt->params.rx_data.p_data[10];
 
-        channel = (p_evt->params.rx_data.p_data[11]);
+        //channel = (p_evt->params.rx_data.p_data[11]);
+
+        int j = 0;
+        unsigned char received_frequency[4];
+        float my_frequency;
+        for (int i = 11; i < 15; i++)
+        {
+            received_frequency[j++] = (p_evt->params.rx_data.p_data[i]);
+        }
+        memcpy(&my_frequency, &received_frequency, sizeof(my_frequency));
+        channel = (int)my_frequency;
+        
         datasend();
     }
 }
@@ -1296,8 +1307,8 @@ void tapeDiagnosis(void)
             {
                 printf(DBG_BLUE "BLE Radio Scan\n" DBG_RESET);
                 
-                //bleScan(scanDuration);
-                radio_rx();
+                bleScan(scanDuration);
+                //radio_rx();
                 start_timer(scanDuration);
 
                 while (!timerFlag)
@@ -1428,8 +1439,8 @@ void radio_with_data1(bool flag)
             {
                 printf(DBG_BLUE "BLE Radio Scan\n" DBG_RESET);
                 
-                //bleScan(scanDuration);
-                radio_rx();
+                bleScan(scanDuration);
+                //radio_rx();
                 start_timer(scanDuration);
 
                 while (!timerFlag)
