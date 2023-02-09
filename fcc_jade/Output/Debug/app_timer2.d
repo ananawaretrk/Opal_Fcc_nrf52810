@@ -1,7 +1,7 @@
 Output/Debug//app_timer2.o: \
  D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\timer\app_timer2.c \
  D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\timer\app_timer.h \
- D:/Office\ Data/Git/TrackFW_FCC/fcc_emerald_app/sdk_config.h \
+ D:/Office\ Data/Git/TrackFW_FCC/fcc_jade/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdio.h \

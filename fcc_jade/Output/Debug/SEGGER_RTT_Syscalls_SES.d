@@ -1,6 +1,6 @@
 Output/Debug//SEGGER_RTT_Syscalls_SES.o: \
  D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\external\segger_rtt\SEGGER_RTT_Syscalls_SES.c \
- D:/Office\ Data/Git/TrackFW_FCC/fcc_emerald_app/sdk_config.h \
+ D:/Office\ Data/Git/TrackFW_FCC/fcc_jade/sdk_config.h \
  D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\external\segger_rtt\SEGGER_RTT.h \
  D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\external\segger_rtt\SEGGER_RTT_Conf.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \

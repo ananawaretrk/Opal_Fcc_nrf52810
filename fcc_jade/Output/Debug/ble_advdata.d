@@ -31,7 +31,7 @@ Output/Debug//ble_advdata.o: \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/ble_gatts.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_common.h \
- D:/Office\ Data/Git/TrackFW_FCC/fcc_emerald_app/sdk_config.h \
+ D:/Office\ Data/Git/TrackFW_FCC/fcc_jade/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_os.h \
