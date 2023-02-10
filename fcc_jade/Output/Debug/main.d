@@ -137,6 +137,9 @@ Output/Debug//main.o: D:\Office\ Data\Git\TrackFW_FCC\fcc_jade\main.cpp \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/core_cm4.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/math.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/arm_common_tables.h \
- ../sx1261/RH_SX126x.h ../rfm95/RH_RF95.h \
+ ../sx1261/RH_SX126x.h ../rfm95/RH_RF95.h ../I2CFiles/Wire/Wire.h \
+ ../TMP117/TMP117.h ../I2CFiles/Arduino.h ../I2CFiles/wiring_constants.h \
+ ../TMP117/TMP117_REG.h ../I2CFiles/i2c_wrapper.h \
+ ../I2CFiles/eventflag_and_errors.h \
  ../3rd_party/nRF5_SDK_16/components/boards/boards.h \
  ../3rd_party/nRF5_SDK_16/components/boards/pca10100.h

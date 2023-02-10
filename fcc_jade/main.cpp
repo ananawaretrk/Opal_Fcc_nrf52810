@@ -42,6 +42,10 @@
 #include "arm_const_structs.h"
 #include "RH_SX126x.h"
 #include "RH_RF95.h"
+#include "Wire.h"
+#include "TMP117.h"
+#include "i2c_wrapper.h"
+#include "eventflag_and_errors.h"
 #include "boards.h"
 
 //UART COLOR DEFINE
@@ -53,6 +57,14 @@
 #define DBG_CYAN    "\x1b[36m"
 #define DBG_RESET   "\x1b[0m"
 //#define test_print
+
+// Sensor defines
+#define I2C_SCL                  7 // Onyx i2c scl 7
+#define I2C_SDA                  8 // Onyx i2c scl 8
+#define I2C_PRIORITY             2
+static TMP117  tmp_sensor = TMP117();
+I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
+TwoWire Wire(i2c_wrapper.GetI2CInstance());
 
 // LoRa defines
 RH_RF95 rf95 = RH_RF95();
@@ -1904,6 +1916,28 @@ int main(void)
     init_timer();
     init_timer2();
     
+    int temperature_fail_counter = 0;
+    float temperature_array[5] = {0};
+
+    i2c_wrapper.InitializeI2C();
+    tmp_sensor.begin();
+    for (int j = 0; j < 5; j++)
+    {
+        temperature_fail_counter = 0;
+        tmp_sensor.setOneShotMode();
+        while (tmp_sensor.dataReady() == false && temperature_fail_counter < 5)
+        {
+            nrf_delay_ms(110);
+            temperature_fail_counter++;
+        }
+        temperature_array[j] = tmp_sensor.readTempC();
+    }
+    tmp_sensor.setShutdownMode();
+    printf("----> Final TMP117 Temp = %3.2f %C\n", temperature_array[0]);
+    i2c_wrapper.DeInitializeI2C();
+    
+    while(1);
+
     init_spi_for_lora();
     
     //loraInit();
