@@ -51,4 +51,21 @@ Output/Debug//nrfx_twim.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_errors.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_resources.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_sd_def.h \
- ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_errors.h
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_errors.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twim.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twi_twim.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_twim.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_gpio.h \
+ D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\drivers\src\prs/nrfx_prs.h \
+ ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_log.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_common.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/string.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_os.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/util/app_util.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_macros.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/experimental_section_vars/nrf_section.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/log/src/nrf_log_internal.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log_instance.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log_types.h \
+ ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log_types.h
