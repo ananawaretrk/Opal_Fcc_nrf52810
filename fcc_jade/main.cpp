@@ -1467,9 +1467,9 @@ void radio_with_data1(bool flag)
 //
 //                stop_timer();
             }
+          print_temperature_sensor_data();
         }
             
-        print_temperature_sensor_data();
     }
     else
     {
