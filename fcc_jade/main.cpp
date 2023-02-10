@@ -65,6 +65,7 @@
 static TMP117  tmp_sensor = TMP117();
 I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
 TwoWire Wire(i2c_wrapper.GetI2CInstance());
+void print_temperature_sensor_data(void);
 
 // LoRa defines
 RH_RF95 rf95 = RH_RF95();
@@ -1320,16 +1321,18 @@ void tapeDiagnosis(void)
                 printf(DBG_BLUE "BLE Radio Scan\n" DBG_RESET);
                 
                 bleScan(scanDuration);
-                //radio_rx();
-                start_timer(scanDuration);
-
-                while (!timerFlag)
-                {
-                    nrf_pwr_mgmt_run();
-                }
-
-                stop_timer();
+//                radio_rx();
+//                start_timer(scanDuration);
+//
+//                while (!timerFlag)
+//                {
+//                    nrf_pwr_mgmt_run();
+//                }
+//
+//                stop_timer();
             }
+              
+            print_temperature_sensor_data();
         }
     }
     else
@@ -1342,12 +1345,14 @@ void tapeDiagnosis(void)
         else
         {
             printf(DBG_BLUE "BLE Radio Transmit\n" DBG_RESET);
-            radio_config();    
+            radio_config();  
         }
 
         while(1)
         {
             nrf_pwr_mgmt_run();
+            print_temperature_sensor_data();
+            nrf_delay_ms(1000);
         }
     }
 }
@@ -1452,17 +1457,19 @@ void radio_with_data1(bool flag)
                 printf(DBG_BLUE "BLE Radio Scan\n" DBG_RESET);
                 
                 bleScan(scanDuration);
-                //radio_rx();
-                start_timer(scanDuration);
-
-                while (!timerFlag)
-                {
-                    nrf_pwr_mgmt_run();
-                }
-
-                stop_timer();
+//                radio_rx();
+//                start_timer(scanDuration);
+//
+//                while (!timerFlag)
+//                {
+//                    nrf_pwr_mgmt_run();
+//                }
+//
+//                stop_timer();
             }
         }
+            
+        print_temperature_sensor_data();
     }
     else
     {
@@ -1480,6 +1487,8 @@ void radio_with_data1(bool flag)
         while(1)
         {
             nrf_pwr_mgmt_run();
+            print_temperature_sensor_data();
+            nrf_delay_ms(1000);
         }
     }
 }
@@ -1899,23 +1908,10 @@ void lora_interval_receive(int rcv_time)
 
 //LoRa
 
-long power_map(long x, long in_min, long in_max, long out_min, long out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
+// Temperature Sensor
 
-int main(void)
+void print_temperature_sensor_data()
 {
-    ret_code_t err_code;
-
-    err_code = nrf_drv_gpiote_init();
-    APP_ERROR_CHECK(err_code);
-
-    config_init();
-    get_ble_mac();
-    get_hw_ver();
-    init_timer();
-    init_timer2();
-    
     int temperature_fail_counter = 0;
     float temperature_array[5] = {0};
 
@@ -1935,9 +1931,25 @@ int main(void)
     tmp_sensor.setShutdownMode();
     printf("----> Final TMP117 Temp = %3.2f %C\n", temperature_array[0]);
     i2c_wrapper.DeInitializeI2C();
-    
-    while(1);
+}
 
+long power_map(long x, long in_min, long in_max, long out_min, long out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+int main(void)
+{
+    ret_code_t err_code;
+
+    err_code = nrf_drv_gpiote_init();
+    APP_ERROR_CHECK(err_code);
+
+    config_init();
+    get_ble_mac();
+    get_hw_ver();
+    init_timer();
+    init_timer2();
+    
     init_spi_for_lora();
     
     //loraInit();
