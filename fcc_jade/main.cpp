@@ -1331,8 +1331,14 @@ void tapeDiagnosis(void)
 //
 //                stop_timer();
             }
-              
+
+            if(scanDuration > 0 && advTime == 0 && sleepTime == 0)
+            {
+              printf("Do not measure temperature\n");
+            }
+            else { 
             print_temperature_sensor_data();
+            }
         }
     }
     else
@@ -1467,7 +1473,11 @@ void radio_with_data1(bool flag)
 //
 //                stop_timer();
             }
-          print_temperature_sensor_data();
+            if (scanDuration > 0 && advTime == 0 && sleepTime == 0) {
+              printf("Do not measure temperature\n");
+            } else {
+              print_temperature_sensor_data();
+            }
         }
             
     }

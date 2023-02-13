@@ -1,8 +1,8 @@
 Output/Debug//nrfx_twim.o: \
- D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\drivers\src\nrfx_twim.c \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\drivers\src\nrfx_twim.c \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/nrfx.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_config.h \
- D:/Office\ Data/Git/TrackFW_FCC/fcc_jade/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stddef.h \
@@ -56,7 +56,7 @@ Output/Debug//nrfx_twim.o: \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twi_twim.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_twim.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_gpio.h \
- D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\drivers\src\prs/nrfx_prs.h \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\drivers\src\prs/nrfx_prs.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_log.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_common.h \

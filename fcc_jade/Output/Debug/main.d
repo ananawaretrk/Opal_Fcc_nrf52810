@@ -1,4 +1,5 @@
-Output/Debug//main.o: D:\Office\ Data\Git\TrackFW_FCC\fcc_jade\main.cpp \
+Output/Debug//main.o: \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\fcc_jade\main.cpp \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdlib.h \
@@ -39,7 +40,7 @@ Output/Debug//main.o: D:\Office\ Data\Git\TrackFW_FCC\fcc_jade\main.cpp \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twim.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/nrfx.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_config.h \
- D:/Office\ Data/Git/TrackFW_FCC/fcc_jade/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stddef.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf_peripherals.h \

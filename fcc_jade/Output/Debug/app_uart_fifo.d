@@ -1,11 +1,11 @@
 Output/Debug//app_uart_fifo.o: \
- D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\uart\app_uart_fifo.c \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\uart\app_uart_fifo.c \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/string.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/__crossworks.h \
- D:/Office\ Data/Git/TrackFW_FCC/fcc_jade/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_os.h \
@@ -30,7 +30,7 @@ Output/Debug//app_uart_fifo.o: \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_svc.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_macros.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nrf_assert.h \
- D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\uart\app_uart.h \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\uart\app_uart.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_util_platform.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_soc.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_svc.h \

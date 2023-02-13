@@ -1,10 +1,10 @@
 Output/Debug//i2c_wrapper.o: \
- D:\Office\ Data\Git\TrackFW_FCC\I2CFiles\i2c_wrapper.cpp \
- D:\Office\ Data\Git\TrackFW_FCC\I2CFiles\i2c_wrapper.h \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\I2CFiles\i2c_wrapper.cpp \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\I2CFiles\i2c_wrapper.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twim.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/nrfx.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_config.h \
- D:/Office\ Data/Git/TrackFW_FCC/fcc_jade/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stddef.h \

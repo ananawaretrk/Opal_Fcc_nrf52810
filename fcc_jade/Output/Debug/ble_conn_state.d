@@ -1,6 +1,6 @@
 Output/Debug//ble_conn_state.o: \
- D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_conn_state.c \
- D:\Office\ Data\Git\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_conn_state.h \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_conn_state.c \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_conn_state.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/ble.h \
@@ -33,7 +33,7 @@ Output/Debug//ble_conn_state.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/string.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/__crossworks.h \
- D:/Office\ Data/Git/TrackFW_FCC/fcc_jade/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_os.h \
