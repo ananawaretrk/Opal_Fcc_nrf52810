@@ -47,6 +47,7 @@
 #include "i2c_wrapper.h"
 #include "eventflag_and_errors.h"
 #include "boards.h"
+//#define temperature_sensor
 
 //UART COLOR DEFINE
 #define DBG_RED     "\x1b[31m"
@@ -1336,8 +1337,10 @@ void tapeDiagnosis(void)
             {
               printf("Do not measure temperature\n");
             }
-            else { 
+            else {
+             #ifdef temperature_sensor
             print_temperature_sensor_data();
+            #endif
             }
         }
     }
@@ -1357,7 +1360,9 @@ void tapeDiagnosis(void)
         while(1)
         {
             nrf_pwr_mgmt_run();
+            #ifdef temperature_sensor
             print_temperature_sensor_data();
+            #endif
             nrf_delay_ms(1000);
         }
     }
@@ -1476,7 +1481,9 @@ void radio_with_data1(bool flag)
             if (scanDuration > 0 && advTime == 0 && sleepTime == 0) {
               printf("Do not measure temperature\n");
             } else {
-              print_temperature_sensor_data();
+            #ifdef temperature_sensor
+            print_temperature_sensor_data();
+            #endif
             }
         }
             
@@ -1497,7 +1504,9 @@ void radio_with_data1(bool flag)
         while(1)
         {
             nrf_pwr_mgmt_run();
+            #ifdef temperature_sensor
             print_temperature_sensor_data();
+            #endif
             nrf_delay_ms(1000);
         }
     }
@@ -1807,7 +1816,8 @@ void lora_continuous_cw_transmit()
 
 void lora_disable()
 {
-    nrf_delay_ms(1000);
+    //nrf_delay_ms(1000);
+    nrf_delay_ms(50);
     rf95.sleep();
 }
 
@@ -1902,10 +1912,12 @@ void lora_interval_receive(int rcv_time)
     start_timer(rcv_time);
     while (!timerFlag)
     {
-        nrf_delay_ms(500);
+        //nrf_delay_ms(500);
+        nrf_delay_ms(50);
         if (rf95.available())
         {
-            nrf_delay_ms(500);
+            //nrf_delay_ms(500);
+            nrf_delay_ms(50);
             memset(buff, 0, RH_RF95_MAX_MESSAGE_LEN);
             // nrf_delay_ms(10);
             uint8_t len = sizeof(buff);
