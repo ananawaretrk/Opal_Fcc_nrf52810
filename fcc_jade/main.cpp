@@ -1891,10 +1891,12 @@ void lora_continuous_receive()
     printf(DBG_GREEN "LoRa Continuous Receive\n" DBG_RESET);
     while (1)
     {
-        nrf_delay_ms(500);
+        //nrf_delay_ms(500);
+        nrf_delay_ms(50);
         if (rf95.available())
         {          
-                nrf_delay_ms(500);
+                //nrf_delay_ms(500);
+                nrf_delay_ms(50);
                 memset(buff, 0, RH_RF95_MAX_MESSAGE_LEN);
                 // nrf_delay_ms(10);
                 uint8_t len = sizeof(buff);

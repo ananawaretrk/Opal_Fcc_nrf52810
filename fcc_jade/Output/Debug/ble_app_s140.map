@@ -7372,7 +7372,7 @@ Discarded input sections
  .text._Z25lora_cw_transmit_5secondsv
                 0x0000000000000000       0xdc Output/Debug//main.o
  .text._Z23lora_continuous_receivev
-                0x0000000000000000       0x60 Output/Debug//main.o
+                0x0000000000000000       0x5c Output/Debug//main.o
  .text._Z29print_temperature_sensor_datav
                 0x0000000000000000       0xbc Output/Debug//main.o
  .text._Z8clearBiti
