@@ -1903,6 +1903,7 @@ void lora_interval_transmit(int localadvTime)
     stop_timer();
 }
 
+// Updated Function
 void lora_interval_transmit1(int localadvTime)
 {
     printf(DBG_GREEN "LoRa Interval Transmit1\n" DBG_RESET);
