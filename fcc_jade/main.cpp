@@ -89,6 +89,7 @@ void lora_cw_transmit_5seconds();
 void lora_continuous_transmit();
 void lora_continuous_receive();
 void lora_interval_transmit(int localadvTime);
+void lora_interval_transmit1(int localadvTime);
 void lora_interval_receive(int scanDuration);
 void lora_disable();
 
@@ -1402,7 +1403,7 @@ void radio_with_data1(bool flag)
             if(lora_selected && advTime > 0)
             {
                 printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
-                lora_interval_transmit(advTime);
+                lora_interval_transmit1(advTime);
             }
             
             // BLE - enabled and transmit
@@ -1415,15 +1416,15 @@ void radio_with_data1(bool flag)
             // LoRa/BLE Advertise time
             if(!lora_selected && advTime > 0)
             {
-            start_timer(advTime);
+              start_timer(advTime);
 
-            while(!timerFlag)
-            {
-                nrf_pwr_mgmt_run();
+              while(!timerFlag)
+              {
+                  nrf_pwr_mgmt_run();
+              }
+
+              stop_timer();
             }
-
-            stop_timer();
-        }
             
             // LoRa - disable
             if(lora_selected)
@@ -1855,15 +1856,31 @@ void init_spi_for_lora(void)
 void lora_continuous_transmit()
 {
   printf(DBG_GREEN "LoRa Continuous Transmit\n" DBG_RESET);
-  while (1)
+  while (0)
     {
         memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
         sprintf(loraSendBuf, "id=%s-----hello", idString);
         rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
         printf("%s\n", loraSendBuf);
         rf95.waitPacketSent();
-        nrf_delay_ms(500);
+        nrf_delay_ms(700);
         rf95.sleep();
+    }
+
+
+   memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
+   sprintf(loraSendBuf, "id=%s-----hello", idString);
+   while (1)
+    {
+        
+        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
+//        printf("%s\n", loraSendBuf);
+        while(!rf95.waitPacketSent())
+        {
+          //nrf_delay_ms(700);
+        }
+        //nrf_delay_ms(50);
+//        rf95.sleep();
     }
 }
 
@@ -1880,10 +1897,30 @@ void lora_interval_transmit(int localadvTime)
         rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
         printf("%s\n", loraSendBuf);
         rf95.waitPacketSent();
-        nrf_delay_ms(500);
+        nrf_delay_ms(700);
         rf95.sleep();
     }
     stop_timer();
+}
+
+void lora_interval_transmit1(int localadvTime)
+{
+    printf(DBG_GREEN "LoRa Interval Transmit1\n" DBG_RESET);
+
+    start_timer(localadvTime);
+
+    memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
+    sprintf(loraSendBuf, "id=%s-----hello", idString);
+
+    while (!timerFlag)
+    {     
+        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
+        rf95.waitPacketSent();
+    }
+
+    stop_timer();
+
+    rf95.sleep();
 }
 
 void lora_continuous_receive()
@@ -1976,9 +2013,15 @@ int main(void)
     
     init_spi_for_lora();
     
-    //loraInit();
-    
-    //rf95.setFrequency(920);
+//    loratxlevel = 20;
+//
+//    loraInit();
+//    
+//    rf95.setFrequency(920);
+//
+//    while(1){
+//    lora_interval_transmit(5000);
+//    }
     
     //int my_rcv_time = 10000;
     
