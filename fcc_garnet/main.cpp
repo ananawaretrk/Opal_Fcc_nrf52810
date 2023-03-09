@@ -49,6 +49,12 @@
 #include "boards.h"
 //#define temperature_sensor
 
+/*
+if defined sx1261 chip selected
+else sx1262
+*/
+//#define lora_sx1261
+
 //UART COLOR DEFINE
 #define DBG_RED     "\x1b[31m"
 #define DBG_GREEN   "\x1b[32m"
@@ -71,12 +77,13 @@ void print_temperature_sensor_data(void);
 // LoRa defines
 RH_RF95 rf95 = RH_RF95();
 
-#define SPI_MISO_PIN    5
-#define SPI_MOSI_PIN    3
-#define SPI_SCK_PIN     4
-#define LORA_NSS        2
-#define LORA_RST        17
-#define LORA_INT        6
+#define SPI_MISO_PIN    12
+#define SPI_MOSI_PIN    14
+#define SPI_SCK_PIN     15
+#define LORA_NSS        16
+#define LORA_RST        18
+#define LORA_INT        28
+#define LORA_RF_SW        19
 
 uint8_t  buff[RH_RF95_MAX_MESSAGE_LEN];
 char loraSendBuf[RH_RF95_MAX_MESSAGE_LEN];
@@ -140,9 +147,10 @@ int8_t  lora_power      = 14;
 float   lora_frequency  = 915.0f;
 
 void lora_radio_enable(void);
-void lora_radio_configure(void);
-void lora_radio_cw_mode_w_data(void);
+void lora_radio_configure(bool sx1261_chip);
+void lora_radio_cw_mode_w_data(int local_advTime);
 void lora_radio_cw_rx_mode(void);
+void lora_radio_cw_rx_mode_interval(int local_scanDuration);
 void lora_radio_cw_mode(void);
 void lora_radio_disable(void);
 
@@ -1223,6 +1231,296 @@ void prepare_wake()
 {
 }
 
+//void tapeDiagnosis(void)
+//{
+//    prepare_sleep();
+//    prepare_wake();
+//    NRF_RNG->TASKS_START = 1;
+//    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+//    NRF_CLOCK->TASKS_HFCLKSTART        = 1;
+//
+//    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0){ } // Do nothing.
+//    
+//    // LoRa
+//    if(lora_selected)
+//    {
+//        printf(DBG_GREEN "LoRa Radio Selected\n" DBG_RESET);
+//        loraInit();
+//        nrf_delay_ms(1000);
+//        //rf95.setFrequency(920);
+//    }
+//    
+//    // BLE
+//    else
+//    {
+//        printf(DBG_BLUE "BLE Radio Selected\n" DBG_RESET);
+//        radio_disable();
+//    }
+//
+//    if(debugMode) // TRUE -> interval
+//    {
+//        while(1)
+//        {   
+//            // LoRa - enabled and transmit
+//            if(lora_selected && advTime > 0)
+//            {
+//                printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
+//                lora_continuous_cw_transmit();
+//            }
+//            
+//            // BLE - enabled and transmit
+//            else if(!lora_selected && advTime > 0)
+//            {
+//                printf(DBG_BLUE "BLE Radio Transmit\n" DBG_RESET);
+//                radio_config();
+//            }
+//            
+//            // LoRa/BLE Advertise time
+//            if(advTime > 0)
+//            {
+//            start_timer(advTime);
+//
+//            while(!timerFlag)
+//            {
+//                nrf_pwr_mgmt_run();
+//            }
+//
+//            stop_timer();
+//          }
+//            
+//            // LoRa - disable
+//            if(lora_selected)
+//            {
+//                #ifdef test_print
+//                printf(DBG_GREEN "LoRa Radio Disabled\n" DBG_RESET);
+//                #endif //test_print
+//                lora_disable();
+//            }
+//            // BLE - disable
+//            else if (!lora_selected)
+//            {
+//                #ifdef test_print
+//                printf(DBG_BLUE "BLE Radio Disabled\n" DBG_RESET);
+//                #endif //test_print
+//                radio_disable();
+//            }
+//            
+//            // LoRa/BLE sleep time
+//            if (sleepTime != 0)
+//            {
+//                printf(DBG_YELLOW "BLE/LoRa Radio Sleep\n" DBG_RESET);
+//                start_timer(sleepTime);
+//
+//                while (!timerFlag)
+//                {
+//                    nrf_pwr_mgmt_run();
+//                }
+//            }
+//            
+//            // LoRa - enabled and receive
+//            if (lora_selected && scanDuration >0)
+//            {
+//                printf(DBG_GREEN "LoRa Interval Radio receive\n" DBG_RESET);
+//                printf(DBG_MAGENTA "-------scanDuration: %d\n" DBG_RESET, scanDuration);
+//                lora_interval_receive(scanDuration);
+//            }
+//              
+//            // BLE - enabled and receive
+//            else if (!lora_selected && scanDuration >0)
+//            {
+//                printf(DBG_BLUE "BLE Radio Scan\n" DBG_RESET);
+//                
+//                bleScan(scanDuration);
+////                radio_rx();
+////                start_timer(scanDuration);
+////
+////                while (!timerFlag)
+////                {
+////                    nrf_pwr_mgmt_run();
+////                }
+////
+////                stop_timer();
+//            }
+//
+//            if(scanDuration > 0 && advTime == 0 && sleepTime == 0)
+//            {
+//              printf("Do not measure temperature\n");
+//            }
+//            else {
+//             #ifdef temperature_sensor
+//            print_temperature_sensor_data();
+//            #endif
+//            }
+//        }
+//    }
+//    else
+//    {
+//        if (lora_selected)
+//        {
+//            printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
+//            lora_continuous_cw_transmit();
+//        }
+//        else
+//        {
+//            printf(DBG_BLUE "BLE Radio Transmit\n" DBG_RESET);
+//            radio_config();  
+//        }
+//
+//        while(1)
+//        {
+//            nrf_pwr_mgmt_run();
+//            #ifdef temperature_sensor
+//            print_temperature_sensor_data();
+//            #endif
+//            nrf_delay_ms(1000);
+//        }
+//    }
+//}
+//
+//void radio_with_data1(bool flag)
+//{
+//    prepare_sleep();
+//    prepare_wake();
+//    NRF_RNG->TASKS_START = 1;
+//    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+//    NRF_CLOCK->TASKS_HFCLKSTART        = 1;
+//
+//    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0){ } // Do nothing.
+//    
+//    // LoRa
+//    if(lora_selected)
+//    {
+//        printf(DBG_GREEN "LoRa Radio Selected\n" DBG_RESET);
+//        loraInit();
+//        nrf_delay_ms(1000);
+//        //rf95.setFrequency(920);
+//    }
+//    
+//    // BLE
+//    else
+//    {
+//        printf(DBG_BLUE "BLE Radio Selected\n" DBG_RESET);
+//        radio_disable();
+//    }
+//
+//    if(flag) // TRUE -> interval
+//    {
+//        while(1)
+//        {   
+//            // LoRa - enabled and transmit
+//            if(lora_selected && advTime > 0)
+//            {
+//                printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
+//                lora_interval_transmit1(advTime);
+//            }
+//            
+//            // BLE - enabled and transmit
+//            else if (!lora_selected && advTime > 0)
+//            {
+//                printf(DBG_BLUE "BLE Radio Transmit\n" DBG_RESET);
+//                modulation();
+//            }
+//            
+//            // LoRa/BLE Advertise time
+//            if(!lora_selected && advTime > 0)
+//            {
+//              start_timer(advTime);
+//
+//              while(!timerFlag)
+//              {
+//                  nrf_pwr_mgmt_run();
+//              }
+//
+//              stop_timer();
+//            }
+//            
+//            // LoRa - disable
+//            if(lora_selected)
+//            {
+//                #ifdef test_print
+//                printf(DBG_GREEN "LoRa Radio Disabled\n" DBG_RESET);
+//                #endif //test_print
+//                lora_disable();
+//            }
+//            // BLE - disable
+//            else if (!lora_selected)
+//            {
+//                #ifdef test_print
+//                printf(DBG_BLUE "BLE Radio Disabled\n" DBG_RESET);
+//                #endif //test_print
+//                radio_disable();
+//            }
+//            
+//            // LoRa/BLE sleep time
+//            if (sleepTime != 0)
+//            {
+//                printf(DBG_YELLOW "BLE/LoRa Radio Sleep\n" DBG_RESET);
+//                start_timer(sleepTime);
+//
+//                while (!timerFlag)
+//                {
+//                    nrf_pwr_mgmt_run();
+//                }
+//            }
+//            
+//            // LoRa - enabled and receive
+//            if (lora_selected && scanDuration >0)
+//            {
+//                printf(DBG_GREEN "LoRa Interval Radio receive\n" DBG_RESET);
+//                printf(DBG_MAGENTA "-------scanDuration: %d\n" DBG_RESET, scanDuration);
+//                lora_interval_receive(scanDuration);
+//            }
+//              
+//            // BLE - enabled and receive
+//            else if(!lora_selected && scanDuration >0)
+//            {
+//                printf(DBG_BLUE "BLE Radio Scan\n" DBG_RESET);
+//                
+//                bleScan(scanDuration);
+////                radio_rx();
+////                start_timer(scanDuration);
+////
+////                while (!timerFlag)
+////                {
+////                    nrf_pwr_mgmt_run();
+////                }
+////
+////                stop_timer();
+//            }
+//            if (scanDuration > 0 && advTime == 0 && sleepTime == 0) {
+//              printf("Do not measure temperature\n");
+//            } else {
+//            #ifdef temperature_sensor
+//            print_temperature_sensor_data();
+//            #endif
+//            }
+//        }
+//            
+//    }
+//    else
+//    {
+//        if (lora_selected)
+//        {
+//            printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
+//            lora_continuous_transmit();
+//        }
+//        else
+//        {
+//            printf(DBG_BLUE "BLE Radio Transmit\n" DBG_RESET);
+//            modulation();   
+//        }
+//
+//        while(1)
+//        {
+//            nrf_pwr_mgmt_run();
+//            #ifdef temperature_sensor
+//            print_temperature_sensor_data();
+//            #endif
+//            nrf_delay_ms(1000);
+//        }
+//    }
+//}
+
 void tapeDiagnosis(void)
 {
     prepare_sleep();
@@ -1232,14 +1530,17 @@ void tapeDiagnosis(void)
     NRF_CLOCK->TASKS_HFCLKSTART        = 1;
 
     while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0){ } // Do nothing.
-    
     // LoRa
     if(lora_selected)
     {
         printf(DBG_GREEN "LoRa Radio Selected\n" DBG_RESET);
-        loraInit();
+        lora_radio_disable();
         nrf_delay_ms(1000);
-        //rf95.setFrequency(920);
+        #ifdef lora_sx1261
+        lora_radio_configure(true);
+        #else
+        lora_radio_configure(false);
+        #endif
     }
     
     // BLE
@@ -1257,7 +1558,7 @@ void tapeDiagnosis(void)
             if(lora_selected && advTime > 0)
             {
                 printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
-                lora_continuous_cw_transmit();
+                lora_radio_cw_mode();
             }
             
             // BLE - enabled and transmit
@@ -1286,7 +1587,7 @@ void tapeDiagnosis(void)
                 #ifdef test_print
                 printf(DBG_GREEN "LoRa Radio Disabled\n" DBG_RESET);
                 #endif //test_print
-                lora_disable();
+                lora_radio_disable();
             }
             // BLE - disable
             else if (!lora_selected)
@@ -1314,7 +1615,7 @@ void tapeDiagnosis(void)
             {
                 printf(DBG_GREEN "LoRa Interval Radio receive\n" DBG_RESET);
                 printf(DBG_MAGENTA "-------scanDuration: %d\n" DBG_RESET, scanDuration);
-                lora_interval_receive(scanDuration);
+                lora_radio_cw_rx_mode_interval(scanDuration);
             }
               
             // BLE - enabled and receive
@@ -1323,15 +1624,6 @@ void tapeDiagnosis(void)
                 printf(DBG_BLUE "BLE Radio Scan\n" DBG_RESET);
                 
                 bleScan(scanDuration);
-//                radio_rx();
-//                start_timer(scanDuration);
-//
-//                while (!timerFlag)
-//                {
-//                    nrf_pwr_mgmt_run();
-//                }
-//
-//                stop_timer();
             }
 
             if(scanDuration > 0 && advTime == 0 && sleepTime == 0)
@@ -1349,12 +1641,12 @@ void tapeDiagnosis(void)
     {
         if (lora_selected)
         {
-            printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
-            lora_continuous_cw_transmit();
+            printf(DBG_GREEN "LoRa Radio Continuous Transmit\n" DBG_RESET);
+            lora_radio_cw_mode();
         }
         else
         {
-            printf(DBG_BLUE "BLE Radio Transmit\n" DBG_RESET);
+            printf(DBG_BLUE "BLE Radio Continuous Transmit\n" DBG_RESET);
             radio_config();  
         }
 
@@ -1369,7 +1661,8 @@ void tapeDiagnosis(void)
     }
 }
 
-void radio_with_data1(bool flag)
+
+void radio_with_data(bool flag)
 {
     prepare_sleep();
     prepare_wake();
@@ -1383,9 +1676,13 @@ void radio_with_data1(bool flag)
     if(lora_selected)
     {
         printf(DBG_GREEN "LoRa Radio Selected\n" DBG_RESET);
-        loraInit();
+        lora_radio_disable();
         nrf_delay_ms(1000);
-        //rf95.setFrequency(920);
+        #ifdef lora_sx1261
+        lora_radio_configure(true);
+        #else
+        lora_radio_configure(false);
+        #endif
     }
     
     // BLE
@@ -1402,8 +1699,8 @@ void radio_with_data1(bool flag)
             // LoRa - enabled and transmit
             if(lora_selected && advTime > 0)
             {
-                printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
-                lora_interval_transmit1(advTime);
+                printf(DBG_GREEN "LoRa Radio Modulated Transmit\n" DBG_RESET);
+                lora_radio_cw_mode_w_data(advTime);
             }
             
             // BLE - enabled and transmit
@@ -1432,7 +1729,7 @@ void radio_with_data1(bool flag)
                 #ifdef test_print
                 printf(DBG_GREEN "LoRa Radio Disabled\n" DBG_RESET);
                 #endif //test_print
-                lora_disable();
+                lora_radio_disable();
             }
             // BLE - disable
             else if (!lora_selected)
@@ -1460,7 +1757,7 @@ void radio_with_data1(bool flag)
             {
                 printf(DBG_GREEN "LoRa Interval Radio receive\n" DBG_RESET);
                 printf(DBG_MAGENTA "-------scanDuration: %d\n" DBG_RESET, scanDuration);
-                lora_interval_receive(scanDuration);
+                lora_radio_cw_rx_mode_interval(scanDuration);
             }
               
             // BLE - enabled and receive
@@ -1469,15 +1766,6 @@ void radio_with_data1(bool flag)
                 printf(DBG_BLUE "BLE Radio Scan\n" DBG_RESET);
                 
                 bleScan(scanDuration);
-//                radio_rx();
-//                start_timer(scanDuration);
-//
-//                while (!timerFlag)
-//                {
-//                    nrf_pwr_mgmt_run();
-//                }
-//
-//                stop_timer();
             }
             if (scanDuration > 0 && advTime == 0 && sleepTime == 0) {
               printf("Do not measure temperature\n");
@@ -1494,7 +1782,8 @@ void radio_with_data1(bool flag)
         if (lora_selected)
         {
             printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
-            lora_continuous_transmit();
+            //lora_continuous_transmit();
+            lora_radio_cw_mode_w_data(advTime);
         }
         else
         {
@@ -1512,7 +1801,6 @@ void radio_with_data1(bool flag)
         }
     }
 }
-
 
 
 void bufferclearTape(void)
@@ -1629,10 +1917,10 @@ void setConfig(int setTime)
         NVIC_SystemReset();
     }
 
-//    if(lora_selected)
-//    {
-//        lora_radio_enable();
-//    }
+    if(lora_selected)
+    {
+        lora_radio_enable();
+    }
     ble_adv_stack_init();
 }
 
@@ -2011,37 +2299,22 @@ int main(void)
     get_hw_ver();
     init_timer();
     init_timer2();
-    
-    init_spi_for_lora();
-    
-//    loratxlevel = 20;
+
+    lora_radio_enable();
+
+    prepare_sleep();
+    prepare_wake();
+//    NRF_RNG->TASKS_START = 1;
+//    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+//    NRF_CLOCK->TASKS_HFCLKSTART = 1;
 //
-//    loraInit();
-//    
-//    rf95.setFrequency(920);
-//
-//    while(1){
-//    lora_interval_transmit(5000);
-//    }
-    
-    //int my_rcv_time = 10000;
-    
-    //lora_interval_receive(my_rcv_time);
-    
-    //lora_cw_transmit_5seconds();
-    
-    //lora_continuous_cw_transmit();
-    
-    //lora_continuous_transmit();
-    
-    //nrf_delay_ms(5000);
-    
-    //lora_disable();
-  
-    //while(1);
-    
-    //lora_continuous_receive();
-    
+//    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0) {} // Do nothing.
+    lora_radio_disable();
+
+    lora_radio_configure(false);
+
+    while (1);
+
     setConfig(120000);
     //while(1);
 
@@ -2095,14 +2368,14 @@ int main(void)
                 {
                     while(1)
                     {
-                        radio_with_data1(false);
+                        radio_with_data(false);
                     }
                 }
                 else
                 {
                     while(1)
                     {
-                        radio_with_data1(true);
+                        radio_with_data(true);
                     }
                 }
             break;
@@ -2353,9 +2626,13 @@ void spi_event_handler(nrf_drv_spi_evt_t const *p_event, void *p_context)
 void lora_radio_enable(void)
 {
     nrf_gpio_cfg_output(LORA_RST);
-    nrf_gpio_cfg_input(LORA_INT, NRF_GPIO_PIN_NOPULL);
     nrf_gpio_pin_clear(LORA_RST);
     nrf_delay_ms(1);
+    nrf_gpio_pin_set(LORA_RST);
+    nrf_delay_ms(1);
+
+    nrf_gpio_cfg_output(LORA_RF_SW);
+    nrf_gpio_pin_clear(LORA_RF_SW);
 
     nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
     spi_config.ss_pin = LORA_NSS;
@@ -2367,14 +2644,14 @@ void lora_radio_enable(void)
     APP_ERROR_CHECK(nrf_drv_spi_init(&spi, &spi_config, spi_event_handler, NULL));
 
     // Set up interrupt
-    //nrfx_gpiote_in_config_t pin_config = NRFX_GPIOTE_CONFIG_IN_SENSE_LOTOHI(true);
+    nrfx_gpiote_in_config_t pin_config = NRFX_GPIOTE_CONFIG_IN_SENSE_LOTOHI(true);
 
-    //ret_code_t result = nrfx_gpiote_in_init(LORA_RST, &pin_config, gpiote_lora_evt_handler);
+    ret_code_t result = nrfx_gpiote_in_init(LORA_RST, &pin_config, gpiote_lora_evt_handler);
 
-//    if(result != NRFX_SUCCESS)
-//    {
-//        printf("gpiote init failed for Lora SPI\n");
-//    }
+    if(result != NRFX_SUCCESS)
+    {
+        printf("gpiote init failed for Lora SPI\n");
+    }
     nrfx_gpiote_in_event_enable(LORA_RST, true);
 
     if (!rf95.init(&spi, LORA_INT))
@@ -2387,7 +2664,7 @@ void lora_radio_enable(void)
     }
 }
 
-void lora_radio_configure(void)
+void lora_radio_configure(bool sx1261_chip)
 {
     uint8_t error_code[] = {0x01};
     sx126x.spiWriteAddr(0x0889, error_code, 1);
@@ -2402,20 +2679,22 @@ void lora_radio_configure(void)
     sx126x.setFrequency(lora_frequency);
     nrf_delay_ms(1);
 
-    sx126x.setTxPower(lora_power, true);
+    sx126x.setTxPower(loratxlevel, sx1261_chip);
     nrf_delay_ms(1);
 
-    printf("freq: %d\n", (uint32_t)(lora_frequency * 1000 * 1000));
-    printf("pwr: %d\n", lora_power);
+    //printf(DBG_GREEN "LoRa freq: %d\n" DBG_RESET, (uint32_t)(lora_frequency * 1000 * 1000));
+    //printf(DBG_GREEN "LoRa pwr: %d\n" DBG_RESET, loratxlevel);
 }
 
-void lora_radio_cw_mode_w_data(void)
+void lora_radio_cw_mode_w_data(int local_advTime)
 {
-    while(1)
+    start_timer(local_advTime);
+    while(!timerFlag)
     {
         sx126x.send((uint8_t *)"Hello World, This is Lora Modulated Carrier Wave\n\r", 50);
         nrf_delay_ms(10);
     }
+    stop_timer();
 }
 
 void lora_radio_cw_rx_mode(void)
@@ -2426,6 +2705,21 @@ void lora_radio_cw_rx_mode(void)
         sx126x.recv(buffer, MAX_PAYLOAD_LEN);
         nrf_delay_ms(10);
     }
+}
+
+void lora_radio_cw_rx_mode_interval(int local_scanDuration)
+{
+  uint8_t buffer[MAX_PAYLOAD_LEN];
+
+  start_timer(local_scanDuration);
+
+  while (!timerFlag) {
+    sx126x.recv(buffer, MAX_PAYLOAD_LEN);
+    nrf_delay_ms(1000);
+    //printf("buffer %s\n", (uint8_t *)buffer);
+  }
+
+  stop_timer();
 }
 
 void lora_radio_cw_mode(void)

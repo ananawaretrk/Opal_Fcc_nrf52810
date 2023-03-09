@@ -484,9 +484,13 @@ void RH_SX126x::setFrequency(float frequency)
 void RH_SX126x::setModeIdle(void)
 {
     OperatingMode = MODE_STDBY_RC;
+    printf("----------------------here1\n");
 
     RadioStandbyModes_t standbyConfig = STDBY_RC;
+    printf("----------------------here2\n");
     spiWriteCommand(RADIO_SET_STANDBY, ( uint8_t* )&standbyConfig, 1);
+    printf("----------------------here3\n");
+    
 }
 
 void RH_SX126x::setModeRx(void)

@@ -70,6 +70,7 @@ bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin)
     nrf_delay_ms(10); // Wait for sleep mode to take over from say, CAD
     // Check we are in sleep mode, with LORA set
     mode = spiRead(RH_RF95_REG_01_OP_MODE);
+    printf("-----------LoRa Mode: %d\n", mode);
     //printf("Mode 0x80 %02x\n",mode);
     if ((mode & RH_RF95_LONG_RANGE_MODE) != RH_RF95_LONG_RANGE_MODE)
     {
