@@ -629,7 +629,7 @@ public:
     void        setTxContinuousWave(void);
     void        setTxInfinitePreamble(void);
     void        setPaConfig(uint8_t paDutyCycle, uint8_t hpMax, uint8_t deviceSel, uint8_t paLut);
-    void        setTxPower(int8_t power, bool useRFO = true);
+    void        setTxPower(int8_t power, bool sx1261_chip = true);
     void        sleep(void);
     void        setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask);
     void        setPacketParams(PacketParams_t *packetParams);

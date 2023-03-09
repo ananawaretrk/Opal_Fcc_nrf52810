@@ -25,7 +25,7 @@ Output/Debug//app_error_weak.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/string.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_garnet/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_os.h \

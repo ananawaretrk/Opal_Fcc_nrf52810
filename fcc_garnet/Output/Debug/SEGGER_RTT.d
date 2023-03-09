@@ -33,5 +33,5 @@ Output/Debug//SEGGER_RTT.o: \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_error.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_error_weak.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_garnet/sdk_config.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/string.h

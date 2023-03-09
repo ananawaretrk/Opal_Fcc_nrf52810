@@ -549,33 +549,39 @@ void RH_SX126x::setPaConfig(uint8_t paDutyCycle, uint8_t hpMax, uint8_t deviceSe
     spiWriteCommand( RADIO_SET_PACONFIG, buf, sizeof(buf));
 }
 
-void RH_SX126x::setTxPower(int8_t power, bool useRFO)
+void RH_SX126x::setTxPower(int8_t power, bool sx1261_chip)
 {
     uint8_t buf[2];
 
-    if( power == 15 )
+    if( sx1261_chip )
     {
-        setPaConfig( 0x06, 0x00, 0x01, 0x01 );
+      //SX1261
+      printf("SX1261 CHIP SELECTED\n");
+      setPaConfig(0x06, 0x00, 0x01, 0x01);
+      if (14 > power < -17) {
+        power = 14;
+      }
+      
+      // Set max current to 60mA
+      buf[0] = 0x18;
+      buf[1] = 0x0;
+      spiWriteAddr(REG_OCP, buf, sizeof(buf));
     }
     else
     {
-        setPaConfig( 0x04, 0x00, 0x01, 0x01 );
+      //SX1262
+      printf("SX1262 CHIP SELECTED\n");
+      setPaConfig(0x04, 0x07, 0x00, 0x01);
+      if (22 > power < -9) {
+        power = 22;
+      }
+      // Set max current to 140mA
+      buf[0] = 0x38;
+      buf[1] = 0x0;
+      spiWriteAddr(REG_OCP, buf, sizeof(buf));
     }
 
-    if( power >= 14 )
-    {
-        power = 14;
-    }
-    else if( power < -3 )
-    {
-        power = -3;
-    }
-
-    // current max is 80 mA for the whole device
-    buf[0] = 0x18;
-    buf[1] = 0x0;
-    spiWriteAddr(REG_OCP, buf, sizeof(buf));
-
+    printf("LoRa power: %d\n", power);
     buf[0] = power;
     buf[1] = RADIO_RAMP_40_US;
     spiWriteCommand(RADIO_SET_TXPARAMS, buf, sizeof(buf));
