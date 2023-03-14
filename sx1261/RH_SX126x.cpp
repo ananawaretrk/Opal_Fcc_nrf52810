@@ -3,7 +3,7 @@
 
 #include "RH_SX126x.h"
 
-#define LORA_BUSY      20
+#define LORA_BUSY      4
 
 static bool ImageCalibrated = false;
 static bool isInitialised = false;
