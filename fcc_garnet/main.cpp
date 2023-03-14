@@ -2334,7 +2334,7 @@ int main(void)
 
     loratxlevel = 22;
 
-    channel = 25;
+    channel = 20;
 
     lora_radio_configure(false);
 

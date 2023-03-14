@@ -5,6 +5,8 @@
 
 //#define lora_busy_pin      4
 
+#define REG_TX_CLAMP_CFG  0x08D8
+
 uint32_t lora_busy_pin = 0; 
 
 static bool ImageCalibrated = false;
@@ -574,6 +576,11 @@ void RH_SX126x::setTxPower(int8_t power, bool sx1261_chip)
     {
       //SX1262
       printf("SX1262 CHIP SELECTED\n");
+      // WORKAROUND - Better Resistance of the SX1262 Tx to Antenna Mismatch, see DS_SX1261-2_V1.2 datasheet chapter 15.2
+      uint8_t testFix = spiReadReg( REG_TX_CLAMP_CFG ) | ( 0x0F << 1 );
+      spiWriteAddr( REG_TX_CLAMP_CFG, &testFix, 1);
+      // WORKAROUND
+
       setPaConfig(0x04, 0x07, 0x00, 0x01);
       if (22 > power < -9) {
         power = 22;
