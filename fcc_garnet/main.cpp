@@ -102,6 +102,7 @@ void lora_interval_receive(int scanDuration);
 void lora_disable();
 
 // Utility Function Prototypes
+#ifdef lora_sx1261
 long power_map(long x, long in_min, long in_max, long out_min, long out_max);
 long input_min = 0;
 long input_max = 8;
@@ -109,6 +110,18 @@ long output_min = 5;
 long output_max = 20;
 int8_t loratxlevel = 0;
 float lorafrequency = 915.0f;
+#endif // lora_sx1261
+
+#ifndef lora_sx1261
+long power_map(long x, long in_min, long in_max, long out_min, long out_max);
+long input_min = 0;
+long input_max = 8;
+long output_min = -9;
+long output_max = 22;
+int8_t loratxlevel = 0;
+float lorafrequency = 915.0f;
+
+#endif // lora_sx1261
 
 
 #define UD_SER
@@ -2320,28 +2333,28 @@ int main(void)
 //    nrf_delay_ms(100);
 
 
-    lora_radio_enable();
-    
-    NRF_RNG->TASKS_START = 1;
-    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
-    NRF_CLOCK->TASKS_HFCLKSTART        = 1;
-
-    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0) {
-    } // Do nothing.
-
-    lora_radio_disable();
-    printf(DBG_GREEN "lora_radio_disable\n" DBG_RESET);
-
-    loratxlevel = 22;
-
-    channel = 20;
-
-    lora_radio_configure(false);
-
-    lora_radio_cw_mode();
-    printf(DBG_GREEN "lora_radio_cw_mode timed\n" DBG_RESET);
-    
-    while(1);
+//    lora_radio_enable();
+//    
+//    NRF_RNG->TASKS_START = 1;
+//    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+//    NRF_CLOCK->TASKS_HFCLKSTART        = 1;
+//
+//    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0) {
+//    } // Do nothing.
+//
+//    lora_radio_disable();
+//    printf(DBG_GREEN "lora_radio_disable\n" DBG_RESET);
+//
+//    loratxlevel = 22;
+//
+//    channel = 20;
+//
+//    lora_radio_configure(false);
+//
+//    lora_radio_cw_mode();
+//    printf(DBG_GREEN "lora_radio_cw_mode timed\n" DBG_RESET);
+//    
+//    while(1);
 
     setConfig(120000);
 
