@@ -3,7 +3,9 @@
 
 #include "RH_SX126x.h"
 
-#define LORA_BUSY      4
+//#define lora_busy_pin      4
+
+uint32_t lora_busy_pin = 0; 
 
 static bool ImageCalibrated = false;
 static bool isInitialised = false;
@@ -16,11 +18,12 @@ RH_SX126x::RH_SX126x(void)
 {
 }
 
-bool RH_SX126x::init(const nrf_drv_spi_t* spi_ins, uint32_t pin)
+bool RH_SX126x::init(const nrf_drv_spi_t* spi_ins, uint32_t pin, uint32_t local_lora_busy_pin)
 {
     _spi = spi_ins;
     _interruptPin = pin;
     (void)_interruptPin;
+    lora_busy_pin = local_lora_busy_pin;
 
     //Set header
     _header[0] = 0x7F;
@@ -52,8 +55,8 @@ bool RH_SX126x::init(const nrf_drv_spi_t* spi_ins, uint32_t pin)
     // WORKAROUND
     // Set up Lora Busy Pin
     nrfx_gpiote_in_config_t pin_config = NRFX_GPIOTE_CONFIG_IN_SENSE_TOGGLE(true);
-    ret_code_t result = nrfx_gpiote_in_init(LORA_BUSY, &pin_config, NULL);
-    while(nrf_gpio_pin_read(LORA_BUSY));
+    ret_code_t result = nrfx_gpiote_in_init(lora_busy_pin, &pin_config, NULL);
+    while(nrf_gpio_pin_read(lora_busy_pin));
     // WORKAROUND
 
     // Use DC DC regulator
@@ -128,7 +131,7 @@ void RH_SX126x::checkBusy(void)
 
 void RH_SX126x::waitOnBusy(void) 
 {
-    while(nrf_gpio_pin_read(LORA_BUSY) == 1);
+    while(nrf_gpio_pin_read(lora_busy_pin) == 1);
 }
 
 void RH_SX126x::spiReadCommand(RadioCommands_t cmd, uint8_t* dest, uint8_t len)

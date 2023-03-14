@@ -605,7 +605,7 @@ public:
 
     RH_SX126x(void);
 
-    bool        init(const nrf_drv_spi_t* spi_ins, uint32_t pin);
+    bool        init(const nrf_drv_spi_t* spi_ins, uint32_t pin, uint32_t local_lora_busy_pin);
     void        Wakeup(void);
 
     void        spiReadCommand(RadioCommands_t cmd, uint8_t* dest, uint8_t len);

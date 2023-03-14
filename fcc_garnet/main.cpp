@@ -2301,23 +2301,23 @@ int main(void)
     init_timer();
     init_timer2();
 
-    nrf_gpio_cfg_input(LORA_INT, NRF_GPIO_PIN_NOPULL);
-  nrf_gpio_cfg_input(LORA_INT, NRF_GPIO_PIN_NOPULL);
-  nrf_gpio_cfg_output(LORA_NSS);
-  nrf_gpio_pin_set(LORA_NSS);
-
-  nrf_delay_ms(1);
-
-  nrf_gpio_cfg_output(LORA_RF_SW);
-  nrf_gpio_pin_set(LORA_RF_SW);
-
-  nrf_delay_ms(100);
-
-
-    nrf_gpio_pin_clear(LORA_RST);
-    nrf_delay_ms(10);
-    nrf_gpio_pin_set(LORA_RST);
-    nrf_delay_ms(100);
+//    nrf_gpio_cfg_input(LORA_INT, NRF_GPIO_PIN_NOPULL);
+//  nrf_gpio_cfg_input(LORA_INT, NRF_GPIO_PIN_NOPULL);
+//  nrf_gpio_cfg_output(LORA_NSS);
+//  nrf_gpio_pin_set(LORA_NSS);
+//
+//  nrf_delay_ms(1);
+//
+//  nrf_gpio_cfg_output(LORA_RF_SW);
+//  nrf_gpio_pin_set(LORA_RF_SW);
+//
+//  nrf_delay_ms(100);
+//
+//
+//    nrf_gpio_pin_clear(LORA_RST);
+//    nrf_delay_ms(10);
+//    nrf_gpio_pin_set(LORA_RST);
+//    nrf_delay_ms(100);
 
 
     lora_radio_enable();
@@ -2334,7 +2334,7 @@ int main(void)
 
     loratxlevel = 22;
 
-    channel = 10;
+    channel = 25;
 
     lora_radio_configure(false);
 
@@ -2652,19 +2652,19 @@ void spi_event_handler(nrf_drv_spi_evt_t const *p_event, void *p_context)
 
 void lora_radio_enable(void)
 {   
-//    nrf_gpio_cfg_input(LORA_BUSY, NRF_GPIO_PIN_NOPULL);
-//    nrf_gpio_cfg_input(LORA_INT, NRF_GPIO_PIN_NOPULL);
-//
-//    nrf_gpio_cfg_output(LORA_RST);
-//    nrf_gpio_pin_clear(LORA_RST);
-//    nrf_delay_ms(10);
-//    nrf_gpio_pin_set(LORA_RST);
-//    nrf_delay_ms(100);
-//
-//    nrf_gpio_cfg_output(LORA_RF_SW);
-//    nrf_delay_ms(10);
-//    nrf_gpio_pin_set(LORA_RF_SW);
-//    nrf_delay_ms(10);
+    nrf_gpio_cfg_input(LORA_BUSY, NRF_GPIO_PIN_NOPULL);
+    nrf_gpio_cfg_input(LORA_INT, NRF_GPIO_PIN_NOPULL);
+
+    nrf_gpio_cfg_output(LORA_RST);
+    nrf_gpio_pin_clear(LORA_RST);
+    nrf_delay_ms(10);
+    nrf_gpio_pin_set(LORA_RST);
+    nrf_delay_ms(100);
+
+    nrf_gpio_cfg_output(LORA_RF_SW);
+    nrf_delay_ms(10);
+    nrf_gpio_pin_set(LORA_RF_SW);
+    nrf_delay_ms(10);
 
     nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
     spi_config.ss_pin = LORA_NSS;
@@ -2686,7 +2686,7 @@ void lora_radio_enable(void)
     }
     nrfx_gpiote_in_event_enable(LORA_RST, true);
 
-    if (!sx126x.init(&spi, LORA_INT))
+    if (!sx126x.init(&spi, LORA_INT, LORA_BUSY))
     {
         printf("LoRa radio init failed\n");
     }
