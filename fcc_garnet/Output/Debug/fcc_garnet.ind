@@ -63,7 +63,6 @@
 "Output/Debug//nrf_sdh_ble.o"
 "Output/Debug//nrf_sdh_soc.o"
 "Output/Debug//RH_SX126x.o"
-"Output/Debug//RH_RF95.o"
 "Output/Debug//TMP117.o"
 "Output/Debug//i2c_wrapper.o"
 "Output/Debug//Wire_nRF52.o"

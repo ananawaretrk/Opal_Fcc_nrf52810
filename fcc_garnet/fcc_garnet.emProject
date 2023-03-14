@@ -125,7 +125,9 @@
     </folder>
     <folder Name="Radio">
       <file file_name="../sx1261/RH_SX126x.cpp" />
-      <file file_name="../rfm95/RH_RF95.cpp" />
+      <file file_name="../rfm95/RH_RF95.cpp">
+        <configuration Name="Debug" build_exclude_from_build="Yes" />
+      </file>
     </folder>
     <configuration
       Name="Debug"

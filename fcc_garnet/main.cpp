@@ -75,7 +75,7 @@ TwoWire Wire(i2c_wrapper.GetI2CInstance());
 void print_temperature_sensor_data(void);
 
 // LoRa defines
-RH_RF95 rf95 = RH_RF95();
+//RH_RF95 rf95 = RH_RF95();
 
 #define SPI_MISO_PIN    12
 #define SPI_MOSI_PIN    14
@@ -83,7 +83,8 @@ RH_RF95 rf95 = RH_RF95();
 #define LORA_NSS        16
 #define LORA_RST        18
 #define LORA_INT        28
-#define LORA_RF_SW        19
+#define LORA_RF_SW      19
+#define LORA_BUSY       4
 
 uint8_t  buff[RH_RF95_MAX_MESSAGE_LEN];
 char loraSendBuf[RH_RF95_MAX_MESSAGE_LEN];
@@ -2021,242 +2022,242 @@ void cut_init()
 }
 #endif //CUT
 
-//LoRa
-
-void lora_cw_transmit_5seconds()
-{
-  printf(DBG_GREEN "LoRa 5 second CW Transmit\n" DBG_RESET);
-  
-  // Modem config FSK
-  rf95.sleep();
-  rf95.spiWrite(RH_RF95_REG_01_OP_MODE, 0x00); // long range mode off 
-  rf95.spiWrite( RH_RF95_REG_40_DIO_MAPPING1, 0x00 );
-  rf95.spiWrite( RH_RF95_REG_41_DIO_MAPPING2, 0x30 );
-  
-  // Set Transmit Power
-  rf95.setTxPower(loratxlevel);
-  
-  // Set FSK config
-  //Setting FDEV to zero
-  rf95.spiWrite( 0x04, ( uint8_t )0x00 ); // REG REG_FDEVMSB
-  rf95.spiWrite( 0x05, ( uint8_t )0x00 ); // REG_FDEVLSB 
-  
-  // First write
-  bool my_fixLen = false; // unlimited packet length (basically variable)
-  bool my_crcOn = true;
-  rf95.spiWrite( 0x30, //REG_PACKETCONFIG1
-                         ( rf95.spiRead( 0x30 ) &
-                           0xEF & //RF_PACKETCONFIG1_CRC_MASK
-                           0X7F ) | // RF_PACKETCONFIG1_PACKETFORMAT_MASK
-                           ( ( my_fixLen == 1 ) ? 0x00 : 0x80 ) |
-                           ( my_crcOn << 4 ) );
-                           
-  // Second write
-  rf95.spiWrite( 0x31, ( rf95.spiRead( 0x31 ) | 0x00 ) );
-  
-   // Now send
-   rf95.send(NULL,0);
-   
-   nrf_delay_ms(5000);
-   
-   rf95.sleep();
-}
- 
-void lora_continuous_cw_transmit()
-{
-  printf(DBG_GREEN "LoRa Continuous CW Transmit\n" DBG_RESET);
-  
-  // Modem config FSK
-  rf95.sleep();
-  rf95.spiWrite(RH_RF95_REG_01_OP_MODE, 0x00); // long range mode off 
-  rf95.spiWrite( RH_RF95_REG_40_DIO_MAPPING1, 0x00 );
-  rf95.spiWrite( RH_RF95_REG_41_DIO_MAPPING2, 0x30 );
-  
-  // Set Transmit Power
-  rf95.setTxPower(loratxlevel);
-  
-  // Set FSK config
-  //Setting FDEV to zero
-  rf95.spiWrite( 0x04, ( uint8_t )0x00 ); // REG REG_FDEVMSB
-  rf95.spiWrite( 0x05, ( uint8_t )0x00 ); // REG_FDEVLSB 
-  
-  // First write
-  bool my_fixLen = false; // unlimited packet length (basically variable)
-  bool my_crcOn = true;
-  rf95.spiWrite( 0x30, //REG_PACKETCONFIG1
-                         ( rf95.spiRead( 0x30 ) &
-                           0xEF & //RF_PACKETCONFIG1_CRC_MASK
-                           0X7F ) | // RF_PACKETCONFIG1_PACKETFORMAT_MASK
-                           ( ( my_fixLen == 1 ) ? 0x00 : 0x80 ) |
-                           ( my_crcOn << 4 ) );
-                           
-  // Second write
-  rf95.spiWrite( 0x31, ( rf95.spiRead( 0x31 ) | 0x00 ) );
-  
-   // Now send
-   rf95.send(NULL,0);
-   
+////LoRa
+//
+//void lora_cw_transmit_5seconds()
+//{
+//  printf(DBG_GREEN "LoRa 5 second CW Transmit\n" DBG_RESET);
+//  
+//  // Modem config FSK
+//  rf95.sleep();
+//  rf95.spiWrite(RH_RF95_REG_01_OP_MODE, 0x00); // long range mode off 
+//  rf95.spiWrite( RH_RF95_REG_40_DIO_MAPPING1, 0x00 );
+//  rf95.spiWrite( RH_RF95_REG_41_DIO_MAPPING2, 0x30 );
+//  
+//  // Set Transmit Power
+//  rf95.setTxPower(loratxlevel);
+//  
+//  // Set FSK config
+//  //Setting FDEV to zero
+//  rf95.spiWrite( 0x04, ( uint8_t )0x00 ); // REG REG_FDEVMSB
+//  rf95.spiWrite( 0x05, ( uint8_t )0x00 ); // REG_FDEVLSB 
+//  
+//  // First write
+//  bool my_fixLen = false; // unlimited packet length (basically variable)
+//  bool my_crcOn = true;
+//  rf95.spiWrite( 0x30, //REG_PACKETCONFIG1
+//                         ( rf95.spiRead( 0x30 ) &
+//                           0xEF & //RF_PACKETCONFIG1_CRC_MASK
+//                           0X7F ) | // RF_PACKETCONFIG1_PACKETFORMAT_MASK
+//                           ( ( my_fixLen == 1 ) ? 0x00 : 0x80 ) |
+//                           ( my_crcOn << 4 ) );
+//                           
+//  // Second write
+//  rf95.spiWrite( 0x31, ( rf95.spiRead( 0x31 ) | 0x00 ) );
+//  
+//   // Now send
+//   rf95.send(NULL,0);
+//   
 //   nrf_delay_ms(5000);
-   
+//   
 //   rf95.sleep();
-
-    //while(1);
-}
-
-void lora_disable()
-{
-    //nrf_delay_ms(1000);
-    nrf_delay_ms(50);
-    rf95.sleep();
-}
-
-
-void init_spi_for_lora(void) 
-{
-    nrf_gpio_cfg_input(LORA_INT, NRF_GPIO_PIN_NOPULL);
-    nrf_delay_ms(50);
-    nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
-    spi_config.ss_pin = LORA_NSS;
-    spi_config.miso_pin = SPI_MISO_PIN;
-    spi_config.mosi_pin = SPI_MOSI_PIN;
-    spi_config.sck_pin = SPI_SCK_PIN;
-    spi_config.frequency = NRF_DRV_SPI_FREQ_2M;
-    spi_config.bit_order = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST;
-    APP_ERROR_CHECK(nrf_drv_spi_init(&spi, &spi_config, spi_event_handler, NULL));
-}
-  
- bool loraInit()
- {
-   if (!rf95.init(&spi, LORA_INT)) {
-    printf("LoRa radio init failed\n");
-    return false;
-  }
-  //rf95.setFrequency(920);
-  rf95.setTxPower(loratxlevel);
-  printf("TX power changed to: %d\n", loratxlevel);
-  
-  nrf_delay_ms(1000);
-  rf95.setFrequency(lorafrequency);
-  
-  return true;
- }
-
-void lora_continuous_transmit()
-{
-  printf(DBG_GREEN "LoRa Continuous Transmit\n" DBG_RESET);
-  while (0)
-    {
-        memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
-        sprintf(loraSendBuf, "id=%s-----hello", idString);
-        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
-        printf("%s\n", loraSendBuf);
-        rf95.waitPacketSent();
-        nrf_delay_ms(700);
-        rf95.sleep();
-    }
-
-
-   memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
-   sprintf(loraSendBuf, "id=%s-----hello", idString);
-   while (1)
-    {
-        
-        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
+//}
+// 
+//void lora_continuous_cw_transmit()
+//{
+//  printf(DBG_GREEN "LoRa Continuous CW Transmit\n" DBG_RESET);
+//  
+//  // Modem config FSK
+//  rf95.sleep();
+//  rf95.spiWrite(RH_RF95_REG_01_OP_MODE, 0x00); // long range mode off 
+//  rf95.spiWrite( RH_RF95_REG_40_DIO_MAPPING1, 0x00 );
+//  rf95.spiWrite( RH_RF95_REG_41_DIO_MAPPING2, 0x30 );
+//  
+//  // Set Transmit Power
+//  rf95.setTxPower(loratxlevel);
+//  
+//  // Set FSK config
+//  //Setting FDEV to zero
+//  rf95.spiWrite( 0x04, ( uint8_t )0x00 ); // REG REG_FDEVMSB
+//  rf95.spiWrite( 0x05, ( uint8_t )0x00 ); // REG_FDEVLSB 
+//  
+//  // First write
+//  bool my_fixLen = false; // unlimited packet length (basically variable)
+//  bool my_crcOn = true;
+//  rf95.spiWrite( 0x30, //REG_PACKETCONFIG1
+//                         ( rf95.spiRead( 0x30 ) &
+//                           0xEF & //RF_PACKETCONFIG1_CRC_MASK
+//                           0X7F ) | // RF_PACKETCONFIG1_PACKETFORMAT_MASK
+//                           ( ( my_fixLen == 1 ) ? 0x00 : 0x80 ) |
+//                           ( my_crcOn << 4 ) );
+//                           
+//  // Second write
+//  rf95.spiWrite( 0x31, ( rf95.spiRead( 0x31 ) | 0x00 ) );
+//  
+//   // Now send
+//   rf95.send(NULL,0);
+//   
+////   nrf_delay_ms(5000);
+//   
+////   rf95.sleep();
+//
+//    //while(1);
+//}
+//
+//void lora_disable()
+//{
+//    //nrf_delay_ms(1000);
+//    nrf_delay_ms(50);
+//    rf95.sleep();
+//}
+//
+//
+//void init_spi_for_lora(void) 
+//{
+//    nrf_gpio_cfg_input(LORA_INT, NRF_GPIO_PIN_NOPULL);
+//    nrf_delay_ms(50);
+//    nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
+//    spi_config.ss_pin = LORA_NSS;
+//    spi_config.miso_pin = SPI_MISO_PIN;
+//    spi_config.mosi_pin = SPI_MOSI_PIN;
+//    spi_config.sck_pin = SPI_SCK_PIN;
+//    spi_config.frequency = NRF_DRV_SPI_FREQ_2M;
+//    spi_config.bit_order = NRF_DRV_SPI_BIT_ORDER_MSB_FIRST;
+//    APP_ERROR_CHECK(nrf_drv_spi_init(&spi, &spi_config, spi_event_handler, NULL));
+//}
+//  
+// bool loraInit()
+// {
+//   if (!rf95.init(&spi, LORA_INT)) {
+//    printf("LoRa radio init failed\n");
+//    return false;
+//  }
+//  //rf95.setFrequency(920);
+//  rf95.setTxPower(loratxlevel);
+//  printf("TX power changed to: %d\n", loratxlevel);
+//  
+//  nrf_delay_ms(1000);
+//  rf95.setFrequency(lorafrequency);
+//  
+//  return true;
+// }
+//
+//void lora_continuous_transmit()
+//{
+//  printf(DBG_GREEN "LoRa Continuous Transmit\n" DBG_RESET);
+//  while (0)
+//    {
+//        memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
+//        sprintf(loraSendBuf, "id=%s-----hello", idString);
+//        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
 //        printf("%s\n", loraSendBuf);
-        while(!rf95.waitPacketSent())
-        {
-          //nrf_delay_ms(700);
-        }
-        //nrf_delay_ms(50);
+//        rf95.waitPacketSent();
+//        nrf_delay_ms(700);
 //        rf95.sleep();
-    }
-}
-
-void lora_interval_transmit(int localadvTime)
-{
-    printf(DBG_GREEN "LoRa Interval Transmit\n" DBG_RESET);
-
-    start_timer(localadvTime);
-
-    while (!timerFlag)
-    {
-        memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
-        sprintf(loraSendBuf, "id=%s-----hello", idString);
-        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
-        printf("%s\n", loraSendBuf);
-        rf95.waitPacketSent();
-        nrf_delay_ms(700);
-        rf95.sleep();
-    }
-    stop_timer();
-}
-
-// Updated Function
-void lora_interval_transmit1(int localadvTime)
-{
-    printf(DBG_GREEN "LoRa Interval Transmit1\n" DBG_RESET);
-
-    start_timer(localadvTime);
-
-    memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
-    sprintf(loraSendBuf, "id=%s-----hello", idString);
-
-    while (!timerFlag)
-    {     
-        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
-        rf95.waitPacketSent();
-    }
-
-    stop_timer();
-
-    rf95.sleep();
-}
-
-void lora_continuous_receive()
-{
-    printf(DBG_GREEN "LoRa Continuous Receive\n" DBG_RESET);
-    while (1)
-    {
-        //nrf_delay_ms(500);
-        nrf_delay_ms(50);
-        if (rf95.available())
-        {          
-                //nrf_delay_ms(500);
-                nrf_delay_ms(50);
-                memset(buff, 0, RH_RF95_MAX_MESSAGE_LEN);
-                // nrf_delay_ms(10);
-                uint8_t len = sizeof(buff);
-                rf95.recv(buff, &len);
-                printf("%s\n", buff);          
-        }
-    }
-}
-
-void lora_interval_receive(int rcv_time)
-{
-    
-    printf(DBG_GREEN "LoRa Interval Receive\n" DBG_RESET);
-
-    start_timer(rcv_time);
-    while (!timerFlag)
-    {
-        //nrf_delay_ms(500);
-        nrf_delay_ms(50);
-        if (rf95.available())
-        {
-            //nrf_delay_ms(500);
-            nrf_delay_ms(50);
-            memset(buff, 0, RH_RF95_MAX_MESSAGE_LEN);
-            // nrf_delay_ms(10);
-            uint8_t len = sizeof(buff);
-            rf95.recv(buff, &len);
-            printf("%s\n", buff);
-        }
-    }
-    stop_timer();
-}
-
-//LoRa
+//    }
+//
+//
+//   memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
+//   sprintf(loraSendBuf, "id=%s-----hello", idString);
+//   while (1)
+//    {
+//        
+//        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
+////        printf("%s\n", loraSendBuf);
+//        while(!rf95.waitPacketSent())
+//        {
+//          //nrf_delay_ms(700);
+//        }
+//        //nrf_delay_ms(50);
+////        rf95.sleep();
+//    }
+//}
+//
+//void lora_interval_transmit(int localadvTime)
+//{
+//    printf(DBG_GREEN "LoRa Interval Transmit\n" DBG_RESET);
+//
+//    start_timer(localadvTime);
+//
+//    while (!timerFlag)
+//    {
+//        memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
+//        sprintf(loraSendBuf, "id=%s-----hello", idString);
+//        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
+//        printf("%s\n", loraSendBuf);
+//        rf95.waitPacketSent();
+//        nrf_delay_ms(700);
+//        rf95.sleep();
+//    }
+//    stop_timer();
+//}
+//
+//// Updated Function
+//void lora_interval_transmit1(int localadvTime)
+//{
+//    printf(DBG_GREEN "LoRa Interval Transmit1\n" DBG_RESET);
+//
+//    start_timer(localadvTime);
+//
+//    memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
+//    sprintf(loraSendBuf, "id=%s-----hello", idString);
+//
+//    while (!timerFlag)
+//    {     
+//        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
+//        rf95.waitPacketSent();
+//    }
+//
+//    stop_timer();
+//
+//    rf95.sleep();
+//}
+//
+//void lora_continuous_receive()
+//{
+//    printf(DBG_GREEN "LoRa Continuous Receive\n" DBG_RESET);
+//    while (1)
+//    {
+//        //nrf_delay_ms(500);
+//        nrf_delay_ms(50);
+//        if (rf95.available())
+//        {          
+//                //nrf_delay_ms(500);
+//                nrf_delay_ms(50);
+//                memset(buff, 0, RH_RF95_MAX_MESSAGE_LEN);
+//                // nrf_delay_ms(10);
+//                uint8_t len = sizeof(buff);
+//                rf95.recv(buff, &len);
+//                printf("%s\n", buff);          
+//        }
+//    }
+//}
+//
+//void lora_interval_receive(int rcv_time)
+//{
+//    
+//    printf(DBG_GREEN "LoRa Interval Receive\n" DBG_RESET);
+//
+//    start_timer(rcv_time);
+//    while (!timerFlag)
+//    {
+//        //nrf_delay_ms(500);
+//        nrf_delay_ms(50);
+//        if (rf95.available())
+//        {
+//            //nrf_delay_ms(500);
+//            nrf_delay_ms(50);
+//            memset(buff, 0, RH_RF95_MAX_MESSAGE_LEN);
+//            // nrf_delay_ms(10);
+//            uint8_t len = sizeof(buff);
+//            rf95.recv(buff, &len);
+//            printf("%s\n", buff);
+//        }
+//    }
+//    stop_timer();
+//}
+//
+////LoRa
 
 // Temperature Sensor
 
@@ -2301,22 +2302,27 @@ int main(void)
     init_timer2();
 
     lora_radio_enable();
+    
+    NRF_RNG->TASKS_START = 1;
+    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+    NRF_CLOCK->TASKS_HFCLKSTART        = 1;
 
-    prepare_sleep();
-    prepare_wake();
-//    NRF_RNG->TASKS_START = 1;
-//    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
-//    NRF_CLOCK->TASKS_HFCLKSTART = 1;
-//
-//    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0) {} // Do nothing.
+    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0) {
+    } // Do nothing.
+
     lora_radio_disable();
+    printf(DBG_GREEN "lora_radio_disable\n" DBG_RESET);
+
+    loratxlevel = 22;
 
     lora_radio_configure(false);
 
-    while (1);
+    lora_radio_cw_mode();
+    printf(DBG_GREEN "lora_radio_cw_mode timed\n" DBG_RESET);
+    
+    while(1);
 
     setConfig(120000);
-    //while(1);
 
     while(1)
     {
@@ -2632,7 +2638,7 @@ void lora_radio_enable(void)
     nrf_delay_ms(1);
 
     nrf_gpio_cfg_output(LORA_RF_SW);
-    nrf_gpio_pin_clear(LORA_RF_SW);
+    nrf_gpio_pin_set(LORA_RF_SW);
 
     nrf_drv_spi_config_t spi_config = NRF_DRV_SPI_DEFAULT_CONFIG;
     spi_config.ss_pin = LORA_NSS;
@@ -2654,7 +2660,7 @@ void lora_radio_enable(void)
     }
     nrfx_gpiote_in_event_enable(LORA_RST, true);
 
-    if (!rf95.init(&spi, LORA_INT))
+    if (!sx126x.init(&spi, LORA_INT))
     {
         printf("LoRa radio init failed\n");
     }
@@ -2741,8 +2747,8 @@ void gpiote_lora_evt_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action
     switch (action)
     {
         case NRF_GPIOTE_POLARITY_LOTOHI:
-           // sx126x.handleInterrupt();
-           rf95.handleInterrupt();
+           sx126x.handleInterrupt();
+           //rf95.handleInterrupt();
         break;
 
         default:
