@@ -243,6 +243,11 @@ uint32_t app_uart_put(uint8_t byte)
     return err_code;
 }
 
+uint32_t app_uart_fifo_length()
+{
+
+    return FIFO_LENGTH(m_rx_fifo);
+}
 
 uint32_t app_uart_close(void)
 {

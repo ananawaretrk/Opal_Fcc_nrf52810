@@ -251,7 +251,7 @@ uint32_t app_uart_flush(void);
  */
 uint32_t app_uart_close(void);
 
-
+uint32_t app_uart_fifo_length();
 
 #ifdef __cplusplus
 }
