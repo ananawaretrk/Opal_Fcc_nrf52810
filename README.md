@@ -1,11 +1,11 @@
 # Trackonomy Radio Certification Firmware
 ---
-This repository is used for radio certification of the hardware listed below. The hardware can be set to a particular frequency using the app. The radios support the following radio modes:
+This repository is used for radio certification of the hardware listed below. The hardware can be set to a particular frequency using the android app. It support the following radio modes:
 1. Transmit
     1. Trasmit Continous Wave at a predefined frequency set by android application
     2. Transmit Modulated Wave at a predefined frequency set by android application
 2. Receive
-    Receive at a predefined frequency set by android application
+    1. Receive at a predefined frequency set by android application
 
 There are in general four modes of operation:
 1. TX continous
