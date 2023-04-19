@@ -76,9 +76,10 @@ static nbiot nbiot_instance;
 //#define CELL_TX                  NRF_GPIO_PIN_MAP(0, 26)
 //#define CELL_RX                  NRF_GPIO_PIN_MAP(0, 27)
 
-#define CELL_ENABLE_PIN_O        29
-#define CELL_TX                  15
-#define CELL_RX                  16
+#define _PINNUM(port, bit)    ((port)*32 + (bit))
+#define CELL_ENABLE_PIN_O        _PINNUM(1, 6)
+#define CELL_TX                  26
+#define CELL_RX                  27
 volatile int cell_timer_flag           = 0;
 
 // LoRa defines
@@ -2115,10 +2116,10 @@ int main(void)
     init_timer();
     init_timer2();
 
-//    nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
-//    nrf_gpio_pin_set(CELL_ENABLE_PIN_O);
-//    nrf_delay_ms(2000);
-//    init_Modem();
+    nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
+    nrf_gpio_pin_set(CELL_ENABLE_PIN_O);
+    nrf_delay_ms(2000);
+    init_Modem();
     
     //init_spi_for_lora();
     
