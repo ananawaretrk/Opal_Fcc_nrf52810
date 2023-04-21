@@ -2239,9 +2239,9 @@ sm_state board_init()
     nrf_delay_ms(500);
     nrf_gpio_pin_clear(GPS_BK_EN);
 
-    //return STATE_GATT_SERVER;
+    return STATE_GATT_SERVER;
     //return STATE_DEBUG;
-    return STATE_SLEEP;
+    //return STATE_SLEEP;
 }
 
 void ble_radio_setup()
