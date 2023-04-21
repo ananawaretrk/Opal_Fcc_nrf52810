@@ -2107,7 +2107,7 @@ void cell_interval_receive_modulated(int rcv_time)
 int main(void)
 {
     ret_code_t err_code;
-
+    // Without Hall sensor and state machine code
     err_code = nrf_drv_gpiote_init();
     APP_ERROR_CHECK(err_code);
 
