@@ -2210,14 +2210,16 @@ sm_state soc_init()
 {
     ret_code_t err_code;
 
-    err_code = nrf_drv_gpiote_init();
-    APP_ERROR_CHECK(err_code);
-
     config_init();
     get_ble_mac();
     get_hw_ver();
     init_timer();
     init_timer2();
+
+    sd_power_dcdc_mode_set(NRF_POWER_DCDC_ENABLE);
+
+    err_code = nrf_drv_gpiote_init();
+    APP_ERROR_CHECK(err_code);
 
     return STATE_BOARD_INIT;
 }
@@ -2663,7 +2665,6 @@ void sleep()
 
     // Clear Pending Interrupts
     NVIC_ClearPendingIRQ(FPU_IRQn);
-    NVIC_ClearPendingIRQ(GPIOTE_IRQn);
     NVIC_ClearPendingIRQ(SAADC_IRQn);
     NVIC_ClearPendingIRQ(TEMP_IRQn);
     NVIC_ClearPendingIRQ(SPIM2_SPIS2_SPI2_IRQn);
@@ -2684,6 +2685,32 @@ void sleep()
     nrf_gpio_pin_clear(GPS_BK_EN);
     nrf_gpio_cfg_default(I2C_SCL);
     nrf_gpio_cfg_default(I2C_SDA);
+    nrf_gpio_cfg_default(9);
+    nrf_gpio_cfg_default(6);
+    nrf_gpio_cfg_default(2);
+    nrf_gpio_cfg_default(5);
+    nrf_gpio_cfg_default(3);
+    nrf_gpio_cfg_default(4);
+    nrf_gpio_cfg_default(29);
+    nrf_gpio_cfg_default(6);
+    nrf_gpio_cfg_default(6);
+    nrf_gpio_cfg_default(21);
+    nrf_gpio_cfg_default(18);
+    nrf_gpio_cfg_default(16);
+    nrf_gpio_cfg_default(15);
+    nrf_gpio_cfg_default(14);
+    nrf_gpio_cfg_default(10);
+    nrf_gpio_cfg_default(20);
+    nrf_gpio_cfg_default(13);
+
+    *(volatile uint32_t *)0x40003FFC = 0;
+    *(volatile uint32_t *)0x40003FFC;
+    *(volatile uint32_t *)0x40003FFC = 1;
+
+    *(volatile uint32_t *)0x40004FFC = 0;
+    *(volatile uint32_t *)0x40004FFC;
+    *(volatile uint32_t *)0x40004FFC = 1;
+
 
     while(1)
     {
