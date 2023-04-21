@@ -42,13 +42,49 @@
 #include "arm_const_structs.h"
 #include "RH_SX126x.h"
 #include "RH_RF95.h"
-//#include "Wire.h"
+#include "Wire.h"
 #include "TMP117.h"
 #include "i2c_wrapper.h"
 #include "eventflag_and_errors.h"
 #include "boards.h"
 #include "4gSIM.h"
+#include "nrf_drv_wdt.h"
 //#define temperature_sensor
+
+// States
+typedef enum {
+  STATE_SOC_INIT,
+  STATE_BOARD_INIT,
+  STATE_GATT_SERVER,
+  STATE_SLEEP,
+  STATE_BLE_CONT_CW_TX,
+  STATE_BLE_CONT_MCW_TX,
+  STATE_BLE_CONT_RX,
+  STATE_BLE_INT_CW_TX,
+  STATE_BLE_INT_MCW_TX,
+  STATE_BLE_INT_RX,
+  STATE_BLE_INT_CW_TX_RX,
+  STATE_BLE_INT_MCW_TX_RX,
+  STATE_LTE_CONT_CW_TX,
+  STATE_LTE_CONT_MCW_TX,
+  STATE_LTE_CONT_RX,
+  STATE_LTE_INT_CW_TX,
+  STATE_LTE_INT_MCW_TX,
+  STATE_LTE_INT_RX,
+  STATE_DEBUG
+} sm_state;
+
+sm_state state = STATE_SOC_INIT;
+// -- States 
+
+// HALL effect
+#define HALL_INT 17
+APP_TIMER_DEF(timer_id_8); 
+volatile bool hallTimer = false;
+volatile uint8_t hallCounter = 0;
+#define HALL_DFU_THRESHOLD 10
+uint8_t hallState = 0;
+// -- HALL effect
 
 //UART COLOR DEFINE
 #define DBG_RED     "\x1b[31m"
@@ -67,7 +103,7 @@
 #define I2C_PRIORITY             2
 static TMP117  tmp_sensor = TMP117();
 I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
-//TwoWire Wire(i2c_wrapper.GetI2CInstance());
+TwoWire Wire(i2c_wrapper.GetI2CInstance());
 void print_temperature_sensor_data(void);
 
 //Modem
@@ -81,7 +117,13 @@ static nbiot nbiot_instance;
 #define CELL_ENABLE_PIN_O        29
 #define CELL_TX                  15
 #define CELL_RX                  16
+#define GPS_BK_EN                13
+#define SENSOR_EN                 3
 volatile int cell_timer_flag           = 0;
+
+// Watchdog
+#define WATCHDOG_TIMEOUT_MS 600000 // 10 minutes in milliseconds
+
 
 // LoRa defines
 RH_RF95 rf95 = RH_RF95();
@@ -1554,8 +1596,6 @@ void radio_with_data1(bool flag)
     }
 }
 
-
-
 void bufferclearTape(void)
 {
 #ifdef RESET
@@ -2104,10 +2144,72 @@ void cell_interval_receive_modulated(int rcv_time)
     nbiot_instance.CwFunction(0, 0, channel, cellpowerlevel, true);
 }
 
-int main(void)
+void stop_hall_effect_timer() {
+   printf("Stopping hall effect timer\n");
+   app_timer_stop(timer_id_8);
+   hallTimer = false;
+}
+
+void hall_effect_timer_event_handler(void * p_context)
+{
+    printf("Hall effect timer event handler\n");
+    if(hallCounter < HALL_DFU_THRESHOLD){
+    printf("Not enough swipes\n");
+    hallCounter = 0;
+    }
+    stop_hall_effect_timer();
+}
+
+void start_hall_effect_timer(uint32_t milliseconds) {
+  ret_code_t error_code;
+
+  stop_hall_effect_timer();
+  printf("Starting hall effect timer for %d milliseconds\n", milliseconds);
+  
+  error_code = app_timer_create(&timer_id_8, APP_TIMER_MODE_SINGLE_SHOT, hall_effect_timer_event_handler);
+  if (error_code != NRF_SUCCESS) {
+    printf("app_timer_create for hall effect timer failed: %d\n", error_code);
+  }
+
+  hallTimer = true;
+
+  error_code = app_timer_start(timer_id_8, APP_TIMER_TICKS(milliseconds), NULL);
+  if (error_code != NRF_SUCCESS) {
+    printf("app_timer_start for hall effect timer failed: %d\n", error_code);
+  }
+}
+
+void hall_gpio_init() {
+  nrf_gpio_cfg_input(HALL_INT ,NRF_GPIO_PIN_NOPULL);
+}
+void gpiote_hall_evt_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action) {
+printf("hall triggered\n");
+hallCounter++;
+if(hallTimer == false){
+    start_hall_effect_timer(8000);
+  }
+ if(hallCounter >= 10){
+ //NRF_POWER->GPREGRET = 0xB1;
+ NVIC_SystemReset();
+ }
+}
+void config_hall_sensor() {
+  nrfx_gpiote_in_config_t hall_config;
+  hall_config.is_watcher = false;
+  hall_config.hi_accuracy = false;
+  hall_config.skip_gpio_setup = false;
+  hall_config.sense = NRF_GPIOTE_POLARITY_TOGGLE;
+  hall_config.hi_accuracy = true;
+  hall_config.pull = NRF_GPIO_PIN_NOPULL;
+  if (nrfx_gpiote_in_init(HALL_INT, &hall_config, gpiote_hall_evt_handler) != NRFX_SUCCESS) {
+    printf("nrfx_gpiote_in_init failed for hall effect sensor\n");
+  }
+  nrfx_gpiote_in_event_enable(HALL_INT, true);
+}
+sm_state soc_init()
 {
     ret_code_t err_code;
-    // Without Hall sensor and state machine code
+
     err_code = nrf_drv_gpiote_init();
     APP_ERROR_CHECK(err_code);
 
@@ -2117,116 +2219,588 @@ int main(void)
     init_timer();
     init_timer2();
 
+    return STATE_BOARD_INIT;
+}
+sm_state board_init()
+{
+    hall_gpio_init();
+    config_hall_sensor();
+
+    // Turn OFF MODEM
     nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
+    nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
+    nrf_delay_ms(1000);
+
+    nrf_gpio_cfg_output(SENSOR_EN);
+    nrf_delay_ms(500);
+    nrf_gpio_pin_clear(SENSOR_EN);
+
+    nrf_gpio_cfg_output(GPS_BK_EN);
+    nrf_delay_ms(500);
+    nrf_gpio_pin_clear(GPS_BK_EN);
+
+    //return STATE_GATT_SERVER;
+    //return STATE_DEBUG;
+    return STATE_SLEEP;
+}
+
+void ble_radio_setup()
+{   
+    // Disable SD
+    nrf_sdh_disable_request();
+
+    // Configure HFCLK
+    NRF_RNG->TASKS_START = 1;
+    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+    NRF_CLOCK->TASKS_HFCLKSTART        = 1;
+    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0){ } // Do nothing.
+
+    // Disable Radio
+    NRF_RADIO->SHORTS = 0;
+    NRF_RADIO->EVENTS_DISABLED = 0;
+    NRF_RADIO->TASKS_TXEN = 0;
+    NRF_RADIO->TASKS_STOP = 1;
+    NRF_RADIO->TASKS_DISABLE = 1;
+    NRF_RADIO->EVENTS_END = 1U;
+
+    while (NRF_RADIO->EVENTS_DISABLED == 0){  }    // Do nothing.
+
+    NRF_RADIO->EVENTS_DISABLED = 0;
+}
+
+sm_state start_gatt_server()
+{
+    setConfig(120000);
+
+    if(celltxrx != 0){
     nrf_gpio_pin_set(CELL_ENABLE_PIN_O);
     nrf_delay_ms(2000);
     init_Modem();
-//    
-    init_spi_for_lora();
+    }
     
-//    loratxlevel = 20;
-//
-//    loraInit();
-//    
-//    rf95.setFrequency(920);
-//
-//    while(1){
-//    lora_interval_transmit(5000);
-//    }
+    //STATE_BLE_CONT_CW_TX
+    if(MODE == 2 && celltxrx == 0 && advTime == 0 && scanDuration == 0 && sleepTime == 0){
+    return STATE_BLE_CONT_CW_TX;
+    }
+
+    else if(MODE == 0 && celltxrx == 0 && advTime == 0 && scanDuration == 0 && sleepTime == 0){
+    return STATE_SLEEP;
+    }
     
-    //int my_rcv_time = 10000;
+    //STATE_BLE_CONT_MCW_TX
+    else if(MODE == 3 && celltxrx == 0 && advTime == 0 && scanDuration == 0 && sleepTime == 0){
+    return STATE_BLE_CONT_MCW_TX;
+    }
+
+    //STATE_BLE_CONT_RX
+    else if(MODE == 2 && celltxrx == 0 && advTime == 0 && scanDuration > 0 && sleepTime == 0){
+    return STATE_BLE_CONT_RX;
+    }
+
+    //STATE_BLE_INT_CW_TX
+    else if(MODE == 2 && celltxrx == 0 && advTime > 0 && scanDuration == 0 && sleepTime > 0){
+    return STATE_BLE_INT_CW_TX;
+    }
     
-    //lora_interval_receive(my_rcv_time);
+    //STATE_BLE_INT_MCW_TX
+    else if(MODE == 3 && celltxrx == 0 && advTime > 0 && scanDuration == 0 && sleepTime > 0){
+    return STATE_BLE_INT_MCW_TX;
+    }
+
+    //STATE_BLE_INT_RX
+    else if(MODE == 2 && celltxrx == 0 && advTime == 0 && scanDuration > 0 && sleepTime > 0){
+    return STATE_BLE_INT_RX;
+    }
+
+    //--STATE_BLE_INT_CW_TX_RX
+    else if(MODE == 2 && celltxrx == 0 && advTime > 0 && scanDuration > 0 && sleepTime > 0){
+    return STATE_BLE_INT_CW_TX_RX;
+    }
+
+    //STATE_BLE_INT_MCW_TX_RX
+    else if(MODE == 3 && celltxrx == 0 && advTime > 0 && scanDuration > 0 && sleepTime > 0){
+    return STATE_BLE_INT_MCW_TX_RX;
+    }
+
+    //STATE_LTE_CONT_CW_TX
+    else if(MODE == 2 && celltxrx == 1 && advTime == 0 && scanDuration == 0 && sleepTime == 0){
+    return STATE_LTE_CONT_CW_TX;
+    }
+
+    //STATE_LTE_CONT_MCW_TX
+    else if(MODE == 3 && celltxrx == 1 && advTime == 0 && scanDuration == 0 && sleepTime == 0){
+    return STATE_LTE_CONT_MCW_TX;
+    }
+
+    //STATE_LTE_CONT_RX
+    else if(MODE == 2 && celltxrx == 2 && advTime == 0 && scanDuration == 0 && sleepTime == 0){
+    return STATE_LTE_CONT_RX;
+    }
+
+    //STATE_LTE_INT_CW_TX
+    else if(MODE == 2 && celltxrx == 1 && advTime > 0 && scanDuration == 0 && sleepTime > 0){
+    return STATE_LTE_INT_CW_TX;
+    }
+
+    //STATE_LTE_INT_MCW_TX
+    else if(MODE == 3 && celltxrx == 1 && advTime > 0 && scanDuration == 0 && sleepTime > 0){
+    return STATE_LTE_INT_MCW_TX;
+    }
+
+    //STATE_LTE_INT_RX
+    else if(MODE == 2 && celltxrx == 2 && advTime == 0 && scanDuration > 0 && sleepTime > 0){
+    return STATE_LTE_INT_RX;
+    }
     
-    //lora_cw_transmit_5seconds();
-    
-    //lora_continuous_cw_transmit();
-    
-    //lora_continuous_transmit();
-    
-    //nrf_delay_ms(5000);
-    
-    //lora_disable();
+    //Default
+    return STATE_SLEEP;
+}
+sm_state ble_cont_cw_tx()
+{
+  // Configure BLE Radio
+  ble_radio_setup();
+
+  // Run CW 
+  radio_config();
+
+  return STATE_SLEEP;
+}
+sm_state ble_cont_mcw_tx()
+{
+  // Configure BLE Radio
+  ble_radio_setup();
   
-    //while(1);
+  //Run Modulated CW
+  modulation();
+
+  return STATE_SLEEP;
+}
+sm_state ble_cont_rx()
+{
+  bleScan(scanDuration);
+
+  return STATE_BLE_CONT_RX;
+}
+
+sm_state ble_int_cw_tx()
+{
+    // Setup BLE Radio
+    ble_radio_setup();
+
+    while (1)
+    {
+        // Run CW
+        radio_config();
+
+        // Advertise for x seconds
+        start_timer(advTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+
+        // Stop CW
+        radio_disable();
+
+        // Do not advertise for x seconds
+        start_timer(sleepTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+    }
+
+    return STATE_SLEEP;
+}
+sm_state ble_int_mcw_tx()
+{
+    // Setup BLE Radio
+    ble_radio_setup();
+
+    while (1)
+    {
+        // Run MCW
+        modulation();
+
+        // Advertise for x seconds
+        start_timer(advTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+
+        // Stop MCW
+        radio_disable();
+
+        // Do not advertise for x seconds
+        start_timer(sleepTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+    }
+
+    return STATE_SLEEP;
+}
+sm_state ble_int_rx()
+{
+    // Setup BLE Radio
+    ble_radio_setup();
+
+    while (1)
+    {
+        // Run scan for x seconds
+        bleScan(scanDuration);
+
+        // Do not scan and sleep for x seconds
+        start_timer(sleepTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+    }
+
+    return STATE_SLEEP;
+}
+sm_state ble_int_cw_tx_rx()
+{
+    // Setup BLE Radio
+    ble_radio_setup();
+
+    while (1)
+    {
+        // Run CW
+        radio_config();
+
+        // Advertise for x seconds
+        start_timer(advTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+
+        // Stop CW
+        radio_disable();
+
+        // Do not advertise for x seconds
+        start_timer(sleepTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+
+        // Run scan for x seconds
+        bleScan(scanDuration);
+    }
+
+    return STATE_SLEEP;
+}
+sm_state ble_int_mcw_tx_rx()
+{
+    // Setup BLE Radio
+    ble_radio_setup();
+
+    while (1)
+    {
+        // Run CW
+        modulation();
+
+        // Advertise for x seconds
+        start_timer(advTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+
+        // Stop CW
+        radio_disable();
+
+        // Do not advertise for x seconds
+        start_timer(sleepTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+
+        // Run scan for x seconds
+        bleScan(scanDuration);
+    }
+
+    return STATE_SLEEP;
+}
+sm_state lte_cont_cw_tx()
+{
+    nbiot_instance.CwFunction(1, 1, channel, cellpowerlevel, false);
+
+    while (1)
+    {
+        nrf_pwr_mgmt_run();
+    }
     
-    //lora_continuous_receive();
+    return STATE_SLEEP;
+}
+sm_state lte_cont_mcw_tx()
+{
+    nbiot_instance.CwFunction(1, 1, channel, cellpowerlevel, true);
+
+    while (1)
+    {
+        nrf_pwr_mgmt_run();
+    }
+
+    return STATE_SLEEP;
+}
+sm_state lte_cont_rx()
+{
+    nbiot_instance.CwFunction(0, 1, channel, cellrxpowerlevel, false);
+    while (1)
+    {
+        nrf_pwr_mgmt_run();
+    }
     
-    setConfig(120000);
-    //while(1);
+    return STATE_SLEEP;
+}
+sm_state lte_int_cw_tx()
+{
+    while (1)
+    {
+        nbiot_instance.CwFunction(1, 1, channel, cellpowerlevel, false);
+
+        start_timer(advTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+
+        nbiot_instance.CwFunction(1, 0, channel, cellpowerlevel, false);
+
+        start_timer(sleepTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+    }
+
+    return STATE_SLEEP;
+}
+
+sm_state lte_int_mcw_tx()
+{
+    while (1)
+    {
+        nbiot_instance.CwFunction(1, 1, channel, cellpowerlevel, true);
+
+        start_timer(advTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+
+        nbiot_instance.CwFunction(1, 0, channel, cellpowerlevel, true);
+
+        start_timer(sleepTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+    }
+
+    return STATE_SLEEP;
+}
+sm_state lte_int_rx()
+{
+    while (1)
+    {
+        nbiot_instance.CwFunction(0, 1, channel, cellpowerlevel, false);
+
+        start_timer(advTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+
+        nbiot_instance.CwFunction(0, 0, channel, cellpowerlevel, false);
+
+        start_timer(sleepTime);
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+        stop_timer();
+    }
+
+    return STATE_SLEEP;
+}
+sm_state debug_function()
+{
+    return STATE_SLEEP;
+}
+
+void sleep()
+{
+    if(celltxrx !=0){
+    nrf_delay_ms(200);
+    nbiot_instance.UnInitialize();
+    }
+    else{
+    app_uart_flush();
+    app_uart_close();
+    }
+
+    // Clear Pending Interrupts
+    NVIC_ClearPendingIRQ(FPU_IRQn);
+    NVIC_ClearPendingIRQ(GPIOTE_IRQn);
+    NVIC_ClearPendingIRQ(SAADC_IRQn);
+    NVIC_ClearPendingIRQ(TEMP_IRQn);
+    NVIC_ClearPendingIRQ(SPIM2_SPIS2_SPI2_IRQn);
+    NVIC_ClearPendingIRQ(SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQn);
+    NVIC_ClearPendingIRQ(RADIO_IRQn);
+    NVIC_ClearPendingIRQ(UARTE0_UART0_IRQn);
+    NVIC_ClearPendingIRQ(TIMER0_IRQn);
+    NVIC_ClearPendingIRQ(TIMER1_IRQn);
+    NVIC_ClearPendingIRQ(TIMER2_IRQn);
+
+    // Errata
+    *(volatile uint32_t *)0x4007AC84ul = 0x00000002ul;
+    NVIC_ClearPendingIRQ(GPIOTE_IRQn);
+
+    nrf_delay_ms(200);
+    nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
+    nrf_gpio_pin_clear(SENSOR_EN);
+    nrf_gpio_pin_clear(GPS_BK_EN);
+    nrf_gpio_cfg_default(I2C_SCL);
+    nrf_gpio_cfg_default(I2C_SDA);
 
     while(1)
     {
-        switch(MODE)
+       nrf_pwr_mgmt_run(); 
+    }
+
+}
+
+int main(void)
+{
+    ret_code_t err_code;
+
+    state = STATE_SOC_INIT;
+
+    while (1)
+    {
+        switch (state)
         {
-            case 0:
-                printf("Sleep ON\n");
-                random_pwr_fix();
-                prepare_sleep();
+            case STATE_SOC_INIT:
+                printf("STATE_SOC_INIT\n");
+                state = soc_init();
+                break;
 
-                while(1)
-                {
-                    nrf_pwr_mgmt_run();
-                }
-            break;
+            case STATE_BOARD_INIT:
+                printf("STATE_BOARD_INIT\n");
+                state = board_init();
+                break;
 
-            case 1:
-                printf("Parcel Turned ON\n");
-                debugMode = false;
+            case STATE_GATT_SERVER:
+                printf("STATE_GATT_SERVER\n");
+                state = start_gatt_server();
+                break;
 
-                while(1)
-                {
-                    nrf_pwr_mgmt_run();
-                }
-            break;
+            case STATE_SLEEP:
+                printf("STATE_SLEEP\n");
+                sleep();
+                break;
 
-            case 2:
-                printf("CW Mode without modulation ON\n");
+            case STATE_BLE_CONT_CW_TX:
+                printf("STATE_BLE_CONT_CW_TX\n");
+                state = ble_cont_cw_tx();
+                break;
 
-                if(advTime == 0 && scanDuration == 0)
-                {
-                    debugMode = false;
-                }
-                else
-                {
-                    debugMode = true;
-                }
+            case STATE_BLE_CONT_MCW_TX:
+                printf("STATE_BLE_CONT_MCW_TX\n");
+                state = ble_cont_mcw_tx();
+                break;
 
-                while(1)
-                {
-                    tapeDiagnosis();
-                }
-            break;
+            case STATE_BLE_CONT_RX:
+                printf("STATE_BLE_CONT_RX\n");
+                state = ble_cont_rx();
+                break;
 
-            case 3:
-                printf("CW Mode with modulation ON\n");
+            case STATE_BLE_INT_CW_TX:
+                printf("STATE_BLE_INT_CW_TX\n");
+                state = ble_int_cw_tx();
+                break;
 
-                if(advTime == 0 && scanDuration == 0)
-                {
-                    while(1)
-                    {
-                        radio_with_data1(false);
-                    }
-                }
-                else
-                {
-                    while(1)
-                    {
-                        radio_with_data1(true);
-                    }
-                }
-            break;
+            case STATE_BLE_INT_MCW_TX:
+                printf("STATE_BLE_INT_MCW_TX\n");
+                state = ble_int_mcw_tx();
+                break;
+
+            case STATE_BLE_INT_RX:
+                printf("STATE_BLE_INT_RX\n");
+                state = ble_int_rx();
+                break;
+
+            case STATE_BLE_INT_CW_TX_RX:
+                printf("STATE_BLE_INT_CW_TX_RX\n");
+                state = ble_int_cw_tx_rx();
+                break;
+
+            case STATE_BLE_INT_MCW_TX_RX:
+                printf("STATE_BLE_INT_MCW_TX_RX\n");
+                state = ble_int_mcw_tx_rx();
+                break;
+
+            case STATE_LTE_CONT_CW_TX:
+                printf("STATE_LTE_CONT_CW_TX\n");
+                state = lte_cont_cw_tx();
+                break;
+
+            case STATE_LTE_CONT_MCW_TX:
+                printf("STATE_LTE_CONT_MCW_TX\n");
+                state = lte_cont_mcw_tx();
+                break;
+
+            case STATE_LTE_CONT_RX:
+                printf("STATE_LTE_CONT_RX\n");
+                state = lte_cont_rx();
+                break;
+
+            case STATE_LTE_INT_CW_TX:
+                printf("STATE_LTE_INT_CW_TX\n");
+                state = lte_int_cw_tx();
+                break;
+
+            case STATE_LTE_INT_MCW_TX:
+                printf("STATE_LTE_INT_MCW_TX\n");
+                state = lte_int_mcw_tx();
+                break;
+
+            case STATE_LTE_INT_RX:
+                printf("STATE_LTE_INT_RX\n");
+                state = lte_int_rx();
+                break;
+
+            case STATE_DEBUG:
+                printf("STATE_DEBUG\n");
+                state = debug_function();
+                break;
 
             default:
-                printf("Sleep ON\n");
-                random_pwr_fix();
-                prepare_sleep();
-
-                while(1)
-                {
-                    nrf_pwr_mgmt_run();
-                }
-            break;
+                printf("DEFAULT: STATE_SLEEP\n");
+                sleep();
+                break;
         }
     }
 }
