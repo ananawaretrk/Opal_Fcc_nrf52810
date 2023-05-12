@@ -100,7 +100,8 @@ long input_max = 8;
 long output_min = 5;
 long output_max = 20;
 int8_t loratxlevel = 0;
-float lorafrequency = 915.0f;
+//float lorafrequency = 915.0f;
+int lorafrequency = 915;
 
 
 #define UD_SER
@@ -454,7 +455,8 @@ bool low_voltage = false;
 uint8_t m_tx_packet[RADIO_MAX_PAYLOAD_LEN];                                                                             /**< Buffer for the radio TX packet. */
 uint8_t    mode                       = RADIO_MODE_MODE_Ble_2Mbit;    /**< Radio mode. Data rate and modulation. */
 uint8_t    txpower                    = RADIO_TXPOWER_TXPOWER_0dBm; /**< Radio output power. */
-uint8_t    channel                    = 40;
+//uint8_t    channel                    = 40;
+int    channel                    = 920;
 uint8_t g_rx_packet[RADIO_MAX_PAYLOAD_LEN];                                       /**< Buffer for the radio RX packet. */
 
 
@@ -1602,13 +1604,14 @@ void setConfig(int setTime)
         txlevel = 7;
     }
 
-    if(channel < 0 || channel > 100)
+    if((channel < 0 || channel > 100) && !lora_selected)
     {
         channel = 17;
     }
       
     loratxlevel = (int8_t)power_map(txlevel, input_min, input_max, output_min, output_max);
-    lorafrequency = 900 + channel;
+    //lorafrequency = 900 + channel;
+    lorafrequency = channel;
     
     printf("OTA: %d\n",           OTA);
     printf("advTime: %d\n",       advTime);
@@ -1618,7 +1621,7 @@ void setConfig(int setTime)
     printf("scanDuration: %d\n",  scanDuration);
     printf("MODE: %d\n",          MODE);
     printf(DBG_BLUE "channel: %d\n" DBG_RESET, channel);
-    printf(DBG_GREEN "channel: %.2f\n" DBG_RESET, lorafrequency);
+    printf(DBG_GREEN "channel: %d\n" DBG_RESET, lorafrequency);
     printf("Radio: %d\n",         lora_selected);
 
     if(OTA)
