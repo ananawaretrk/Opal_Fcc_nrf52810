@@ -2041,8 +2041,8 @@ float my_rn()
   
   // Range
   //rand_number[0] = rand_min + rand_number[0] % (rand_max - rand_min + 1);
-  rand_number[0] = (rand_number[0] % 6);
-  rand_number[1] = (rand_number[1] % 99);
+  rand_number[0] = (rand_number[0] % 5);
+  rand_number[1] = (rand_number[1] % 110);
  
   // Create floating number using two bytes
   f_random_number = rand_number[0] + (rand_number[1] * 0.01);
@@ -2055,8 +2055,8 @@ float my_rn()
       {
           sd_rand_application_vector_get(rand_number, 2);
       }
-      rand_number[0] = (rand_number[0] % 6);
-      rand_number[1] = (rand_number[1] % 99);
+      rand_number[0] = (rand_number[0] % 5);
+      rand_number[1] = (rand_number[1] % 110);
 
       f_random_number = rand_number[0] + (rand_number[1] * 0.01);
   }
