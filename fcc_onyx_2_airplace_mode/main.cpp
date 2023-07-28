@@ -2825,7 +2825,8 @@ void TCAInitialize(void) {
 
 void TCATest(){
   i2c_wrapper.InitializeI2C();
-  TCAInitialize();
+  TCAInitialize(); 
+  // Pin 14 on TCA is gpio pin 12
   TCA.setPin(12, TCA.OUTPUTa);
   //for(int i = 0; i < 5; i++){
   while(1){
