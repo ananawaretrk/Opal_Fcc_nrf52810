@@ -67,6 +67,7 @@
 "Output/Debug//4gSIM.o"
 "Output/Debug//TMP117.o"
 "Output/Debug//Dps310.o"
+"Output/Debug//TCA9535.o"
 "Output/Debug//i2c_wrapper.o"
 "Output/Debug//Wire_nRF52.o"
 "Output/Debug//error_handler.o"

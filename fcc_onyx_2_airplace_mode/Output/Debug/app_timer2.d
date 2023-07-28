@@ -1,7 +1,7 @@
 Output/Debug//app_timer2.o: \
  C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\timer\app_timer2.c \
  C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\timer\app_timer.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_onyx_2/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_onyx_2_airplace_mode/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdio.h \

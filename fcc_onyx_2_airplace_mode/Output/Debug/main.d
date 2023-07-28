@@ -147,4 +147,4 @@ Output/Debug//main.o: \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/legacy/nrf_drv_wdt.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_wdt.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_wdt.h ../Dps310/Dps310.h \
- ../Dps310/dps310_consts.h
+ ../Dps310/dps310_consts.h ../TCA9535/TCA9535.h

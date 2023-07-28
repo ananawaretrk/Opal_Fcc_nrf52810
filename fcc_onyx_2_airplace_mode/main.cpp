@@ -51,6 +51,7 @@
 #include "nrf_drv_wdt.h"
 //#define temperature_sensor
 #include "Dps310.h"
+#include "TCA9535.h"
 
 // States
 typedef enum {
@@ -100,7 +101,8 @@ uint8_t hallState = 0;
 #define DBG_RESET   "\x1b[0m"
 //#define test_print
 
-// Sensor defines
+// Murata pins Sensor defines
+#define MBN_INT                  20 // TCA EXP interrupt
 #define I2C_SCL                  7 // Onyx i2c scl 7
 #define I2C_SDA                  8 // Onyx i2c scl 8
 #define I2C_PRIORITY             2
@@ -123,6 +125,28 @@ static nbiot nbiot_instance;
 #define GPS_BK_EN                13
 #define SENSOR_EN                 3
 volatile int cell_timer_flag           = 0;
+
+// tca
+#define TCA_GPS_STNDBY_PIN_O     0
+#define TCA_GPS_RST_PIN_O        1
+#define TCA_HDCINT_PIN_I         2
+#define TCA_LED_PIN_O            3
+#define TCA_OPT_INT_I            4
+#define TCA_GPS_EN_PIN_O         5
+#define TCA_DPSINT_PIN_I         6
+#define TCA_IOX_O                7
+#define TCA_LIS_INT2_I          10
+#define TCA_UNUSED_P11          11
+#define TCA_UNUSED_P12          12
+#define TCA_MCP_OCAL            15 
+#define TCA_MCP_SCAL            16
+#define TCA_BATT_ENABLE_PIN_O   13 // Switch to enable battery voltage monitor
+#define TCA_LED_PIN_O1          14 // LED - TCA PIN 
+#define TCA_MCP_EN2_O           17 // Alternate path to MCPEN if MCP_PWR_EN is not decided to be used
+volatile bool tca_interrupt_detected    = false;
+TCA9535 TCA = TCA9535();
+void TCATest();
+// --tca
 
 // Watchdog
 #define WATCHDOG_TIMEOUT_MS 600000 // 10 minutes in milliseconds
@@ -2237,8 +2261,10 @@ sm_state soc_init()
 
     sd_power_dcdc_mode_set(NRF_POWER_DCDC_ENABLE);
 
-    err_code = nrf_drv_gpiote_init();
-    APP_ERROR_CHECK(err_code);
+    if (nrfx_gpiote_init() != NRFX_SUCCESS){
+    printf("!!!WARN: NRF gpiote failed to initialize\n");
+    }
+    nrf_delay_ms(100);
 
     return STATE_BOARD_INIT;
 }
@@ -2259,6 +2285,8 @@ sm_state board_init()
     nrf_gpio_cfg_output(GPS_BK_EN);
     nrf_delay_ms(500);
     nrf_gpio_pin_clear(GPS_BK_EN);
+
+    nrf_gpio_cfg_input(MBN_INT, NRF_GPIO_PIN_NOPULL); 
 
     //return STATE_GATT_SERVER;
     return STATE_DEBUG;
@@ -2671,7 +2699,15 @@ sm_state debug_function()
     nrf_gpio_pin_set(SENSOR_EN);
     nrf_delay_ms(500);
     //print_temperature_sensor_data();
-    print_pressure_sensor_data();
+    //print_pressure_sensor_data();
+
+    TCATest();
+    start_timer(advTime);
+        while (!timerFlag)
+        {
+            //nrf_pwr_mgmt_run();
+        }
+        stop_timer();
     return STATE_SLEEP;
 }
 
@@ -2740,6 +2776,64 @@ void sleep()
        nrf_pwr_mgmt_run(); 
     }
 
+}
+
+void TCAEventHandler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action) {
+  printf("TCA Interrupt detected\n");
+  tca_interrupt_detected = true;
+}
+
+void TCAInitialize(void) {
+  TCA.begin();
+  nrf_delay_ms(100);
+
+  TCA.setPin(TCA_GPS_STNDBY_PIN_O, TCA.INPUTa);  // Intentionally setting as input to leave in floating state
+  TCA.setPin(TCA_GPS_RST_PIN_O, TCA.INPUTa);
+  TCA.setPin(TCA_GPS_EN_PIN_O, TCA.OUTPUTa);
+  TCA.setPin(TCA_LED_PIN_O, TCA.OUTPUTa);
+  TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
+  TCA.setPin(TCA_UNUSED_P11, TCA.OUTPUTa);
+  TCA.setPin(TCA_UNUSED_P12, TCA.OUTPUTa);
+
+  TCA.setPin(TCA_MCP_OCAL, TCA.INPUTa);
+  TCA.setPin(TCA_MCP_SCAL, TCA.INPUTa);
+
+  TCA.setPin(TCA_HDCINT_PIN_I, TCA.INPUTa);
+  TCA.setPin(TCA_OPT_INT_I, TCA.INPUTa);    
+  TCA.setPin(TCA_DPSINT_PIN_I, TCA.INPUTa);
+  
+  TCA.setPin(TCA_LIS_INT2_I, TCA.INPUTa);
+  TCA.writePin(TCA_GPS_EN_PIN_O, TCA.OFF);
+  
+    TCA.setPin(TCA_BATT_ENABLE_PIN_O, TCA.OUTPUTa);
+    TCA.setPin(TCA_LED_PIN_O1, TCA.OUTPUTa);
+    TCA.writePin(TCA_LED_PIN_O1, TCA.OFF);
+    TCA.setPin(TCA_MCP_EN2_O, TCA.INPUTa);
+
+   
+  nrfx_gpiote_in_config_t config_expander;
+  config_expander.is_watcher = false;
+  config_expander.hi_accuracy = false;
+  config_expander.skip_gpio_setup = false;
+  config_expander.pull = NRF_GPIO_PIN_NOPULL;
+  config_expander.sense = NRF_GPIOTE_POLARITY_HITOLO;
+  if(nrfx_gpiote_in_init(MBN_INT, &config_expander, TCAEventHandler) != NRFX_SUCCESS)
+    printf("gpiote in init failed for TCA\n");
+  nrfx_gpiote_in_event_enable(MBN_INT, true);
+  nrf_delay_ms(50);
+}
+
+void TCATest(){
+  i2c_wrapper.InitializeI2C();
+  TCAInitialize();
+  //for(int i = 0; i < 5; i++){
+  while(1){
+    TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+    nrf_delay_ms(200);
+    TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
+    nrf_delay_ms(200);
+  }
+  i2c_wrapper.DeInitializeI2C();
 }
 
 int main(void)
