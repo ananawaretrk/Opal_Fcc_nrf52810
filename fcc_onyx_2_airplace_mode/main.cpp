@@ -52,6 +52,7 @@
 //#define temperature_sensor
 #include "Dps310.h"
 #include "TCA9535.h"
+#include "LIS3DH.h"
 
 // States
 typedef enum {
@@ -73,13 +74,18 @@ typedef enum {
   STATE_LTE_INT_CW_TX,
   STATE_LTE_INT_MCW_TX,
   STATE_LTE_INT_RX,
+  STATE_ACCELERATION_AIRPLANE_MODE,
   STATE_DEBUG
 } sm_state;
 
 sm_state state = STATE_SOC_INIT;
 // -- States 
 
-Dps310 dps_pressure_sensor = Dps310();  
+Dps310 dps_pressure_sensor = Dps310();
+TMP117  tmp_sensor = TMP117();
+LIS3DH lis3dh_accel = LIS3DH();
+
+bool acc_flag = false; 
 
 // HALL effect
 #define HALL_INT 17
@@ -106,7 +112,6 @@ uint8_t hallState = 0;
 #define I2C_SCL                  7 // Onyx i2c scl 7
 #define I2C_SDA                  8 // Onyx i2c scl 8
 #define I2C_PRIORITY             2
-static TMP117  tmp_sensor = TMP117();
 I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
 TwoWire Wire(i2c_wrapper.GetI2CInstance());
 void print_temperature_sensor_data(void);
@@ -124,6 +129,7 @@ static nbiot nbiot_instance;
 #define CELL_RX                  16
 #define GPS_BK_EN                13
 #define SENSOR_EN                 3
+#define LIS3_INT                  2 // lis3dh Interrupt pin
 volatile int cell_timer_flag           = 0;
 
 // tca
@@ -145,6 +151,7 @@ volatile int cell_timer_flag           = 0;
 #define TCA_MCP_EN2_O           17 // Alternate path to MCPEN if MCP_PWR_EN is not decided to be used
 volatile bool tca_interrupt_detected    = false;
 TCA9535 TCA = TCA9535();
+void TCAInitialize();
 void TCATest();
 // --tca
 
@@ -2092,7 +2099,7 @@ void print_temperature_sensor_data()
     int temperature_fail_counter = 0;
     float temperature_array[5] = {0};
 
-    i2c_wrapper.InitializeI2C();
+    //i2c_wrapper.InitializeI2C();
     tmp_sensor.begin();
     for (int j = 0; j < 5; j++)
     {
@@ -2107,15 +2114,18 @@ void print_temperature_sensor_data()
     }
     tmp_sensor.setShutdownMode();
     printf("----> Final TMP117 Temp = %3.2f %C\n", temperature_array[0]);
-    i2c_wrapper.DeInitializeI2C();
+    //i2c_wrapper.DeInitializeI2C();
 }
 
+// --Temperature Sensor
+
+// Pressure Sensor
 void print_pressure_sensor_data()
 {
     int ret = -1;
     int temp_pressure_value    = -1;
     printf("Inside pressure sensor function\n");
-    i2c_wrapper.InitializeI2C();
+    //i2c_wrapper.InitializeI2C();
     dps_pressure_sensor.begin(Wire, 0x76);
     while (1)
     {
@@ -2123,7 +2133,14 @@ void print_pressure_sensor_data()
         printf("DSP310 pressure = %d Pa (101325 kPa)\n", temp_pressure_value);
         nrf_delay_ms(500);
     }
-    i2c_wrapper.DeInitializeI2C();
+    //i2c_wrapper.DeInitializeI2C();
+}
+// --Pressure Sensor
+
+
+static void Lis3EvtHandler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
+{
+    printf("---------> Motion Interrupt TRIGGERED\n");
 }
 
 long power_map(long x, long in_min, long in_max, long out_min, long out_max) {
@@ -2280,17 +2297,24 @@ sm_state board_init()
 
     nrf_gpio_cfg_output(SENSOR_EN);
     nrf_delay_ms(500);
-    nrf_gpio_pin_clear(SENSOR_EN);
+    //nrf_gpio_pin_clear(SENSOR_EN);
+    nrf_gpio_pin_set(SENSOR_EN);
 
     nrf_gpio_cfg_output(GPS_BK_EN);
     nrf_delay_ms(500);
     nrf_gpio_pin_clear(GPS_BK_EN);
 
-    nrf_gpio_cfg_input(MBN_INT, NRF_GPIO_PIN_NOPULL); 
+    nrf_gpio_cfg_input(MBN_INT, NRF_GPIO_PIN_NOPULL);
+     
+     i2c_wrapper.InitializeI2C();
+     TCAInitialize();
+     TCATest();
+     //i2c_wrapper.DeInitializeI2C();
 
     //return STATE_GATT_SERVER;
-    return STATE_DEBUG;
+    //return STATE_DEBUG;
     //return STATE_SLEEP;
+    return STATE_ACCELERATION_AIRPLANE_MODE;
 }
 
 void ble_radio_setup()
@@ -2694,20 +2718,96 @@ sm_state lte_int_rx()
 
     return STATE_SLEEP;
 }
+sm_state acceleration_airplane_mode()
+{
+    if (lis3dh_accel.begin(0x19, 0x33))
+    {
+        printf("LIS3DH Init Success\n");
+    }
+    else
+    {
+        printf("LIS3DH not Initialized\n");
+    }
+
+    lis3dh_accel.setDataRate(LIS3DH_DATARATE_100_HZ);
+    nrfx_gpiote_in_config_t config;
+    config.is_watcher = false;
+    config.hi_accuracy = false;
+    config.skip_gpio_setup = false;
+    config.pull = NRF_GPIO_PIN_NOPULL;
+    config.sense = NRF_GPIOTE_POLARITY_LOTOHI;
+    nrf_gpio_cfg_input(LIS3_INT, NRF_GPIO_PIN_NOPULL);
+
+    if (nrfx_gpiote_in_init(LIS3_INT, &config, Lis3EvtHandler) != NRFX_SUCCESS)
+    {
+        printf("LIS3DH ACCEL INT init failed \n");
+    }
+    else
+    {
+        printf("LIS3DH ACCEL INT init succeeded %d\n", 1);
+    }
+    nrfx_gpiote_in_event_enable(LIS3_INT, true);
+    lis3dh_accel.serviceReferenceInt();
+
+    int fail_count = 3000;
+    while (nrf_gpio_pin_input_get(LIS3_INT) && fail_count > 0)
+    {
+        nrf_delay_ms(10);
+        fail_count--;
+    }
+    if (fail_count == 0)
+    {
+        printf("!!!WARN: LIS3DH Interrupt Error\n");
+        SetErrorMask(ACC_ERROR_MASK);
+    }
+    int sustain_count = 0;
+
+    while (1)
+    {
+        lis3dh_accel.read();
+        float temp_acc = abs(lis3dh_accel.x_g) + abs(lis3dh_accel.y_g) + abs(lis3dh_accel.z_g);
+        printf("DATA: %.2f, sustain_count: %d\n", temp_acc, sustain_count);
+        nrf_delay_ms(500);
+
+        // if(1.85 >= temp_acc >= 1.65){
+        if (temp_acc >= 1.65)
+        {
+            sustain_count++;
+        }
+        else
+        {
+            sustain_count = 0;
+        }
+        if (sustain_count >= 6)
+        {
+            acc_flag = true;
+            printf("FLAG is set\n");
+            //break;
+        }
+        if (acc_flag)
+        {
+            TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+        }
+    }
+    return STATE_SLEEP;
+}
 sm_state debug_function()
 {
-    nrf_gpio_pin_set(SENSOR_EN);
+    i2c_wrapper.InitializeI2C();
+    TCATest();
     nrf_delay_ms(500);
     //print_temperature_sensor_data();
     //print_pressure_sensor_data();
-
-    TCATest();
-    start_timer(advTime);
-        while (!timerFlag)
-        {
-            //nrf_pwr_mgmt_run();
-        }
-        stop_timer();
+    //airplane_mode();
+    
+//    advTime = 2 * 1000;
+//    start_timer(advTime);
+//    while (!timerFlag)
+//    {
+//        // nrf_pwr_mgmt_run();
+//    }
+//    stop_timer();
+    i2c_wrapper.DeInitializeI2C();
     return STATE_SLEEP;
 }
 
@@ -2824,12 +2924,12 @@ void TCAInitialize(void) {
 }
 
 void TCATest(){
-  i2c_wrapper.InitializeI2C();
-  TCAInitialize(); 
+  //i2c_wrapper.InitializeI2C();
+  //TCAInitialize(); 
   // Pin 14 on TCA is gpio pin 12
   TCA.setPin(12, TCA.OUTPUTa);
-  //for(int i = 0; i < 5; i++){
-  while(1){
+  for(int i = 0; i < 10; i++){
+  //while(1){
     TCA.writePin(TCA_LED_PIN_O, TCA.ON);
     TCA.writePin(12, TCA.ON);
     nrf_delay_ms(200);
@@ -2837,7 +2937,7 @@ void TCATest(){
     TCA.writePin(12, TCA.OFF);
     nrf_delay_ms(200);
   }
-  i2c_wrapper.DeInitializeI2C();
+  //i2c_wrapper.DeInitializeI2C();
 }
 
 int main(void)
@@ -2944,6 +3044,11 @@ int main(void)
                 printf("STATE_DEBUG\n");
                 state = debug_function();
                 break;
+            
+            case STATE_ACCELERATION_AIRPLANE_MODE:
+                 printf("STATE_ACCELERATION_AIRPLANE_MODE\n");
+                 state = acceleration_airplane_mode();
+                 break;
 
             default:
                 printf("DEFAULT: STATE_SLEEP\n");
