@@ -2826,11 +2826,14 @@ void TCAInitialize(void) {
 void TCATest(){
   i2c_wrapper.InitializeI2C();
   TCAInitialize();
+  TCA.setPin(12, TCA.OUTPUTa);
   //for(int i = 0; i < 5; i++){
   while(1){
     TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+    TCA.writePin(12, TCA.ON);
     nrf_delay_ms(200);
     TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
+    TCA.writePin(12, TCA.OFF);
     nrf_delay_ms(200);
   }
   i2c_wrapper.DeInitializeI2C();
