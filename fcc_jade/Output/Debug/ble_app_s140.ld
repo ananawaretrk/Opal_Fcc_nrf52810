@@ -317,10 +317,9 @@ SECTIONS
   {
     __cli_sorted_cmd_ptrs_run_start__ = .;
     __start_cli_sorted_cmd_ptrs =   __cli_sorted_cmd_ptrs_run_start__;
-    . = MAX(__cli_sorted_cmd_ptrs_run_start__ + SIZEOF(.cli_sorted_cmd_ptrs), .);
   }
-  __cli_sorted_cmd_ptrs_run_end__ = __cli_sorted_cmd_ptrs_run_start__ + SIZEOF(.cli_sorted_cmd_ptrs_run);
-  __cli_sorted_cmd_ptrs_run_size__ = SIZEOF(.cli_sorted_cmd_ptrs_run);
+  __cli_sorted_cmd_ptrs_run_end__ = __cli_sorted_cmd_ptrs_run_start__ + SIZEOF(.cli_sorted_cmd_ptrs);
+  __cli_sorted_cmd_ptrs_run_size__ = __cli_sorted_cmd_ptrs_run_end__ - __cli_sorted_cmd_ptrs_run_start__;
   __stop_cli_sorted_cmd_ptrs =   __cli_sorted_cmd_ptrs_run_end__;
   __cli_sorted_cmd_ptrs_run_load_end__ = __cli_sorted_cmd_ptrs_run_end__;
 
@@ -342,10 +341,9 @@ SECTIONS
   {
     __fs_data_run_start__ = .;
     __start_fs_data =   __fs_data_run_start__;
-    . = MAX(__fs_data_run_start__ + SIZEOF(.fs_data), .);
   }
-  __fs_data_run_end__ = __fs_data_run_start__ + SIZEOF(.fs_data_run);
-  __fs_data_run_size__ = SIZEOF(.fs_data_run);
+  __fs_data_run_end__ = __fs_data_run_start__ + SIZEOF(.fs_data);
+  __fs_data_run_size__ = __fs_data_run_end__ - __fs_data_run_start__;
   __stop_fs_data =   __fs_data_run_end__;
   __fs_data_run_load_end__ = __fs_data_run_end__;
 
@@ -367,10 +365,9 @@ SECTIONS
   {
     __log_dynamic_data_run_start__ = .;
     __start_log_dynamic_data =   __log_dynamic_data_run_start__;
-    . = MAX(__log_dynamic_data_run_start__ + SIZEOF(.log_dynamic_data), .);
   }
-  __log_dynamic_data_run_end__ = __log_dynamic_data_run_start__ + SIZEOF(.log_dynamic_data_run);
-  __log_dynamic_data_run_size__ = SIZEOF(.log_dynamic_data_run);
+  __log_dynamic_data_run_end__ = __log_dynamic_data_run_start__ + SIZEOF(.log_dynamic_data);
+  __log_dynamic_data_run_size__ = __log_dynamic_data_run_end__ - __log_dynamic_data_run_start__;
   __stop_log_dynamic_data =   __log_dynamic_data_run_end__;
   __log_dynamic_data_run_load_end__ = __log_dynamic_data_run_end__;
 
@@ -392,10 +389,9 @@ SECTIONS
   {
     __log_filter_data_run_start__ = .;
     __start_log_filter_data =   __log_filter_data_run_start__;
-    . = MAX(__log_filter_data_run_start__ + SIZEOF(.log_filter_data), .);
   }
-  __log_filter_data_run_end__ = __log_filter_data_run_start__ + SIZEOF(.log_filter_data_run);
-  __log_filter_data_run_size__ = SIZEOF(.log_filter_data_run);
+  __log_filter_data_run_end__ = __log_filter_data_run_start__ + SIZEOF(.log_filter_data);
+  __log_filter_data_run_size__ = __log_filter_data_run_end__ - __log_filter_data_run_start__;
   __stop_log_filter_data =   __log_filter_data_run_end__;
   __log_filter_data_run_load_end__ = __log_filter_data_run_end__;
 
@@ -479,10 +475,9 @@ SECTIONS
   .fast_run ALIGN(__nrf_sections_run_end_end__ , 4) (NOLOAD) :
   {
     __fast_run_start__ = .;
-    . = MAX(__fast_run_start__ + SIZEOF(.fast), .);
   }
-  __fast_run_end__ = __fast_run_start__ + SIZEOF(.fast_run);
-  __fast_run_size__ = SIZEOF(.fast_run);
+  __fast_run_end__ = __fast_run_start__ + SIZEOF(.fast);
+  __fast_run_size__ = __fast_run_end__ - __fast_run_start__;
   __fast_run_load_end__ = __fast_run_end__;
 
   . = ASSERT(__fast_run_start__ == __fast_run_end__ || (__fast_run_end__ - __RAM_segment_start__) <= __RAM_segment_size__ , "error: .fast_run is too large to fit in RAM memory segment");
@@ -502,10 +497,9 @@ SECTIONS
   .data_run ALIGN(__fast_run_end__ , 4) (NOLOAD) :
   {
     __data_run_start__ = .;
-    . = MAX(__data_run_start__ + SIZEOF(.data), .);
   }
-  __data_run_end__ = __data_run_start__ + SIZEOF(.data_run);
-  __data_run_size__ = SIZEOF(.data_run);
+  __data_run_end__ = __data_run_start__ + SIZEOF(.data);
+  __data_run_size__ = __data_run_end__ - __data_run_start__;
   __data_run_load_end__ = __data_run_end__;
 
   . = ASSERT(__data_run_start__ == __data_run_end__ || (__data_run_end__ - __RAM_segment_start__) <= __RAM_segment_size__ , "error: .data_run is too large to fit in RAM memory segment");
@@ -528,10 +522,9 @@ SECTIONS
   .tdata_run ALIGN(__data_run_end__ , 4) (NOLOAD) :
   {
     __tdata_run_start__ = .;
-    . = MAX(__tdata_run_start__ + SIZEOF(.tdata), .);
   }
-  __tdata_run_end__ = __tdata_run_start__ + SIZEOF(.tdata_run);
-  __tdata_run_size__ = SIZEOF(.tdata_run);
+  __tdata_run_end__ = __tdata_run_start__ + SIZEOF(.tdata);
+  __tdata_run_size__ = __tdata_run_end__ - __tdata_run_start__;
   __tdata_run_load_end__ = __tdata_run_end__;
 
   . = ASSERT(__tdata_run_start__ == __tdata_run_end__ || (__tdata_run_end__ - __RAM_segment_start__) <= __RAM_segment_size__ , "error: .tdata_run is too large to fit in RAM memory segment");

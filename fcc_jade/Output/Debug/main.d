@@ -1,12 +1,12 @@
 Output/Debug//main.o: \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\fcc_jade\main.cpp \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdlib.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdio.h \
+ C:\Users\JoshuaSam\Documents\GitHub\TrackFW_FCC\fcc_jade\main.cpp \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stdio.h \
  ../3rd_party/nRF5_SDK_16/components/nfc/t2t_lib/nfc_t2t_lib.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/string.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_errors.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_error.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
@@ -40,9 +40,9 @@ Output/Debug//main.o: \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twim.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/nrfx.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_config.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
+ C:/Users/JoshuaSam/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stddef.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf_peripherals.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf52832_peripherals.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_glue.h \
@@ -136,7 +136,7 @@ Output/Debug//main.o: \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/arm_const_structs.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/arm_math.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/core_cm4.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/math.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/math.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/arm_common_tables.h \
  ../sx1261/RH_SX126x.h ../rfm95/RH_RF95.h ../I2CFiles/Wire/Wire.h \
  ../TMP117/TMP117.h ../I2CFiles/Arduino.h ../I2CFiles/wiring_constants.h \
