@@ -85,7 +85,8 @@ Dps310 dps_pressure_sensor = Dps310();
 TMP117  tmp_sensor = TMP117();
 LIS3DH lis3dh_accel = LIS3DH();
 
-bool acc_flag = false; 
+bool acc_flag = false;
+volatile int sustain_count = 0; 
 
 // HALL effect
 #define HALL_INT 17
@@ -2760,18 +2761,18 @@ sm_state acceleration_airplane_mode()
         printf("!!!WARN: LIS3DH Interrupt Error\n");
         SetErrorMask(ACC_ERROR_MASK);
     }
-    int sustain_count = 0;
+
+    //TCA.writePin(TCA_LED_PIN_O, TCA.ON);
 
     while (1)
     {
         lis3dh_accel.read();
         float temp_acc = abs(lis3dh_accel.x_g) + abs(lis3dh_accel.y_g) + abs(lis3dh_accel.z_g);
-        printf("DATA: %.2f, sustain_count: %d\n", temp_acc, sustain_count);
+        printf("temp_acc: %.2f, sustain_count: %d\n", temp_acc, sustain_count);
         nrf_delay_ms(500);
 
-        // if(1.85 >= temp_acc >= 1.65){
-        if (temp_acc >= 1.65)
-        {
+        if(1.85 >= temp_acc && temp_acc >= 1.65){
+        //if (temp_acc >= 1.65){
             sustain_count++;
         }
         else
@@ -2787,6 +2788,7 @@ sm_state acceleration_airplane_mode()
         if (acc_flag)
         {
             TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+            //TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
         }
     }
     return STATE_SLEEP;
