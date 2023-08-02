@@ -1,10 +1,10 @@
 Output/Debug//SEGGER_RTT_printf.o: \
- C:\Users\JoshuaSam\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\external\segger_rtt\SEGGER_RTT_printf.c \
- C:\Users\JoshuaSam\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\external\segger_rtt\SEGGER_RTT.h \
- C:\Users\JoshuaSam\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\external\segger_rtt\SEGGER_RTT_Conf.h \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\external\segger_rtt\SEGGER_RTT_printf.c \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\external\segger_rtt\SEGGER_RTT.h \
+ C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\external\segger_rtt\SEGGER_RTT_Conf.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_util_platform.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf52.h \
@@ -26,13 +26,13 @@ Output/Debug//SEGGER_RTT_printf.o: \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_nvic.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nrf_assert.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdbool.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_errors.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_error.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_error_weak.h \
- C:/Users/JoshuaSam/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stdlib.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/stdarg.h
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdarg.h

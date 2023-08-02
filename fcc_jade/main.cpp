@@ -1897,10 +1897,8 @@ void lora_interval_transmit(int localadvTime)
     {
         memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
         sprintf(loraSendBuf, "id=%s-----hello", idString);
-        memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
-        sprintf(loraSendBuf, "hello");
         rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
-        printf("%s \n", loraSendBuf);
+        printf("%s\n", loraSendBuf);
         rf95.waitPacketSent();
         nrf_delay_ms(700);
         rf95.sleep();
@@ -1944,7 +1942,7 @@ void lora_continuous_receive()
                 // nrf_delay_ms(10);
                 uint8_t len = sizeof(buff);
                 rf95.recv(buff, &len);
-                printf("%s \n", buff);          
+                printf("%s\n", buff);          
         }
     }
 }
@@ -2019,15 +2017,15 @@ int main(void)
     
     init_spi_for_lora();
     
-    loratxlevel = 20;
-
-    loraInit();
-    
-    rf95.setFrequency(916);
-
-    while(1){
-      lora_interval_transmit(5000);
-    }
+//    loratxlevel = 20;
+//
+//    loraInit();
+//    
+//    rf95.setFrequency(920);
+//
+//    while(1){
+//    lora_interval_transmit(5000);
+//    }
     
     //int my_rcv_time = 10000;
     
@@ -2045,7 +2043,7 @@ int main(void)
   
     //while(1);
     
-    lora_continuous_receive();
+    //lora_continuous_receive();
     
     setConfig(120000);
     //while(1);
