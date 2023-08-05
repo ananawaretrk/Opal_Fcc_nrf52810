@@ -75,13 +75,29 @@ typedef enum {
   STATE_LTE_INT_MCW_TX,
   STATE_LTE_INT_RX,
   STATE_ACCELERATION_AIRPLANE_MODE,
+  STATE_PRESSURE_AIRPLANE_MODE,
   STATE_DEBUG
 } sm_state;
 
 sm_state state = STATE_SOC_INIT;
 // -- States 
-
+#define MAX_CONSECUTIVE_READINGS 6
 Dps310 dps_pressure_sensor = Dps310();
+int y1 = -85.95;  // Land lower limit meters
+int y2 = 1676.4; // Land upper limit meters
+int x1 = 3048;  // Take-off lower limit meters
+int x2 = 15240;  // Take-off upper limit meters
+//int x1 = 3000;  // Take-off lower limit meters
+//int x2 = 5000; // Take-off lower limit meters
+//int y1 = -25;  // Land lower limit meters
+//int y2 = 1;  // Land upper limit meters
+int consecutive_x = 0;
+int consecutive_y = 0;
+double altitude = 0;
+double seaLevelhPa = 1013.25; //hPa
+int current_pressure = 0;
+bool pressure_airplane_flag = false; 
+
 TMP117  tmp_sensor = TMP117();
 LIS3DH lis3dh_accel = LIS3DH();
 
@@ -2125,16 +2141,71 @@ void print_pressure_sensor_data()
 {
     int ret = -1;
     int temp_pressure_value    = -1;
+    int temp_temp_value = -1;
     printf("Inside pressure sensor function\n");
     //i2c_wrapper.InitializeI2C();
     dps_pressure_sensor.begin(Wire, 0x76);
     while (1)
     {
-        ret = dps_pressure_sensor.measurePressureOnce(temp_pressure_value);
-        printf("DSP310 pressure = %d Pa (101325 kPa)\n", temp_pressure_value);
+        ret = dps_pressure_sensor.measurePressureOnce(current_pressure);
+        //ret = dps_pressure_sensor.measureTempOnce(temp_temp_value);
+        altitude = 44330.0 * (1 - pow((((double)current_pressure/100) / seaLevelhPa), 0.190294957));
+        printf("DSP310 pressure = %d Pa (101325 kPa), Altitude: %.2f (meters)\n", current_pressure, altitude);
         nrf_delay_ms(500);
     }
     //i2c_wrapper.DeInitializeI2C();
+}
+
+sm_state pressure_airplane_mode()
+{
+    dps_pressure_sensor.begin(Wire, 0x76);   
+    
+    while(1)
+    {
+        dps_pressure_sensor.measurePressureOnce(current_pressure);
+
+        altitude = 44330.0 * (1 - pow((((double)current_pressure/100) / seaLevelhPa), 0.190294957));
+
+        printf("DSP310 pressure = %d Pa (101325 kPa), Altitude: %.2f (meters), consecutive_x: %d\n", current_pressure, altitude, consecutive_x);
+
+        if(altitude >= x1 && altitude <=x2){
+            consecutive_x++;
+        }
+        else{
+            consecutive_x = 0;
+        }
+
+        if(altitude >= y1 && altitude <= y2){
+            consecutive_y++;
+        }
+        else{
+            consecutive_y = 0;
+        }
+        
+        
+        if(consecutive_x == MAX_CONSECUTIVE_READINGS){
+            pressure_airplane_flag = true;
+        }
+
+        else if(consecutive_y == MAX_CONSECUTIVE_READINGS){
+            pressure_airplane_flag = false;
+        }
+        
+        if(pressure_airplane_flag)
+        {
+            TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+        }
+        else
+        {
+            TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
+        }
+        
+
+        nrf_delay_ms(1000);
+
+    }
+
+    return STATE_SLEEP;
 }
 // --Pressure Sensor
 
@@ -2315,7 +2386,8 @@ sm_state board_init()
     //return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
-    return STATE_ACCELERATION_AIRPLANE_MODE;
+    //return STATE_ACCELERATION_AIRPLANE_MODE;
+    return STATE_PRESSURE_AIRPLANE_MODE;
 }
 
 void ble_radio_setup()
@@ -2799,7 +2871,7 @@ sm_state debug_function()
     TCATest();
     nrf_delay_ms(500);
     //print_temperature_sensor_data();
-    //print_pressure_sensor_data();
+    print_pressure_sensor_data();
     //airplane_mode();
     
 //    advTime = 2 * 1000;
@@ -2942,7 +3014,7 @@ void TCATest(){
   //i2c_wrapper.DeInitializeI2C();
 }
 
-int main(void)
+int main(void) 
 {
     ret_code_t err_code;
 
@@ -3051,6 +3123,11 @@ int main(void)
                  printf("STATE_ACCELERATION_AIRPLANE_MODE\n");
                  state = acceleration_airplane_mode();
                  break;
+
+             case STATE_PRESSURE_AIRPLANE_MODE:
+                 printf("STATE_PRESSURE_AIRPLANE_MODE\n");
+                 state = pressure_airplane_mode();
+                 break;    
 
             default:
                 printf("DEFAULT: STATE_SLEEP\n");
