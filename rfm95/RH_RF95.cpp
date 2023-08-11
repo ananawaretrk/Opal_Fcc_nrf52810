@@ -116,7 +116,8 @@ bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin)
 
     // Set up default configuration
     // No Sync Words in LORA mode.
-    setModemConfig(Bw125Cr45Sf128); // Radio default
+    //setModemConfig(Bw125Cr45Sf128); // Radio default
+    setModemConfig(Bw500Cr45Sf128); // Radio default
     /*if (spiWrite(RH_RF95_REG_1D_MODEM_CONFIG1, 0x82) != NRF_SUCCESS)
       printf("Set modem config 1 failed\n");
     if (spiWrite(RH_RF95_REG_1E_MODEM_CONFIG2, 0xA4) != NRF_SUCCESS)
