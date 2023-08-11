@@ -76,6 +76,7 @@ typedef enum {
   STATE_LTE_INT_RX,
   STATE_ACCELERATION_AIRPLANE_MODE,
   STATE_PRESSURE_AIRPLANE_MODE,
+  STATE_MODEM_NETWORK_CONFIG,
   STATE_DEBUG
 } sm_state;
 
@@ -87,8 +88,8 @@ int y1 = -85.95;  // Land lower limit meters
 int y2 = 1676.4; // Land upper limit meters
 int x1 = 3048;  // Take-off lower limit meters
 int x2 = 15240;  // Take-off upper limit meters
-//int x1 = 3000;  // Take-off lower limit meters
-//int x2 = 5000; // Take-off lower limit meters
+//int x1 = -50;  // Take-off lower limit meters
+//int x2 = 20; // Take-off lower limit meters
 //int y1 = -25;  // Land lower limit meters
 //int y2 = 1;  // Land upper limit meters
 int consecutive_x = 0;
@@ -2158,8 +2159,12 @@ void print_pressure_sensor_data()
 
 sm_state pressure_airplane_mode()
 {
-    dps_pressure_sensor.begin(Wire, 0x76);   
-    
+    dps_pressure_sensor.begin(Wire, 0x76);
+
+    TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+    TCA.writePin(12, TCA.ON);
+    pressure_airplane_flag = true;
+
     while(1)
     {
         dps_pressure_sensor.measurePressureOnce(current_pressure);
@@ -2183,17 +2188,18 @@ sm_state pressure_airplane_mode()
         }
         
         
-        if(consecutive_x == MAX_CONSECUTIVE_READINGS){
-            pressure_airplane_flag = true;
-        }
+//        if(consecutive_x == MAX_CONSECUTIVE_READINGS){
+//            pressure_airplane_flag = true;
+//        }
 
-        else if(consecutive_y == MAX_CONSECUTIVE_READINGS){
+        if(consecutive_y == MAX_CONSECUTIVE_READINGS){
             pressure_airplane_flag = false;
         }
         
         if(pressure_airplane_flag)
         {
             TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+            TCA.writePin(12, TCA.ON);
         }
         else
         {
@@ -2201,7 +2207,7 @@ sm_state pressure_airplane_mode()
         }
         
 
-        nrf_delay_ms(1000);
+        nrf_delay_ms(10000);
 
     }
 
@@ -2242,6 +2248,22 @@ void init_Modem()
   nbiot_instance.Init(CELL_RX, CELL_TX,StartCellTimer,&cell_timer_flag);
   nrf_delay_ms(2000);
   nbiot_instance.GetConfig();
+}
+
+sm_state modem_network_config()
+{
+    nrf_gpio_pin_set(CELL_ENABLE_PIN_O);
+    nrf_delay_ms(2000);
+    init_Modem();
+    //nbiot_instance.SetConfig(false); // LTE-M or NB-IOT no preference
+    nbiot_instance.SetConfig(true); // NB-IOT Only
+    nbiot_instance.GetConfig();
+    while(1)
+    {
+        nbiot_instance.CheckConnection();
+        nrf_delay_ms(1000);
+    }
+    return STATE_SLEEP;
 }
 
 void cell_interval_receive(int rcv_time)
@@ -2387,7 +2409,8 @@ sm_state board_init()
     //return STATE_DEBUG;
     //return STATE_SLEEP;
     //return STATE_ACCELERATION_AIRPLANE_MODE;
-    return STATE_PRESSURE_AIRPLANE_MODE;
+    //return STATE_PRESSURE_AIRPLANE_MODE;
+    return STATE_MODEM_NETWORK_CONFIG;
 }
 
 void ble_radio_setup()
@@ -2835,6 +2858,7 @@ sm_state acceleration_airplane_mode()
     }
 
     //TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+    //TCA.writePin(12, TCA.ON);
 
     while (1)
     {
@@ -2860,6 +2884,7 @@ sm_state acceleration_airplane_mode()
         if (acc_flag)
         {
             TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+            TCA.writePin(12, TCA.ON);
             //TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
         }
     }
@@ -3127,7 +3152,12 @@ int main(void)
              case STATE_PRESSURE_AIRPLANE_MODE:
                  printf("STATE_PRESSURE_AIRPLANE_MODE\n");
                  state = pressure_airplane_mode();
-                 break;    
+                 break;
+             
+             case STATE_MODEM_NETWORK_CONFIG:
+                  printf("STATE_MODEM_NETWORK_CONFIG");
+                  state = modem_network_config();
+                  break;
 
             default:
                 printf("DEFAULT: STATE_SLEEP\n");

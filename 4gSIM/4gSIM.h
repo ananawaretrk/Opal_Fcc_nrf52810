@@ -124,7 +124,7 @@ public:
     void SerialInit(uint32_t uart_Rx, uint32_t uart_Tx);
     void GetConfig();
     void MCT();
-    void SetConfig();
+    void SetConfig(bool flag);
     int CheckConnection();
     void GPSSetup(); /* TODO: Fix Implementation*/
     void GPSCheck(); /* TODO: Fix Implementation*/

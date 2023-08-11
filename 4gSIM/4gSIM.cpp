@@ -207,11 +207,22 @@ bool nbiot::ConnectTcpServer(const char *tip, const char *tport){
 }
 
 
-void nbiot::SetConfig(){
-
+void nbiot::SetConfig(bool flag){
+  
+  // Select LTE-M or NB-IOT not preference
+  if(!flag){
   printf("sending AT\%XSYSTEMMODE=1,1,0,0\n");
   SendCommand("AT%XSYSTEMMODE=1,1,0,0\r\n");
   printf("Reply = %s\n",cell_buffer);
+  }
+  
+  // Select NB-IOT only
+  if(flag){
+  printf("sending AT\%XSYSTEMMODE=0,1,0,2\n");
+  printf("NBOIT ONLY\n");
+  SendCommand("AT%XSYSTEMMODE=0,1,0,2\r\n");
+  printf("Reply = %s\n",cell_buffer);
+  }
 
   nrf_delay_ms(10);
   printf("sending AT+CFUN=1\n");
