@@ -2161,9 +2161,9 @@ sm_state pressure_airplane_mode()
 {
     dps_pressure_sensor.begin(Wire, 0x76);
 
-    TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-    pressure_airplane_flag = true;
+//    TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+//    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+//    pressure_airplane_flag = true;
 
     while(1)
     {
@@ -2188,20 +2188,20 @@ sm_state pressure_airplane_mode()
         }
         
         
-//        if(consecutive_x == MAX_CONSECUTIVE_READINGS){
-//            pressure_airplane_flag = true;
-//        }
+        if(consecutive_x == MAX_CONSECUTIVE_READINGS){
+            pressure_airplane_flag = true;
+        }
 
         if(consecutive_y == MAX_CONSECUTIVE_READINGS){
             pressure_airplane_flag = false;
         }
         
-//        if(pressure_airplane_flag)
-//        {
-//            TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-//            TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-//        }
-        if(!pressure_airplane_flag)
+        if(pressure_airplane_flag)
+        {
+            TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+            TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+        }
+        else
         {
             TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
             TCA.writePin(TCA_LED_PIN_O2, TCA.OFF);
@@ -3028,8 +3028,8 @@ void TCATest(){
   //TCAInitialize(); 
   // Pin 14 on TCA is gpio pin 12
   TCA.setPin(12, TCA.OUTPUTa);
-  for(int i = 0; i < 10; i++){
-  //while(1){
+  //for(int i = 0; i < 10; i++){
+  while(1){
     TCA.writePin(TCA_LED_PIN_O, TCA.ON);
     TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
     nrf_delay_ms(200);
