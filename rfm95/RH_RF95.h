@@ -599,6 +599,7 @@ public:
 	Bw31_25Cr48Sf512,	   ///< Bw = 31.25 kHz, Cr = 4/8, Sf = 512chips/symbol, CRC on. Slow+long range
         Bw125Cr48Sf2048,           ///< Bw = 125 kHz, Cr = 4/8, Sf = 2048chips/symbol, CRC on. Default long range
 	Bw125Cr48Sf4096,           ///< Bw = 125 kHz, Cr = 4/8, Sf = 4096chips/symbol, CRC on. Slow+long range
+        Bw250Cr45Sf128,	           ///< Bw = 250 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on. Fast+short range
     } ModemConfigChoice;
 
     typedef enum
@@ -659,7 +660,7 @@ public:
     /// Initialise the Driver transport hardware and software.
     /// Make sure the Driver is properly configured before calling init().
     /// \return true if initialisation succeeded.
-    bool    init(const nrf_drv_spi_t *spi_in, uint32_t pin);
+    bool    init(const nrf_drv_spi_t *spi_in, uint32_t pin, uint8_t bw_select);
 
     /// Prints the value of all chip registers
     /// to the Serial device if RH_HAVE_SERIAL is defined for the current platform

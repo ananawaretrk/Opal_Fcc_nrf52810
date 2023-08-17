@@ -25,6 +25,7 @@ static const RH_RF95::ModemConfig MODEM_CONFIG_TABLE[] =
     { 0x48,   0x94,    0x04}, // Bw31_25Cr48Sf512, AGC enabled
     { 0x78,   0xb4,    0x04}, // Bw125Cr48Sf2048, AGC enabled
     { 0x78,   0xc4,    0x0c}, // Bw125Cr48Sf4096, AGC enabled
+    { 0x82,   0x74,    0x04}, // Bw250Cr45Sf128, AGC enabled
     
 };
 
@@ -47,7 +48,7 @@ uint8_t RH_RF95::modem_Stat()
     return spiRead(RH_RF95_REG_18_MODEM_STAT);
 }
 
-bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin)
+bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin, uint8_t bw_select)
 {
      uint8_t mode;
 
@@ -113,6 +114,19 @@ bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin)
 
     //Idle mode is standby, not sleep
     setModeIdle();
+
+    if(bw_select == 1)
+    {
+        setModemConfig(Bw500Cr45Sf128); // Radio default
+    }
+    else if(bw_select == 2)
+    {
+        setModemConfig(Bw250Cr45Sf128); // Radio default
+    }
+    else if(bw_select == 3)
+    {
+        setModemConfig(Bw125Cr45Sf128); // Radio default
+    }
 
     // Set up default configuration
     // No Sync Words in LORA mode.
