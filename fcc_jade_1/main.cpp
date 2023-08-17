@@ -78,9 +78,10 @@ sm_state state = STATE_SOC_INIT;
 // -- States 
 
 int lora_frequency_bandwidth = 0;
+float lora_frequency_set [32] = {0};
 
 // Random number variable
-uint8_t rand_number[2] = {0};
+uint8_t rand_number[3] = {0};
 float f_random_number;
 
 
@@ -1788,13 +1789,14 @@ float my_rn()
   uint8_t num_rand_bytes_available;
   uint8_t old_units;
   uint8_t old_mantissa;
+  uint8_t byte_old_radom_number;
   float f_old_random_number;
   
   // Generate random bytes
   int err = sd_rand_application_bytes_available_get(&num_rand_bytes_available);
   //uint8_t rand_number[2] = {0};
   if(num_rand_bytes_available > 0){
-    sd_rand_application_vector_get(rand_number, 2);
+    sd_rand_application_vector_get(rand_number, 3);
   }
   
   // Compare and generate if duplicates
@@ -1815,11 +1817,21 @@ float my_rn()
           sd_rand_application_vector_get(&rand_number[1], 1);
       }
   }
+
+  if (rand_number[2] == byte_old_radom_number)
+  {
+      int err = sd_rand_application_bytes_available_get(&num_rand_bytes_available);
+      if (num_rand_bytes_available > 0)
+      {
+          sd_rand_application_vector_get(&rand_number[2], 2);
+      }
+  }
   
   // Range
   //rand_number[0] = rand_min + rand_number[0] % (rand_max - rand_min + 1);
   rand_number[0] = (rand_number[0] % 5);
   rand_number[1] = (rand_number[1] % 110);
+  rand_number[2] = (rand_number[2] % 32);
  
   // Create floating number using two bytes
   f_random_number = rand_number[0] + (rand_number[1] * 0.01);
@@ -1842,6 +1854,7 @@ float my_rn()
   
   old_units = rand_number[0];
   old_mantissa = rand_number[1];
+  byte_old_radom_number = rand_number[2];
   f_old_random_number = f_random_number;
 
   return f_random_number + 920;
@@ -2135,7 +2148,8 @@ sm_state board_init()
     //return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
-    return STATE_LORA_RANDOM_FREQUENCY_HOPPING;
+    //return STATE_LORA_RANDOM_FREQUENCY_HOPPING;
+    return STATE_LORA_FIXED_FREQUENCY_HOPPING;
 }
 
 sm_state start_gatt_server()
@@ -2590,26 +2604,41 @@ sm_state lora_random_frequency_hopping()
 sm_state lora_fixed_frequency_hopping()
 {
     // Hopping code here
-//    loratxlevel = 20;
-//
-//    loraInit();
-//    rf95.setFrequency(922.5);
-//    lora_continuous_cw_transmit();
-//
-//    while (1)
-//    {
-//        rf95.setFrequency(my_rn());
-//        lora_continuous_cw_transmit();
-//        start_timer(200);
-//
-//        while (!timerFlag)
-//        {
-//            nrf_pwr_mgmt_run();
-//        }
-//
-//        stop_timer();
-//        lora_disable();
-//    }
+
+    // Create array of the fixed frequency
+    lora_frequency_set[0] = 917.1;
+    for(int i=0; i<32; i++)
+    {
+      lora_frequency_set[i+1] = lora_frequency_set[i] + 0.2;
+    }
+    for(int i=0; i<32; i++)
+    {
+        printf("lora_frequency_set[%d] = %.1f\n", i, lora_frequency_set[i]);
+        nrf_delay_ms(10);
+        //printf("lora_frequency_set[0] = %.1f, lora_frequency_set[32] = %.1f\n", lora_frequency_set[0], lora_frequency_set[32]);
+    }
+
+    loratxlevel = 20;
+
+    loraInit();
+    rf95.setFrequency(lora_frequency_set[0]);
+    lora_continuous_cw_transmit();
+
+    while (1)
+    {
+        my_rn();
+        rf95.setFrequency(lora_frequency_set[rand_number[2]]);
+        lora_continuous_cw_transmit();
+        start_timer(200);
+
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+
+        stop_timer();
+        lora_disable();
+    }
 
 
     return STATE_SLEEP;
