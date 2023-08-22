@@ -2859,7 +2859,7 @@ sm_state acceleration_airplane_mode()
     }
 
     //TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-    //TCA.writePin(12, TCA.ON);
+    //TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
 
     while (1)
     {
@@ -2886,7 +2886,6 @@ sm_state acceleration_airplane_mode()
         {
             TCA.writePin(TCA_LED_PIN_O, TCA.ON);
             TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-            //TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
         }
     }
     return STATE_SLEEP;
