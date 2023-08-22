@@ -1979,7 +1979,7 @@ void init_spi_for_lora(void)
   
  bool loraInit()
  {
-   if (!rf95.init(&spi, LORA_INT)) {
+   if (!rf95.init(&spi, LORA_INT, 1)) {
     printf("LoRa radio init failed\n");
     return false;
   }
@@ -2409,8 +2409,8 @@ sm_state board_init()
     //return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
-    //return STATE_ACCELERATION_AIRPLANE_MODE;
-    return STATE_PRESSURE_AIRPLANE_MODE;
+    return STATE_ACCELERATION_AIRPLANE_MODE;
+    //return STATE_PRESSURE_AIRPLANE_MODE;
     //return STATE_MODEM_NETWORK_CONFIG;
 }
 
@@ -2885,7 +2885,7 @@ sm_state acceleration_airplane_mode()
         if (acc_flag)
         {
             TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-            TCA.writePin(12, TCA.ON);
+            TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
             //TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
         }
     }
@@ -3028,8 +3028,11 @@ void TCATest(){
   //TCAInitialize(); 
   // Pin 14 on TCA is gpio pin 12
   TCA.setPin(12, TCA.OUTPUTa);
-  //for(int i = 0; i < 10; i++){
-  while(1){
+  TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+    //while(1);
+  for(int i = 0; i < 10; i++){
+  //while(1){
     TCA.writePin(TCA_LED_PIN_O, TCA.ON);
     TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
     nrf_delay_ms(200);
@@ -3424,7 +3427,7 @@ void lora_radio_enable(void)
 //    }
     nrfx_gpiote_in_event_enable(LORA_RST, true);
 
-    if (!rf95.init(&spi, LORA_INT))
+    if (!rf95.init(&spi, LORA_INT, 1))
     {
         printf("LoRa radio init failed\n");
     }
