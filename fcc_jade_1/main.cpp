@@ -137,7 +137,7 @@ long output_min = 5;
 long output_max = 20;
 int8_t loratxlevel = 0;
 //float lorafrequency = 915.0f;
-int lorafrequency = 915;
+float lorafrequency = 915;
 uint8_t bw_selection = 2; // 3=500Khz, 2=250Khz, 1=125Khz, 0=500Khz
 
 
@@ -493,7 +493,8 @@ uint8_t m_tx_packet[RADIO_MAX_PAYLOAD_LEN];                                     
 uint8_t    mode                       = RADIO_MODE_MODE_Ble_2Mbit;    /**< Radio mode. Data rate and modulation. */
 uint8_t    txpower                    = RADIO_TXPOWER_TXPOWER_0dBm; /**< Radio output power. */
 //uint8_t    channel                    = 40;
-int    channel                    = 920;
+float    channel                    = 920;
+int ble_channel = 22;
 uint8_t g_rx_packet[RADIO_MAX_PAYLOAD_LEN];                                       /**< Buffer for the radio RX packet. */
 
 
@@ -882,7 +883,8 @@ void nus_data_handler(ble_nus_evt_t * p_evt)
             received_frequency[j++] = (p_evt->params.rx_data.p_data[i]);
         }
         memcpy(&my_frequency, &received_frequency, sizeof(my_frequency));
-        channel = (int)my_frequency;
+        ble_channel = (int)my_frequency;
+        channel = (float)my_frequency;
         
         // Byte-16
         lora_frequency_bandwidth = (int)(p_evt->params.rx_data.p_data[16]);
@@ -1164,7 +1166,7 @@ void radio_config(void)
     sel_txpower(txlevel);
     NRF_RADIO->TXPOWER = (txpower << RADIO_TXPOWER_TXPOWER_Pos);
     NRF_RADIO->MODE        = (mode << RADIO_MODE_MODE_Pos);
-    NRF_RADIO->FREQUENCY = channel;
+    NRF_RADIO->FREQUENCY = ble_channel;
     NRF_RADIO->TASKS_TXEN = 1;
 }
 
@@ -1217,7 +1219,7 @@ void modulation(void)
     sel_txpower(txlevel);
     NRF_RADIO->TXPOWER    = (txpower << RADIO_TXPOWER_TXPOWER_Pos);
     NRF_RADIO->MODE       = (mode << RADIO_MODE_MODE_Pos);
-    NRF_RADIO->FREQUENCY  = channel;
+    NRF_RADIO->FREQUENCY  = ble_channel;
     NRF_RADIO->EVENTS_END = 0U;
     NRF_RADIO->TASKS_TXEN = 1;
 
@@ -1261,7 +1263,7 @@ void radio_rx()
                         (RADIO_PCNF0_PLEN_16bit << RADIO_PCNF0_PLEN_Pos) |
                         (RADIO_LENGTH_LENGTH_FIELD << RADIO_PCNF0_LFLEN_Pos);
 
-    NRF_RADIO->FREQUENCY = channel;
+    NRF_RADIO->FREQUENCY = ble_channel;
     NRF_RADIO->TASKS_RXEN = 1U;
 }
 
@@ -1653,9 +1655,9 @@ void setConfig(int setTime)
         txlevel = 7;
     }
 
-    if((channel < 0 || channel > 100) && !lora_selected)
+    if((ble_channel < 0 || ble_channel > 100) && !lora_selected)
     {
-        channel = 17;
+        ble_channel = 17;
     }
       
     loratxlevel = (int8_t)power_map(txlevel, input_min, input_max, output_min, output_max);
@@ -1670,8 +1672,8 @@ void setConfig(int setTime)
     printf("sleepTime: %d\n",     sleepTime);
     printf("scanDuration: %d\n",  scanDuration);
     printf("MODE: %d\n",          MODE);
-    printf(DBG_BLUE "channel: %d\n" DBG_RESET, channel);
-    printf(DBG_GREEN "channel: %d\n" DBG_RESET, lorafrequency);
+    printf(DBG_BLUE "channel: %d\n" DBG_RESET, ble_channel);
+    printf(DBG_GREEN "channel: %.2f\n" DBG_RESET, lorafrequency);
     printf("Radio: %d\n",         lora_selected);
 
     if(OTA)
