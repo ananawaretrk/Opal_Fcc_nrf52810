@@ -24,7 +24,7 @@ Output/Debug//nrf_atfifo.o: \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf52/nrf_mbr.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_svc.h \
  C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\atomic_fifo\nrf_atfifo.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_onyx_2_sm/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_opal_1/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nrf_assert.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_errors.h \

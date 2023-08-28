@@ -1,6 +1,6 @@
 <!DOCTYPE CrossStudio_Project_File>
-<solution Name="fcc_onyx_2" target="8" version="2">
-  <project Name="fcc_onyx_2">
+<solution Name="fcc_opal_1" target="8" version="2">
+  <project Name="fcc_opal_1">
     <configuration
       Name="Common"
       arm_architecture="v7EM"

@@ -3,7 +3,7 @@ Output/Debug//nrfx_atomic.o: \
  C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\soc\nrfx_atomic.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/nrfx.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_config.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_onyx_2_sm/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_opal_1/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stddef.h \

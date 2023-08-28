@@ -7,7 +7,7 @@ Output/Debug//nrf_memobj.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_errors.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_error.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/balloc/nrf_balloc.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_onyx_2_sm/sdk_config.h \
+ C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_opal_1/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_util_platform.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf.h \

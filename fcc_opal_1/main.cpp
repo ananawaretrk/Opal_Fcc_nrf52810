@@ -142,13 +142,20 @@ static nbiot nbiot_instance;
 
 
 // For Onyx 2.8
-#define CELL_ENABLE_PIN_O        29
-#define CELL_TX                  15
-#define CELL_RX                  16
-#define GPS_BK_EN                13
-#define SENSOR_EN                 3
-#define LIS3_INT                  2 // lis3dh Interrupt pin
+//#define CELL_ENABLE_PIN_O        29
+//#define CELL_TX                  15
+//#define CELL_RX                  16
+#define GPS_BK_EN                13 // Not used in opal
+
 volatile int cell_timer_flag           = 0;
+
+// For Opal V1.1.0
+#define CELL_ENABLE_PIN_O     2
+#define CELL_TX               6
+#define CELL_RX               7
+#define OPAL_LED              25
+#define SENSOR_EN             5
+#define LIS3_INT              24 // lis3dh Interrupt pin
 
 // tca
 #define TCA_GPS_STNDBY_PIN_O     0
@@ -2382,36 +2389,50 @@ sm_state soc_init()
 }
 sm_state board_init()
 {
-    hall_gpio_init();
-    config_hall_sensor();
+    //    hall_gpio_init();
+    //    config_hall_sensor();
+    //
+    //    // Turn OFF MODEM
+    //    nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
+    //    nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
+    //    nrf_delay_ms(1000);
+    //
+    //    nrf_gpio_cfg_output(SENSOR_EN);
+    //    nrf_delay_ms(500);
+    //    //nrf_gpio_pin_clear(SENSOR_EN);
+    //    nrf_gpio_pin_set(SENSOR_EN);
+    //
+    //    nrf_gpio_cfg_output(GPS_BK_EN);
+    //    nrf_delay_ms(500);
+    //    nrf_gpio_pin_clear(GPS_BK_EN);
+    //
+    //    nrf_gpio_cfg_input(MBN_INT, NRF_GPIO_PIN_NOPULL);
+    //
+    //     i2c_wrapper.InitializeI2C();
+    //     TCAInitialize();
+    //     TCATest();
+    // i2c_wrapper.DeInitializeI2C();
 
-    // Turn OFF MODEM
     nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
     nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
     nrf_delay_ms(1000);
 
-    nrf_gpio_cfg_output(SENSOR_EN);
-    nrf_delay_ms(500);
-    //nrf_gpio_pin_clear(SENSOR_EN);
-    nrf_gpio_pin_set(SENSOR_EN);
+    // LED
+    nrf_gpio_cfg_output(OPAL_LED);
+    for (int i = 0; i < 10; i++)
+    {
+        nrf_gpio_pin_clear(OPAL_LED);
+        nrf_delay_ms(200);
+        nrf_gpio_pin_set(OPAL_LED);
+        nrf_delay_ms(200);
+    }
 
-    nrf_gpio_cfg_output(GPS_BK_EN);
-    nrf_delay_ms(500);
-    nrf_gpio_pin_clear(GPS_BK_EN);
-
-    nrf_gpio_cfg_input(MBN_INT, NRF_GPIO_PIN_NOPULL);
-     
-     i2c_wrapper.InitializeI2C();
-     TCAInitialize();
-     TCATest();
-     //i2c_wrapper.DeInitializeI2C();
-
-    //return STATE_GATT_SERVER;
-    //return STATE_DEBUG;
-    //return STATE_SLEEP;
-    return STATE_ACCELERATION_AIRPLANE_MODE;
-    //return STATE_PRESSURE_AIRPLANE_MODE;
-    //return STATE_MODEM_NETWORK_CONFIG;
+     return STATE_GATT_SERVER;
+    // return STATE_DEBUG;
+    // return STATE_SLEEP;
+    // return STATE_ACCELERATION_AIRPLANE_MODE;
+    // return STATE_PRESSURE_AIRPLANE_MODE;
+    // return STATE_MODEM_NETWORK_CONFIG;
 }
 
 void ble_radio_setup()
