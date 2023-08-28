@@ -1545,11 +1545,11 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	cmp	r3, #0
 	beq	.L68
 	.loc 6 68 13
-	ldr	r0, .L80
+	ldr	r0, .L81
 	bl	printf
 	.loc 6 69 14
 	movs	r3, #0
-	b	.L79
+	b	.L80
 .L68:
 	.loc 6 71 17
 	movs	r0, #10
@@ -1563,7 +1563,7 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	.loc 6 74 11
 	ldrb	r3, [sp, #23]	@ zero_extendqisi2
 	mov	r1, r3
-	ldr	r0, .L80+4
+	ldr	r0, .L81+4
 	bl	printf
 	.loc 6 76 42
 	ldrsb	r3, [sp, #23]
@@ -1571,11 +1571,11 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	cmp	r3, #0
 	blt	.L70
 	.loc 6 78 8
-	ldr	r0, .L80+8
+	ldr	r0, .L81+8
 	bl	printf
 	.loc 6 79 9
 	movs	r3, #0
-	b	.L79
+	b	.L80
 .L70:
 	.loc 6 81 15
 	ldrb	r3, [sp, #23]	@ zero_extendqisi2
@@ -1584,12 +1584,12 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	cmp	r3, #0
 	bne	.L71
 	.loc 6 82 15
-	ldr	r0, .L80+12
+	ldr	r0, .L81+12
 	bl	printf
 	b	.L72
 .L71:
 	.loc 6 84 15
-	ldr	r0, .L80+16
+	ldr	r0, .L81+16
 	bl	printf
 .L72:
 	.loc 6 88 13
@@ -1619,7 +1619,7 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	ldr	r3, [sp, #12]
 	ldr	r3, [r3, #40]
 	add	r1, sp, #20
-	ldr	r2, .L80+20
+	ldr	r2, .L81+20
 	mov	r0, r3
 	bl	nrfx_gpiote_in_init
 	mov	r3, r0
@@ -1633,7 +1633,7 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	cmp	r3, #0
 	beq	.L73
 	.loc 6 98 13
-	ldr	r0, .L80+24
+	ldr	r0, .L81+24
 	bl	printf
 .L73:
 	.loc 6 99 32
@@ -1658,7 +1658,7 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	cmp	r3, #0
 	beq	.L74
 	.loc 6 105 13
-	ldr	r0, .L80+28
+	ldr	r0, .L81+28
 	bl	printf
 .L74:
 	.loc 6 106 17
@@ -1677,7 +1677,7 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	cmp	r3, #0
 	beq	.L75
 	.loc 6 107 13
-	ldr	r0, .L80+32
+	ldr	r0, .L81+32
 	bl	printf
 .L75:
 	.loc 6 116 16
@@ -1685,7 +1685,7 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	bl	_ZN7RH_RF9511setModeIdleEv
 	.loc 6 118 5
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
-	cmp	r3, #1
+	cmp	r3, #3
 	bne	.L76
 	.loc 6 120 23
 	movs	r1, #1
@@ -1705,45 +1705,55 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 .L78:
 	.loc 6 126 10
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
-	cmp	r3, #3
-	bne	.L77
+	cmp	r3, #1
+	bne	.L79
 	.loc 6 128 23
 	movs	r1, #0
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF9514setModemConfigENS_17ModemConfigChoiceE
-.L77:
-	.loc 6 134 19
+	b	.L77
+.L79:
+	.loc 6 131 10
+	ldrb	r3, [sp, #3]	@ zero_extendqisi2
+	cmp	r3, #0
+	bne	.L77
+	.loc 6 133 23
 	movs	r1, #1
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF9514setModemConfigENS_17ModemConfigChoiceE
-	.loc 6 150 22
+.L77:
+	.loc 6 139 19
+	movs	r1, #1
+	ldr	r0, [sp, #12]
+	bl	_ZN7RH_RF9514setModemConfigENS_17ModemConfigChoiceE
+	.loc 6 155 22
 	movs	r1, #8
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF9517setPreambleLengthEt
-	.loc 6 156 17
-	vldr.32	s0, .L80+36
+	.loc 6 161 17
+	vldr.32	s0, .L81+36
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF9512setFrequencyEf
-	.loc 6 164 15
+	.loc 6 169 15
 	movs	r2, #0
 	movs	r1, #23
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF9510setTxPowerEab
-	.loc 6 165 11
-	ldr	r0, .L80+40
+	.loc 6 170 11
+	ldr	r0, .L81+40
 	bl	printf
-	.loc 6 170 12
+	.loc 6 175 12
 	movs	r3, #1
-.L79:
-	.loc 6 171 1 discriminator 1
+.L80:
+	.loc 6 176 1 discriminator 1
 	mov	r0, r3
 	add	sp, sp, #28
 .LCFI22:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L81:
+.L82:
 	.align	2
-.L80:
+.L81:
 	.word	.LC1
 	.word	.LC2
 	.word	.LC3
@@ -1774,7 +1784,7 @@ _ZN7RH_RF954initEPK13nrf_drv_spi_tjh:
 	.type	_ZN7RH_RF9515handleInterruptEv, %function
 _ZN7RH_RF9515handleInterruptEv:
 .LFB321:
-	.loc 6 180 1
+	.loc 6 185 1
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -1782,103 +1792,103 @@ _ZN7RH_RF9515handleInterruptEv:
 	sub	sp, sp, #20
 .LCFI24:
 	str	r0, [sp, #4]
-	.loc 6 184 32
+	.loc 6 189 32
 	movs	r1, #18
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
 	strb	r3, [sp, #15]
-	.loc 6 187 34
+	.loc 6 192 34
 	movs	r1, #28
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
 	strb	r3, [sp, #14]
 .LBB5:
-	.loc 6 189 9
+	.loc 6 194 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 190 2
+	.loc 6 195 2
 	cmp	r3, #4
-	bne	.L83
-	.loc 6 190 7 discriminator 1
+	bne	.L84
+	.loc 6 195 7 discriminator 1
 	ldrb	r3, [sp, #15]	@ zero_extendqisi2
-	.loc 6 190 17 discriminator 1
+	.loc 6 195 17 discriminator 1
 	and	r3, r3, #160
-	.loc 6 191 22 discriminator 1
+	.loc 6 196 22 discriminator 1
 	ldrb	r2, [sp, #14]	@ zero_extendqisi2
 	and	r2, r2, #64
-	.loc 6 191 8 discriminator 1
+	.loc 6 196 8 discriminator 1
 	cmp	r2, #0
 	ite	eq
 	moveq	r2, #1
 	movne	r2, #0
 	uxtb	r2, r2
-	.loc 6 191 6 discriminator 1
+	.loc 6 196 6 discriminator 1
 	orrs	r3, r3, r2
-	.loc 6 190 2 discriminator 1
+	.loc 6 195 2 discriminator 1
 	cmp	r3, #0
-	beq	.L83
-	.loc 6 190 2 is_stmt 0 discriminator 3
+	beq	.L84
+	.loc 6 195 2 is_stmt 0 discriminator 3
 	movs	r3, #1
-	b	.L84
-.L83:
-	.loc 6 190 2 discriminator 4
-	movs	r3, #0
+	b	.L85
 .L84:
-	.loc 6 189 5 is_stmt 1 discriminator 6
+	.loc 6 195 2 discriminator 4
+	movs	r3, #0
+.L85:
+	.loc 6 194 5 is_stmt 1 discriminator 6
 	cmp	r3, #0
-	beq	.L85
-	.loc 6 194 15
+	beq	.L86
+	.loc 6 199 15
 	ldrb	r3, [sp, #15]	@ zero_extendqisi2
 	mov	r1, r3
-	ldr	r0, .L100
+	ldr	r0, .L101
 	bl	printf
-	.loc 6 195 2
+	.loc 6 200 2
 	ldr	r3, [sp, #4]
 	ldrh	r3, [r3, #20]	@ movhi
 	uxth	r3, r3
-	.loc 6 195 8
+	.loc 6 200 8
 	adds	r3, r3, #1
 	uxth	r2, r3
 	ldr	r3, [sp, #4]
 	strh	r2, [r3, #20]	@ movhi
-	b	.L86
-.L85:
+	b	.L87
+.L86:
 .LBB6:
 .LBB7:
-	.loc 6 197 14
+	.loc 6 202 14
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 197 32
+	.loc 6 202 32
 	cmp	r3, #4
-	bne	.L87
-	.loc 6 197 45 discriminator 1
+	bne	.L88
+	.loc 6 202 45 discriminator 1
 	ldrb	r3, [sp, #15]	@ zero_extendqisi2
 	and	r3, r3, #64
-	.loc 6 197 32 discriminator 1
+	.loc 6 202 32 discriminator 1
 	cmp	r3, #0
-	beq	.L87
-	.loc 6 197 32 is_stmt 0 discriminator 3
+	beq	.L88
+	.loc 6 202 32 is_stmt 0 discriminator 3
 	movs	r3, #1
-	b	.L88
-.L87:
-	.loc 6 197 32 discriminator 4
-	movs	r3, #0
+	b	.L89
 .L88:
-	.loc 6 197 10 is_stmt 1 discriminator 6
+	.loc 6 202 32 discriminator 4
+	movs	r3, #0
+.L89:
+	.loc 6 202 10 is_stmt 1 discriminator 6
 	cmp	r3, #0
-	beq	.L89
+	beq	.L90
 .LBB8:
-	.loc 6 200 23
+	.loc 6 205 23
 	movs	r1, #19
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
 	strb	r3, [sp, #13]
-	.loc 6 205 10
+	.loc 6 210 10
 	movs	r1, #16
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
@@ -1887,97 +1897,97 @@ _ZN7RH_RF9515handleInterruptEv:
 	movs	r1, #13
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 207 36
+	.loc 6 212 36
 	ldr	r3, [sp, #4]
 	add	r2, r3, #45
-	.loc 6 207 14
+	.loc 6 212 14
 	ldrb	r3, [sp, #13]	@ zero_extendqisi2
 	movs	r1, #0
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF9512spiBurstReadEhPhh
-	.loc 6 208 17
+	.loc 6 213 17
 	ldr	r3, [sp, #4]
 	ldrb	r2, [sp, #13]
 	strb	r2, [r3, #44]
-	.loc 6 209 10
+	.loc 6 214 10
 	movs	r2, #255
 	movs	r1, #18
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 213 28
+	.loc 6 218 28
 	movs	r1, #25
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
-	.loc 6 213 13
+	.loc 6 218 13
 	sxtb	r3, r3
-	.loc 6 213 59
+	.loc 6 218 59
 	cmp	r3, #0
-	bge	.L90
+	bge	.L91
 	adds	r3, r3, #3
-.L90:
+.L91:
 	asrs	r3, r3, #2
 	sxtb	r3, r3
 	sxth	r2, r3
-	.loc 6 213 11
+	.loc 6 218 11
 	ldr	r3, [sp, #4]
 	strh	r2, [r3, #302]	@ movhi
-	.loc 6 218 21
+	.loc 6 223 21
 	movs	r1, #26
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
 	sxth	r2, r3
-	.loc 6 218 12
+	.loc 6 223 12
 	ldr	r3, [sp, #4]
 	strh	r2, [r3, #304]	@ movhi
-	.loc 6 220 6
+	.loc 6 225 6
 	ldr	r3, [sp, #4]
 	ldrsh	r3, [r3, #302]
-	.loc 6 220 2
+	.loc 6 225 2
 	cmp	r3, #0
-	bge	.L91
-	.loc 6 221 18
+	bge	.L92
+	.loc 6 226 18
 	ldr	r3, [sp, #4]
 	ldrsh	r3, [r3, #304]
 	uxth	r2, r3
-	.loc 6 221 30
+	.loc 6 226 30
 	ldr	r3, [sp, #4]
 	ldrsh	r3, [r3, #302]
 	uxth	r3, r3
-	.loc 6 221 28
+	.loc 6 226 28
 	add	r3, r3, r2
 	uxth	r3, r3
 	sxth	r2, r3
-	.loc 6 221 16
+	.loc 6 226 16
 	ldr	r3, [sp, #4]
 	strh	r2, [r3, #304]	@ movhi
-	b	.L92
-.L91:
-	.loc 6 223 23
+	b	.L93
+.L92:
+	.loc 6 228 23
 	ldr	r3, [sp, #4]
 	ldrsh	r3, [r3, #304]
-	.loc 6 223 33
+	.loc 6 228 33
 	lsls	r3, r3, #4
-	.loc 6 223 38
-	ldr	r2, .L100+4
+	.loc 6 228 38
+	ldr	r2, .L101+4
 	smull	r1, r2, r2, r3
 	add	r2, r2, r3
 	asrs	r2, r2, #3
 	asrs	r3, r3, #31
 	subs	r3, r2, r3
-	.loc 6 223 16
+	.loc 6 228 16
 	sxth	r2, r3
 	ldr	r3, [sp, #4]
 	strh	r2, [r3, #304]	@ movhi
-.L92:
-	.loc 6 224 6
+.L93:
+	.loc 6 229 6
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #301]	@ zero_extendqisi2
-	.loc 6 224 2
+	.loc 6 229 2
 	cmp	r3, #0
-	beq	.L93
-	.loc 6 225 16
+	beq	.L94
+	.loc 6 230 16
 	ldr	r3, [sp, #4]
 	ldrsh	r3, [r3, #304]
 	uxth	r3, r3
@@ -1986,9 +1996,9 @@ _ZN7RH_RF9515handleInterruptEv:
 	sxth	r2, r3
 	ldr	r3, [sp, #4]
 	strh	r2, [r3, #304]	@ movhi
-	b	.L94
-.L93:
-	.loc 6 227 16
+	b	.L95
+.L94:
+	.loc 6 232 16
 	ldr	r3, [sp, #4]
 	ldrsh	r3, [r3, #304]
 	uxth	r3, r3
@@ -1997,114 +2007,114 @@ _ZN7RH_RF9515handleInterruptEv:
 	sxth	r2, r3
 	ldr	r3, [sp, #4]
 	strh	r2, [r3, #304]	@ movhi
-.L94:
-	.loc 6 231 15
+.L95:
+	.loc 6 236 15
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF9513validateRxBufEv
-	b	.L86
-.L89:
+	b	.L87
+.L90:
 .LBE8:
-	.loc 6 239 14
+	.loc 6 244 14
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 239 32
+	.loc 6 244 32
 	cmp	r3, #3
-	bne	.L95
-	.loc 6 239 45 discriminator 1
+	bne	.L96
+	.loc 6 244 45 discriminator 1
 	ldrb	r3, [sp, #15]	@ zero_extendqisi2
 	and	r3, r3, #8
-	.loc 6 239 32 discriminator 1
+	.loc 6 244 32 discriminator 1
 	cmp	r3, #0
-	beq	.L95
-	.loc 6 239 32 is_stmt 0 discriminator 3
+	beq	.L96
+	.loc 6 244 32 is_stmt 0 discriminator 3
 	movs	r3, #1
-	b	.L96
-.L95:
-	.loc 6 239 32 discriminator 4
-	movs	r3, #0
+	b	.L97
 .L96:
-	.loc 6 239 10 is_stmt 1 discriminator 6
+	.loc 6 244 32 discriminator 4
+	movs	r3, #0
+.L97:
+	.loc 6 244 10 is_stmt 1 discriminator 6
 	cmp	r3, #0
-	beq	.L97
-	.loc 6 241 2
+	beq	.L98
+	.loc 6 246 2
 	ldr	r3, [sp, #4]
 	ldrh	r3, [r3, #24]	@ movhi
 	uxth	r3, r3
-	.loc 6 241 9
+	.loc 6 246 9
 	adds	r3, r3, #1
 	uxth	r2, r3
 	ldr	r3, [sp, #4]
 	strh	r2, [r3, #24]	@ movhi
-	.loc 6 242 15
-	ldr	r0, .L100+8
+	.loc 6 247 15
+	ldr	r0, .L101+8
 	bl	printf
-	.loc 6 243 13
+	.loc 6 248 13
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF9511setModeIdleEv
-	b	.L86
-.L97:
-	.loc 6 245 14
+	b	.L87
+.L98:
+	.loc 6 250 14
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 245 33
+	.loc 6 250 33
 	cmp	r3, #5
-	bne	.L98
-	.loc 6 245 46 discriminator 1
+	bne	.L99
+	.loc 6 250 46 discriminator 1
 	ldrb	r3, [sp, #15]	@ zero_extendqisi2
 	and	r3, r3, #4
-	.loc 6 245 33 discriminator 1
+	.loc 6 250 33 discriminator 1
 	cmp	r3, #0
-	beq	.L98
-	.loc 6 245 33 is_stmt 0 discriminator 3
+	beq	.L99
+	.loc 6 250 33 is_stmt 0 discriminator 3
 	movs	r3, #1
-	b	.L99
-.L98:
-	.loc 6 245 33 discriminator 4
-	movs	r3, #0
+	b	.L100
 .L99:
-	.loc 6 245 10 is_stmt 1 discriminator 6
+	.loc 6 250 33 discriminator 4
+	movs	r3, #0
+.L100:
+	.loc 6 250 10 is_stmt 1 discriminator 6
 	cmp	r3, #0
-	beq	.L86
-	.loc 6 247 26
+	beq	.L87
+	.loc 6 252 26
 	ldrb	r3, [sp, #15]	@ zero_extendqisi2
 	and	r3, r3, #1
-	.loc 6 247 28
+	.loc 6 252 28
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r2, r3
-	.loc 6 247 14
+	.loc 6 252 14
 	ldr	r3, [sp, #4]
 	strb	r2, [r3, #26]
-	.loc 6 248 20
+	.loc 6 253 20
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF9511setModeIdleEv
-.L86:
+.L87:
 .LBE7:
 .LBE6:
 .LBE5:
-	.loc 6 252 13
+	.loc 6 257 13
 	movs	r2, #255
 	movs	r1, #18
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 253 13
+	.loc 6 258 13
 	movs	r2, #255
 	movs	r1, #18
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 254 1
+	.loc 6 259 1
 	nop
 	add	sp, sp, #20
 .LCFI25:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L101:
+.L102:
 	.align	2
-.L100:
+.L101:
 	.word	.LC10
 	.word	-2004318071
 	.word	.LC11
@@ -2124,7 +2134,7 @@ _ZN7RH_RF9515handleInterruptEv:
 	.type	_ZN7RH_RF9513validateRxBufEv, %function
 _ZN7RH_RF9513validateRxBufEv:
 .LFB322:
-	.loc 6 259 1
+	.loc 6 264 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -2132,105 +2142,105 @@ _ZN7RH_RF9513validateRxBufEv:
 	sub	sp, sp, #12
 .LCFI27:
 	str	r0, [sp, #4]
-	.loc 6 260 9
+	.loc 6 265 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #44]
 	uxtb	r3, r3
-	.loc 6 260 17
+	.loc 6 265 17
 	cmp	r3, #3
 	ite	ls
 	movls	r3, #1
 	movhi	r3, #0
 	uxtb	r3, r3
-	.loc 6 260 5
+	.loc 6 265 5
 	cmp	r3, #0
-	beq	.L103
-	.loc 6 261 11
-	ldr	r0, .L108
+	beq	.L104
+	.loc 6 266 11
+	ldr	r0, .L109
 	bl	printf
-	.loc 6 262 2
-	b	.L102
-.L103:
-	.loc 6 265 28
+	.loc 6 267 2
+	b	.L103
+.L104:
+	.loc 6 270 28
 	ldr	r3, [sp, #4]
 	ldrb	r2, [r3, #45]	@ zero_extendqisi2
-	.loc 6 265 20
+	.loc 6 270 20
 	ldr	r3, [sp, #4]
 	strb	r2, [r3, #6]
-	.loc 6 266 28
+	.loc 6 271 28
 	ldr	r3, [sp, #4]
 	ldrb	r2, [r3, #46]	@ zero_extendqisi2
-	.loc 6 266 20
+	.loc 6 271 20
 	ldr	r3, [sp, #4]
 	strb	r2, [r3, #7]
-	.loc 6 267 28
+	.loc 6 272 28
 	ldr	r3, [sp, #4]
 	ldrb	r2, [r3, #47]	@ zero_extendqisi2
-	.loc 6 267 20
+	.loc 6 272 20
 	ldr	r3, [sp, #4]
 	strb	r2, [r3, #8]
-	.loc 6 268 28
+	.loc 6 273 28
 	ldr	r3, [sp, #4]
 	ldrb	r2, [r3, #48]	@ zero_extendqisi2
-	.loc 6 268 20
+	.loc 6 273 20
 	ldr	r3, [sp, #4]
 	strb	r2, [r3, #9]
-	.loc 6 269 9
+	.loc 6 274 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #5]	@ zero_extendqisi2
-	.loc 6 270 30
+	.loc 6 275 30
 	cmp	r3, #0
-	bne	.L105
-	.loc 6 270 2 discriminator 2
+	bne	.L106
+	.loc 6 275 2 discriminator 2
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #6]
 	uxtb	r2, r3
-	.loc 6 270 17 discriminator 2
+	.loc 6 275 17 discriminator 2
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #4]	@ zero_extendqisi2
-	.loc 6 269 22 discriminator 2
+	.loc 6 274 22 discriminator 2
 	cmp	r2, r3
-	beq	.L105
-	.loc 6 271 2 discriminator 3
+	beq	.L106
+	.loc 6 276 2 discriminator 3
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #6]
 	uxtb	r3, r3
-	.loc 6 270 30 discriminator 3
+	.loc 6 275 30 discriminator 3
 	cmp	r3, #255
-	bne	.L106
-.L105:
-	.loc 6 270 30 is_stmt 0 discriminator 1
-	movs	r3, #1
-	b	.L107
+	bne	.L107
 .L106:
-	.loc 6 270 30 discriminator 4
-	movs	r3, #0
+	.loc 6 275 30 is_stmt 0 discriminator 1
+	movs	r3, #1
+	b	.L108
 .L107:
-	.loc 6 269 5 is_stmt 1 discriminator 6
+	.loc 6 275 30 discriminator 4
+	movs	r3, #0
+.L108:
+	.loc 6 274 5 is_stmt 1 discriminator 6
 	cmp	r3, #0
-	beq	.L102
-	.loc 6 273 2
+	beq	.L103
+	.loc 6 278 2
 	ldr	r3, [sp, #4]
 	ldrh	r3, [r3, #22]	@ movhi
 	uxth	r3, r3
-	.loc 6 273 9
+	.loc 6 278 9
 	adds	r3, r3, #1
 	uxth	r2, r3
 	ldr	r3, [sp, #4]
 	strh	r2, [r3, #22]	@ movhi
-	.loc 6 274 14
+	.loc 6 279 14
 	ldr	r3, [sp, #4]
 	movs	r2, #1
 	strb	r2, [r3, #300]
-.L102:
-	.loc 6 276 1
+.L103:
+	.loc 6 281 1
 	add	sp, sp, #12
 .LCFI28:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L109:
+.L110:
 	.align	2
-.L108:
+.L109:
 	.word	.LC12
 .LFE322:
 	.size	_ZN7RH_RF9513validateRxBufEv, .-_ZN7RH_RF9513validateRxBufEv
@@ -2244,7 +2254,7 @@ _ZN7RH_RF9513validateRxBufEv:
 	.type	_ZN7RH_RF959availableEv, %function
 _ZN7RH_RF959availableEv:
 .LFB323:
-	.loc 6 279 1
+	.loc 6 284 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -2252,32 +2262,32 @@ _ZN7RH_RF959availableEv:
 	sub	sp, sp, #12
 .LCFI30:
 	str	r0, [sp, #4]
-	.loc 6 283 9
+	.loc 6 288 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 283 15
+	.loc 6 288 15
 	cmp	r3, #3
 	ite	eq
 	moveq	r3, #1
 	movne	r3, #0
 	uxtb	r3, r3
-	.loc 6 283 5
+	.loc 6 288 5
 	cmp	r3, #0
-	beq	.L111
-	.loc 6 284 9
+	beq	.L112
+	.loc 6 289 9
 	movs	r3, #0
-	b	.L112
-.L111:
-	.loc 6 285 14
+	b	.L113
+.L112:
+	.loc 6 290 14
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF959setModeRxEv
-	.loc 6 286 12
+	.loc 6 291 12
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #300]
 	uxtb	r3, r3
-.L112:
-	.loc 6 287 1
+.L113:
+	.loc 6 292 1
 	mov	r0, r3
 	add	sp, sp, #12
 .LCFI31:
@@ -2295,22 +2305,22 @@ _ZN7RH_RF959availableEv:
 	.type	_ZN7RH_RF9510clearRxBufEv, %function
 _ZN7RH_RF9510clearRxBufEv:
 .LFB324:
-	.loc 6 290 1
+	.loc 6 295 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI32:
 	str	r0, [sp, #4]
-	.loc 6 291 18
+	.loc 6 296 18
 	ldr	r3, [sp, #4]
 	movs	r2, #0
 	strb	r2, [r3, #300]
-	.loc 6 292 13
+	.loc 6 297 13
 	ldr	r3, [sp, #4]
 	movs	r2, #0
 	strb	r2, [r3, #44]
-	.loc 6 293 1
+	.loc 6 298 1
 	nop
 	add	sp, sp, #8
 .LCFI33:
@@ -2328,7 +2338,7 @@ _ZN7RH_RF9510clearRxBufEv:
 	.type	_ZN7RH_RF954recvEPhS0_, %function
 _ZN7RH_RF954recvEPhS0_:
 .LFB325:
-	.loc 6 296 1
+	.loc 6 301 1
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -2338,58 +2348,58 @@ _ZN7RH_RF954recvEPhS0_:
 	str	r0, [sp, #12]
 	str	r1, [sp, #8]
 	str	r2, [sp, #4]
-	.loc 6 301 19
+	.loc 6 306 19
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF959availableEv
 	mov	r3, r0
-	.loc 6 301 9
+	.loc 6 306 9
 	eor	r3, r3, #1
 	uxtb	r3, r3
-	.loc 6 301 5
+	.loc 6 306 5
 	cmp	r3, #0
-	beq	.L115
-	.loc 6 302 9
+	beq	.L116
+	.loc 6 307 9
 	movs	r3, #0
-	b	.L116
-.L115:
-	.loc 6 303 5
+	b	.L117
+.L116:
+	.loc 6 308 5
 	ldr	r3, [sp, #8]
 	cmp	r3, #0
-	beq	.L117
-	.loc 6 303 13 discriminator 1
+	beq	.L118
+	.loc 6 308 13 discriminator 1
 	ldr	r3, [sp, #4]
 	cmp	r3, #0
-	beq	.L117
-	.loc 6 308 18
+	beq	.L118
+	.loc 6 313 18
 	ldr	r3, [sp, #12]
 	ldrb	r3, [r3, #44]
 	uxtb	r3, r3
-	.loc 6 308 25
+	.loc 6 313 25
 	subs	r3, r3, #4
 	uxtb	r2, r3
-	.loc 6 308 16
+	.loc 6 313 16
 	ldr	r3, [sp, #4]
 	strb	r2, [r3]
-	.loc 6 312 14
+	.loc 6 317 14
 	ldr	r3, [sp, #12]
 	adds	r3, r3, #45
-	.loc 6 312 8
+	.loc 6 317 8
 	adds	r1, r3, #4
-	.loc 6 312 39
+	.loc 6 317 39
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3]	@ zero_extendqisi2
-	.loc 6 312 8
+	.loc 6 317 8
 	mov	r2, r3
 	ldr	r0, [sp, #8]
 	bl	memcpy
-.L117:
-	.loc 6 319 15
+.L118:
+	.loc 6 324 15
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF9510clearRxBufEv
-	.loc 6 320 12
+	.loc 6 325 12
 	movs	r3, #1
-.L116:
-	.loc 6 321 1
+.L117:
+	.loc 6 326 1
 	mov	r0, r3
 	add	sp, sp, #20
 .LCFI36:
@@ -2407,32 +2417,32 @@ _ZN7RH_RF954recvEPhS0_:
 	.type	_ZN7RH_RF9514waitPacketSentEv, %function
 _ZN7RH_RF9514waitPacketSentEv:
 .LFB326:
-	.loc 6 324 1
+	.loc 6 329 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI37:
 	str	r0, [sp, #4]
-.L120:
-	.loc 6 325 12
+.L121:
+	.loc 6 330 12
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 325 18
+	.loc 6 330 18
 	cmp	r3, #3
 	ite	eq
 	moveq	r3, #1
 	movne	r3, #0
 	uxtb	r3, r3
 	cmp	r3, #0
-	beq	.L119
-	.loc 6 325 5
-	b	.L120
-.L119:
-	.loc 6 327 12
+	beq	.L120
+	.loc 6 330 5
+	b	.L121
+.L120:
+	.loc 6 332 12
 	movs	r3, #1
-	.loc 6 328 1
+	.loc 6 333 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI38:
@@ -2450,34 +2460,34 @@ _ZN7RH_RF9514waitPacketSentEv:
 	.type	_ZN7RH_RF9515checkPacketSentEv, %function
 _ZN7RH_RF9515checkPacketSentEv:
 .LFB327:
-	.loc 6 331 1
+	.loc 6 336 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI39:
 	str	r0, [sp, #4]
-	.loc 6 332 9
+	.loc 6 337 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 332 15
+	.loc 6 337 15
 	cmp	r3, #3
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 332 5
+	.loc 6 337 5
 	cmp	r3, #0
-	beq	.L123
-	.loc 6 333 14
+	beq	.L124
+	.loc 6 338 14
 	movs	r3, #1
-	b	.L124
-.L123:
-	.loc 6 335 14
-	movs	r3, #0
+	b	.L125
 .L124:
-	.loc 6 336 1
+	.loc 6 340 14
+	movs	r3, #0
+.L125:
+	.loc 6 341 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI40:
@@ -2495,7 +2505,7 @@ _ZN7RH_RF9515checkPacketSentEv:
 	.type	_ZN7RH_RF957waitCADEv, %function
 _ZN7RH_RF957waitCADEv:
 .LFB328:
-	.loc 6 339 1
+	.loc 6 344 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -2503,23 +2513,23 @@ _ZN7RH_RF957waitCADEv:
 	sub	sp, sp, #12
 .LCFI42:
 	str	r0, [sp, #4]
-	.loc 6 340 10
+	.loc 6 345 10
 	ldr	r3, [sp, #4]
 	ldr	r3, [r3, #28]
-	.loc 6 340 5
+	.loc 6 345 5
 	cmp	r3, #0
-	bne	.L126
-	.loc 6 341 9
+	bne	.L127
+	.loc 6 346 9
 	movs	r3, #1
-	b	.L127
-.L126:
-	.loc 6 348 17
+	b	.L128
+.L127:
+	.loc 6 353 17
 	movs	r0, #10
 	bl	nrf_delay_ms
-	.loc 6 349 12
+	.loc 6 354 12
 	movs	r3, #1
-.L127:
-	.loc 6 350 1
+.L128:
+	.loc 6 355 1
 	mov	r0, r3
 	add	sp, sp, #12
 .LCFI43:
@@ -2537,7 +2547,7 @@ _ZN7RH_RF957waitCADEv:
 	.type	_ZN7RH_RF954sendEPKhh, %function
 _ZN7RH_RF954sendEPKhh:
 .LFB329:
-	.loc 6 353 1
+	.loc 6 358 1
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -2548,60 +2558,60 @@ _ZN7RH_RF954sendEPKhh:
 	str	r1, [sp, #8]
 	mov	r3, r2
 	strb	r3, [sp, #7]
-	.loc 6 354 5
+	.loc 6 359 5
 	ldrb	r3, [sp, #7]	@ zero_extendqisi2
 	cmp	r3, #251
-	bls	.L129
-	.loc 6 355 9
+	bls	.L130
+	.loc 6 360 9
 	movs	r3, #0
-	b	.L130
-.L129:
-	.loc 6 356 19
+	b	.L131
+.L130:
+	.loc 6 361 19
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF9514waitPacketSentEv
-	.loc 6 357 16
+	.loc 6 362 16
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF9511setModeIdleEv
-	.loc 6 362 13
+	.loc 6 367 13
 	movs	r2, #0
 	movs	r1, #13
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 364 13
+	.loc 6 369 13
 	ldr	r3, [sp, #12]
 	ldrb	r3, [r3, #10]	@ zero_extendqisi2
 	mov	r2, r3
 	movs	r1, #0
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 365 13
+	.loc 6 370 13
 	ldr	r3, [sp, #12]
 	ldrb	r3, [r3, #11]	@ zero_extendqisi2
 	mov	r2, r3
 	movs	r1, #0
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 366 13
+	.loc 6 371 13
 	ldr	r3, [sp, #12]
 	ldrb	r3, [r3, #12]	@ zero_extendqisi2
 	mov	r2, r3
 	movs	r1, #0
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 367 13
+	.loc 6 372 13
 	ldr	r3, [sp, #12]
 	ldrb	r3, [r3, #13]	@ zero_extendqisi2
 	mov	r2, r3
 	movs	r1, #0
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 369 18
+	.loc 6 374 18
 	ldrb	r3, [sp, #7]	@ zero_extendqisi2
 	ldr	r2, [sp, #8]
 	movs	r1, #0
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF9513spiBurstWriteEhPKhh
-	.loc 6 370 13
+	.loc 6 375 13
 	ldrb	r3, [sp, #7]
 	adds	r3, r3, #4
 	uxtb	r3, r3
@@ -2609,13 +2619,13 @@ _ZN7RH_RF954sendEPKhh:
 	movs	r1, #34
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 371 14
+	.loc 6 376 14
 	ldr	r0, [sp, #12]
 	bl	_ZN7RH_RF959setModeTxEv
-	.loc 6 373 12
+	.loc 6 378 12
 	movs	r3, #1
-.L130:
-	.loc 6 374 1
+.L131:
+	.loc 6 379 1
 	mov	r0, r3
 	add	sp, sp, #20
 .LCFI46:
@@ -2633,16 +2643,16 @@ _ZN7RH_RF954sendEPKhh:
 	.type	_ZN7RH_RF9514printRegistersEv, %function
 _ZN7RH_RF9514printRegistersEv:
 .LFB330:
-	.loc 6 377 1
+	.loc 6 382 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI47:
 	str	r0, [sp, #4]
-	.loc 6 389 12
+	.loc 6 394 12
 	movs	r3, #1
-	.loc 6 390 1
+	.loc 6 395 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI48:
@@ -2660,16 +2670,16 @@ _ZN7RH_RF9514printRegistersEv:
 	.type	_ZN7RH_RF9516maxMessageLengthEv, %function
 _ZN7RH_RF9516maxMessageLengthEv:
 .LFB331:
-	.loc 6 393 1
+	.loc 6 398 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI49:
 	str	r0, [sp, #4]
-	.loc 6 394 12
+	.loc 6 399 12
 	movs	r3, #251
-	.loc 6 395 1
+	.loc 6 400 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI50:
@@ -2704,7 +2714,7 @@ _ZN7RH_RF9516maxMessageLengthEv:
 	.type	_ZN7RH_RF9512setFrequencyEf, %function
 _ZN7RH_RF9512setFrequencyEf:
 .LFB332:
-	.loc 6 398 1
+	.loc 6 403 1
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -2713,12 +2723,12 @@ _ZN7RH_RF9512setFrequencyEf:
 .LCFI52:
 	str	r0, [sp, #4]
 	vstr.32	s0, [sp]
-	.loc 6 400 21
+	.loc 6 405 21
 	ldr	r0, [sp]	@ float
 	bl	__aeabi_f2d
 .LVL1:
-	.loc 6 400 28
-	adr	r3, .L140+20
+	.loc 6 405 28
+	adr	r3, .L141+20
 	ldrd	r2, [r3]
 	bl	__aeabi_dmul
 .LVL2:
@@ -2726,67 +2736,67 @@ _ZN7RH_RF9512setFrequencyEf:
 	mov	r3, r1
 	mov	r0, r2
 	mov	r1, r3
-	.loc 6 400 41
-	adr	r3, .L140+28
+	.loc 6 405 41
+	adr	r3, .L141+28
 	ldrd	r2, [r3]
 	bl	__aeabi_ddiv
 .LVL3:
 	mov	r2, r0
 	mov	r3, r1
-	.loc 6 400 14
+	.loc 6 405 14
 	mov	r0, r2
 	mov	r1, r3
 	bl	__aeabi_d2uiz
 .LVL4:
 	mov	r3, r0
 	str	r3, [sp, #12]
-	.loc 6 401 47
+	.loc 6 406 47
 	ldr	r3, [sp, #12]
 	lsrs	r3, r3, #16
-	.loc 6 401 17
+	.loc 6 406 17
 	uxtb	r3, r3
 	mov	r2, r3
 	movs	r1, #6
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 401 62
+	.loc 6 406 62
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 401 5
+	.loc 6 406 5
 	cmp	r3, #0
-	beq	.L136
-	.loc 6 402 14
-	ldr	r0, .L140
+	beq	.L137
+	.loc 6 407 14
+	ldr	r0, .L141
 	bl	printf
-.L136:
-	.loc 6 403 47
+.L137:
+	.loc 6 408 47
 	ldr	r3, [sp, #12]
 	lsrs	r3, r3, #8
-	.loc 6 403 17
+	.loc 6 408 17
 	uxtb	r3, r3
 	mov	r2, r3
 	movs	r1, #7
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 403 61
+	.loc 6 408 61
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 403 5
+	.loc 6 408 5
 	cmp	r3, #0
-	beq	.L137
-	.loc 6 404 14
-	ldr	r0, .L140+4
+	beq	.L138
+	.loc 6 409 14
+	ldr	r0, .L141+4
 	bl	printf
-.L137:
-	.loc 6 405 17
+.L138:
+	.loc 6 410 17
 	ldr	r3, [sp, #12]
 	uxtb	r3, r3
 	mov	r2, r3
@@ -2794,50 +2804,50 @@ _ZN7RH_RF9512setFrequencyEf:
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 405 54
+	.loc 6 410 54
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 405 5
+	.loc 6 410 5
 	cmp	r3, #0
-	beq	.L138
-	.loc 6 406 14
-	ldr	r0, .L140+8
+	beq	.L139
+	.loc 6 411 14
+	ldr	r0, .L141+8
 	bl	printf
-.L138:
-	.loc 6 407 28
+.L139:
+	.loc 6 412 28
 	vldr.32	s15, [sp]
-	vldr.32	s14, .L140+12
+	vldr.32	s14, .L141+12
 	vcmpe.f32	s15, s14
 	vmrs	APSR_nzcv, FPSCR
 	ite	ge
 	movge	r3, #1
 	movlt	r3, #0
 	uxtb	r2, r3
-	.loc 6 407 18
+	.loc 6 412 18
 	ldr	r3, [sp, #4]
 	strb	r2, [r3, #301]
-	.loc 6 409 11
+	.loc 6 414 11
 	ldr	r0, [sp]	@ float
 	bl	__aeabi_f2d
 .LVL5:
 	mov	r2, r0
 	mov	r3, r1
-	ldr	r0, .L140+16
+	ldr	r0, .L141+16
 	bl	printf
-	.loc 6 410 12
+	.loc 6 415 12
 	movs	r3, #1
-	.loc 6 411 1
+	.loc 6 416 1
 	mov	r0, r3
 	add	sp, sp, #20
 .LCFI53:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L141:
+.L142:
 	.align	3
-.L140:
+.L141:
 	.word	.LC13
 	.word	.LC14
 	.word	.LC15
@@ -2863,7 +2873,7 @@ _ZN7RH_RF9512setFrequencyEf:
 	.type	_ZN7RH_RF9511setModeIdleEv, %function
 _ZN7RH_RF9511setModeIdleEv:
 .LFB333:
-	.loc 6 414 1
+	.loc 6 419 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -2871,52 +2881,52 @@ _ZN7RH_RF9511setModeIdleEv:
 	sub	sp, sp, #12
 .LCFI55:
 	str	r0, [sp, #4]
-	.loc 6 415 9
+	.loc 6 420 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 415 15
+	.loc 6 420 15
 	cmp	r3, #2
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 415 5
+	.loc 6 420 5
 	cmp	r3, #0
-	beq	.L145
-	.loc 6 417 14
+	beq	.L146
+	.loc 6 422 14
 	movs	r2, #1
 	movs	r1, #1
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 417 59
+	.loc 6 422 59
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 417 2
+	.loc 6 422 2
 	cmp	r3, #0
-	beq	.L144
-	.loc 6 418 17
-	ldr	r0, .L146
+	beq	.L145
+	.loc 6 423 17
+	ldr	r0, .L147
 	bl	printf
-.L144:
-	.loc 6 419 8
+.L145:
+	.loc 6 424 8
 	ldr	r3, [sp, #4]
 	movs	r2, #2
 	strb	r2, [r3, #32]
-.L145:
-	.loc 6 421 1
+.L146:
+	.loc 6 426 1
 	nop
 	add	sp, sp, #12
 .LCFI56:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L147:
+.L148:
 	.align	2
-.L146:
+.L147:
 	.word	.LC17
 .LFE333:
 	.size	_ZN7RH_RF9511setModeIdleEv, .-_ZN7RH_RF9511setModeIdleEv
@@ -2930,7 +2940,7 @@ _ZN7RH_RF9511setModeIdleEv:
 	.type	_ZN7RH_RF955sleepEv, %function
 _ZN7RH_RF955sleepEv:
 .LFB334:
-	.loc 6 424 1
+	.loc 6 429 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -2938,32 +2948,32 @@ _ZN7RH_RF955sleepEv:
 	sub	sp, sp, #12
 .LCFI58:
 	str	r0, [sp, #4]
-	.loc 6 425 9
+	.loc 6 430 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 425 15
+	.loc 6 430 15
 	cmp	r3, #1
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 425 5
+	.loc 6 430 5
 	cmp	r3, #0
-	beq	.L149
-	.loc 6 427 10
+	beq	.L150
+	.loc 6 432 10
 	movs	r2, #0
 	movs	r1, #1
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 428 8
+	.loc 6 433 8
 	ldr	r3, [sp, #4]
 	movs	r2, #1
 	strb	r2, [r3, #32]
-.L149:
-	.loc 6 430 12
+.L150:
+	.loc 6 435 12
 	movs	r3, #1
-	.loc 6 431 1
+	.loc 6 436 1
 	mov	r0, r3
 	add	sp, sp, #12
 .LCFI59:
@@ -2988,7 +2998,7 @@ _ZN7RH_RF955sleepEv:
 	.type	_ZN7RH_RF959setModeRxEv, %function
 _ZN7RH_RF959setModeRxEv:
 .LFB335:
-	.loc 6 434 1
+	.loc 6 439 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -2996,71 +3006,71 @@ _ZN7RH_RF959setModeRxEv:
 	sub	sp, sp, #12
 .LCFI61:
 	str	r0, [sp, #4]
-	.loc 6 435 9
+	.loc 6 440 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 435 15
+	.loc 6 440 15
 	cmp	r3, #4
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 435 5
+	.loc 6 440 5
 	cmp	r3, #0
-	beq	.L155
-	.loc 6 437 14
+	beq	.L156
+	.loc 6 442 14
 	movs	r2, #5
 	movs	r1, #1
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 437 66
+	.loc 6 442 66
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 437 2
+	.loc 6 442 2
 	cmp	r3, #0
-	beq	.L153
-	.loc 6 438 17
-	ldr	r0, .L156
+	beq	.L154
+	.loc 6 443 17
+	ldr	r0, .L157
 	bl	printf
-.L153:
-	.loc 6 439 14
+.L154:
+	.loc 6 444 14
 	movs	r2, #0
 	movs	r1, #64
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 439 50
+	.loc 6 444 50
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 439 2
+	.loc 6 444 2
 	cmp	r3, #0
-	beq	.L154
-	.loc 6 440 17
-	ldr	r0, .L156+4
+	beq	.L155
+	.loc 6 445 17
+	ldr	r0, .L157+4
 	bl	printf
-.L154:
-	.loc 6 441 15
+.L155:
+	.loc 6 446 15
 	ldr	r3, [sp, #4]
 	movs	r2, #4
 	strb	r2, [r3, #32]
-.L155:
-	.loc 6 443 1
+.L156:
+	.loc 6 448 1
 	nop
 	add	sp, sp, #12
 .LCFI62:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L157:
+.L158:
 	.align	2
-.L156:
+.L157:
 	.word	.LC18
 	.word	.LC19
 .LFE335:
@@ -3079,7 +3089,7 @@ _ZN7RH_RF959setModeRxEv:
 	.type	_ZN7RH_RF959setModeTxEv, %function
 _ZN7RH_RF959setModeTxEv:
 .LFB336:
-	.loc 6 446 1
+	.loc 6 451 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -3087,57 +3097,57 @@ _ZN7RH_RF959setModeTxEv:
 	sub	sp, sp, #12
 .LCFI64:
 	str	r0, [sp, #4]
-	.loc 6 448 9
+	.loc 6 453 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 448 15
+	.loc 6 453 15
 	cmp	r3, #3
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 448 5
+	.loc 6 453 5
 	cmp	r3, #0
-	beq	.L161
-	.loc 6 450 10
+	beq	.L162
+	.loc 6 455 10
 	movs	r2, #3
 	movs	r1, #1
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 451 14
+	.loc 6 456 14
 	movs	r2, #64
 	movs	r1, #64
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 451 50
+	.loc 6 456 50
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 451 2
+	.loc 6 456 2
 	cmp	r3, #0
-	beq	.L160
-	.loc 6 452 17
-	ldr	r0, .L162
+	beq	.L161
+	.loc 6 457 17
+	ldr	r0, .L163
 	bl	printf
-.L160:
-	.loc 6 453 15
+.L161:
+	.loc 6 458 15
 	ldr	r3, [sp, #4]
 	movs	r2, #3
 	strb	r2, [r3, #32]
-.L161:
-	.loc 6 455 1
+.L162:
+	.loc 6 460 1
 	nop
 	add	sp, sp, #12
 .LCFI65:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L163:
+.L164:
 	.align	2
-.L162:
+.L163:
 	.word	.LC20
 .LFE336:
 	.size	_ZN7RH_RF959setModeTxEv, .-_ZN7RH_RF959setModeTxEv
@@ -3151,7 +3161,7 @@ _ZN7RH_RF959setModeTxEv:
 	.type	_ZN7RH_RF9510setTxPowerEab, %function
 _ZN7RH_RF9510setTxPowerEab:
 .LFB337:
-	.loc 6 458 1
+	.loc 6 463 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -3163,102 +3173,102 @@ _ZN7RH_RF9510setTxPowerEab:
 	strb	r3, [sp, #3]
 	mov	r3, r2
 	strb	r3, [sp, #2]
-	.loc 6 461 5
+	.loc 6 466 5
 	ldrb	r3, [sp, #2]	@ zero_extendqisi2
 	cmp	r3, #0
-	beq	.L165
-	.loc 6 463 2
+	beq	.L166
+	.loc 6 468 2
 	ldrsb	r3, [sp, #3]
 	cmp	r3, #14
-	ble	.L166
-	.loc 6 464 12
+	ble	.L167
+	.loc 6 469 12
 	movs	r3, #14
 	strb	r3, [sp, #3]
-.L166:
-	.loc 6 465 2
+.L167:
+	.loc 6 470 2
 	ldrsb	r3, [sp, #3]
 	cmp	r3, #-1
-	bge	.L167
-	.loc 6 466 12
+	bge	.L168
+	.loc 6 471 12
 	movs	r3, #255
 	strb	r3, [sp, #3]
-.L167:
-	.loc 6 467 64
+.L168:
+	.loc 6 472 64
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
 	adds	r3, r3, #1
 	uxtb	r3, r3
 	sxtb	r3, r3
-	.loc 6 467 55
+	.loc 6 472 55
 	orr	r3, r3, #112
 	sxtb	r3, r3
-	.loc 6 467 10
+	.loc 6 472 10
 	uxtb	r3, r3
 	mov	r2, r3
 	movs	r1, #9
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 498 1
-	b	.L173
-.L165:
-	.loc 6 471 2
+	.loc 6 503 1
+	b	.L174
+.L166:
+	.loc 6 476 2
 	ldrsb	r3, [sp, #3]
 	cmp	r3, #23
-	ble	.L169
-	.loc 6 472 12
+	ble	.L170
+	.loc 6 477 12
 	movs	r3, #23
 	strb	r3, [sp, #3]
-.L169:
-	.loc 6 473 2
+.L170:
+	.loc 6 478 2
 	ldrsb	r3, [sp, #3]
 	cmp	r3, #4
-	bgt	.L170
-	.loc 6 474 12
+	bgt	.L171
+	.loc 6 479 12
 	movs	r3, #5
 	strb	r3, [sp, #3]
-.L170:
-	.loc 6 479 2
+.L171:
+	.loc 6 484 2
 	ldrsb	r3, [sp, #3]
 	cmp	r3, #20
-	ble	.L171
-	.loc 6 481 14
+	ble	.L172
+	.loc 6 486 14
 	movs	r2, #135
 	movs	r1, #77
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 482 12
+	.loc 6 487 12
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
 	subs	r3, r3, #3
 	uxtb	r3, r3
 	strb	r3, [sp, #3]
-	b	.L172
-.L171:
-	.loc 6 486 14
+	b	.L173
+.L172:
+	.loc 6 491 14
 	movs	r2, #4
 	movs	r1, #77
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-.L172:
-	.loc 6 495 63
+.L173:
+	.loc 6 500 63
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
 	subs	r3, r3, #5
 	uxtb	r3, r3
 	sxtb	r3, r3
-	.loc 6 495 55
+	.loc 6 500 55
 	orn	r3, r3, #127
 	sxtb	r3, r3
-	.loc 6 495 10
+	.loc 6 500 10
 	uxtb	r3, r3
 	mov	r2, r3
 	movs	r1, #9
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 496 17
+	.loc 6 501 17
 	movs	r2, #255
 	movs	r1, #11
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-.L173:
-	.loc 6 498 1
+.L174:
+	.loc 6 503 1
 	nop
 	add	sp, sp, #12
 .LCFI68:
@@ -3286,7 +3296,7 @@ _ZN7RH_RF9510setTxPowerEab:
 	.type	_ZN7RH_RF9517setModemRegistersEPKNS_11ModemConfigE, %function
 _ZN7RH_RF9517setModemRegistersEPKNS_11ModemConfigE:
 .LFB338:
-	.loc 6 502 1
+	.loc 6 507 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -3295,81 +3305,81 @@ _ZN7RH_RF9517setModemRegistersEPKNS_11ModemConfigE:
 .LCFI70:
 	str	r0, [sp, #4]
 	str	r1, [sp]
-	.loc 6 503 55
+	.loc 6 508 55
 	ldr	r3, [sp]
 	ldrb	r3, [r3]	@ zero_extendqisi2
-	.loc 6 503 17
+	.loc 6 508 17
 	mov	r2, r3
 	movs	r1, #29
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 503 63
+	.loc 6 508 63
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 503 5
+	.loc 6 508 5
 	cmp	r3, #0
-	beq	.L175
-	.loc 6 504 13
-	ldr	r0, .L179
+	beq	.L176
+	.loc 6 509 13
+	ldr	r0, .L180
 	bl	printf
-.L175:
-	.loc 6 505 55
+.L176:
+	.loc 6 510 55
 	ldr	r3, [sp]
 	ldrb	r3, [r3, #1]	@ zero_extendqisi2
-	.loc 6 505 17
+	.loc 6 510 17
 	mov	r2, r3
 	movs	r1, #30
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 505 63
+	.loc 6 510 63
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 505 5
+	.loc 6 510 5
 	cmp	r3, #0
-	beq	.L176
-	.loc 6 506 13
-	ldr	r0, .L179+4
+	beq	.L177
+	.loc 6 511 13
+	ldr	r0, .L180+4
 	bl	printf
-.L176:
-	.loc 6 507 55
+.L177:
+	.loc 6 512 55
 	ldr	r3, [sp]
 	ldrb	r3, [r3, #2]	@ zero_extendqisi2
-	.loc 6 507 17
+	.loc 6 512 17
 	mov	r2, r3
 	movs	r1, #38
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
 	mov	r3, r0
-	.loc 6 507 63
+	.loc 6 512 63
 	cmp	r3, #0
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 507 5
+	.loc 6 512 5
 	cmp	r3, #0
-	beq	.L178
-	.loc 6 508 13
-	ldr	r0, .L179+8
+	beq	.L179
+	.loc 6 513 13
+	ldr	r0, .L180+8
 	bl	printf
-.L178:
-	.loc 6 509 1
+.L179:
+	.loc 6 514 1
 	nop
 	add	sp, sp, #12
 .LCFI71:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L180:
+.L181:
 	.align	2
-.L179:
+.L180:
 	.word	.LC21
 	.word	.LC22
 	.word	.LC23
@@ -3385,7 +3395,7 @@ _ZN7RH_RF9517setModemRegistersEPKNS_11ModemConfigE:
 	.type	_ZN7RH_RF9514setModemConfigENS_17ModemConfigChoiceE, %function
 _ZN7RH_RF9514setModemConfigENS_17ModemConfigChoiceE:
 .LFB339:
-	.loc 6 514 1
+	.loc 6 519 1
 	@ args = 0, pretend = 0, frame = 16
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -3395,44 +3405,44 @@ _ZN7RH_RF9514setModemConfigENS_17ModemConfigChoiceE:
 	str	r0, [sp, #4]
 	mov	r3, r1
 	strb	r3, [sp, #3]
-	.loc 6 515 5
+	.loc 6 520 5
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
 	cmp	r3, #6
-	bls	.L182
-	.loc 6 516 16
+	bls	.L183
+	.loc 6 521 16
 	movs	r3, #0
-	b	.L184
-.L182:
-	.loc 6 519 38
+	b	.L185
+.L183:
+	.loc 6 524 38
 	ldrb	r2, [sp, #3]	@ zero_extendqisi2
-	.loc 6 519 18
+	.loc 6 524 18
 	mov	r3, r2
 	lsls	r3, r3, #1
 	add	r3, r3, r2
-	ldr	r2, .L185
+	ldr	r2, .L186
 	adds	r1, r3, r2
-	.loc 6 519 11
+	.loc 6 524 11
 	add	r3, sp, #12
 	movs	r2, #3
 	mov	r0, r3
 	bl	memcpy
-	.loc 6 520 22
+	.loc 6 525 22
 	add	r3, sp, #12
 	mov	r1, r3
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF9517setModemRegistersEPKNS_11ModemConfigE
-	.loc 6 522 12
+	.loc 6 527 12
 	movs	r3, #1
-.L184:
-	.loc 6 523 1 discriminator 1
+.L185:
+	.loc 6 528 1 discriminator 1
 	mov	r0, r3
 	add	sp, sp, #20
 .LCFI74:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L186:
+.L187:
 	.align	2
-.L185:
+.L186:
 	.word	_ZL18MODEM_CONFIG_TABLE
 .LFE339:
 	.size	_ZN7RH_RF9514setModemConfigENS_17ModemConfigChoiceE, .-_ZN7RH_RF9514setModemConfigENS_17ModemConfigChoiceE
@@ -3446,7 +3456,7 @@ _ZN7RH_RF9514setModemConfigENS_17ModemConfigChoiceE:
 	.type	_ZN7RH_RF9517setPreambleLengthEt, %function
 _ZN7RH_RF9517setPreambleLengthEt:
 .LFB340:
-	.loc 6 526 1
+	.loc 6 531 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -3456,24 +3466,24 @@ _ZN7RH_RF9517setPreambleLengthEt:
 	str	r0, [sp, #4]
 	mov	r3, r1
 	strh	r3, [sp, #2]	@ movhi
-	.loc 6 527 43
+	.loc 6 532 43
 	ldrh	r3, [sp, #2]
-	.loc 6 527 49
+	.loc 6 532 49
 	asrs	r3, r3, #8
-	.loc 6 527 13
+	.loc 6 532 13
 	uxtb	r3, r3
 	mov	r2, r3
 	movs	r1, #32
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 528 13
+	.loc 6 533 13
 	ldrh	r3, [sp, #2]	@ movhi
 	uxtb	r3, r3
 	mov	r2, r3
 	movs	r1, #33
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 529 1
+	.loc 6 534 1
 	nop
 	add	sp, sp, #12
 .LCFI77:
@@ -3491,7 +3501,7 @@ _ZN7RH_RF9517setPreambleLengthEt:
 	.type	_ZN7RH_RF9515isChannelActiveEv, %function
 _ZN7RH_RF9515isChannelActiveEv:
 .LFB341:
-	.loc 6 532 1
+	.loc 6 537 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -3499,54 +3509,54 @@ _ZN7RH_RF9515isChannelActiveEv:
 	sub	sp, sp, #12
 .LCFI79:
 	str	r0, [sp, #4]
-	.loc 6 534 9
+	.loc 6 539 9
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 534 15
+	.loc 6 539 15
 	cmp	r3, #5
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
-	.loc 6 534 5
+	.loc 6 539 5
 	cmp	r3, #0
-	beq	.L191
-	.loc 6 536 17
+	beq	.L192
+	.loc 6 541 17
 	movs	r2, #7
 	movs	r1, #1
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 537 17
+	.loc 6 542 17
 	movs	r2, #128
 	movs	r1, #64
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 538 15
+	.loc 6 543 15
 	ldr	r3, [sp, #4]
 	movs	r2, #5
 	strb	r2, [r3, #32]
-.L191:
-	.loc 6 541 12
+.L192:
+	.loc 6 546 12
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 541 18
+	.loc 6 546 18
 	cmp	r3, #5
 	ite	eq
 	moveq	r3, #1
 	movne	r3, #0
 	uxtb	r3, r3
 	cmp	r3, #0
-	beq	.L190
-	.loc 6 541 5
-	b	.L191
-.L190:
-	.loc 6 543 12
+	beq	.L191
+	.loc 6 546 5
+	b	.L192
+.L191:
+	.loc 6 548 12
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #26]
 	uxtb	r3, r3
-	.loc 6 544 1
+	.loc 6 549 1
 	mov	r0, r3
 	add	sp, sp, #12
 .LCFI80:
@@ -3564,7 +3574,7 @@ _ZN7RH_RF9515isChannelActiveEv:
 	.type	_ZN7RH_RF9510enableTCXOEv, %function
 _ZN7RH_RF9510enableTCXOEv:
 .LFB342:
-	.loc 6 547 1
+	.loc 6 552 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -3572,47 +3582,47 @@ _ZN7RH_RF9510enableTCXOEv:
 	sub	sp, sp, #12
 .LCFI82:
 	str	r0, [sp, #4]
-.L195:
-	.loc 6 548 20
+.L196:
+	.loc 6 553 20
 	movs	r1, #75
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
-	.loc 6 548 42
+	.loc 6 553 42
 	and	r3, r3, #16
-	.loc 6 548 72
+	.loc 6 553 72
 	cmp	r3, #16
 	ite	ne
 	movne	r3, #1
 	moveq	r3, #0
 	uxtb	r3, r3
 	cmp	r3, #0
-	beq	.L196
-	.loc 6 550 8
+	beq	.L197
+	.loc 6 555 8
 	ldr	r3, [sp, #4]
 	ldr	r3, [r3]
 	adds	r3, r3, #4
 	ldr	r3, [r3]
-	.loc 6 550 7
+	.loc 6 555 7
 	ldr	r0, [sp, #4]
 	blx	r3
 .LVL6:
-	.loc 6 551 40
+	.loc 6 556 40
 	movs	r1, #75
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
-	.loc 6 551 10
+	.loc 6 556 10
 	orr	r3, r3, #16
 	uxtb	r3, r3
 	mov	r2, r3
 	movs	r1, #75
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF958spiWriteEhh
-	.loc 6 548 5
-	b	.L195
-.L196:
-	.loc 6 553 1
+	.loc 6 553 5
+	b	.L196
+.L197:
+	.loc 6 558 1
 	nop
 	add	sp, sp, #12
 .LCFI83:
@@ -3644,7 +3654,7 @@ _ZN7RH_RF9510enableTCXOEv:
 	.type	_ZN7RH_RF9514frequencyErrorEv, %function
 _ZN7RH_RF9514frequencyErrorEv:
 .LFB343:
-	.loc 6 558 1
+	.loc 6 563 1
 	@ args = 0, pretend = 0, frame = 64
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, lr}
@@ -3652,61 +3662,61 @@ _ZN7RH_RF9514frequencyErrorEv:
 	sub	sp, sp, #68
 .LCFI85:
 	str	r0, [sp, #4]
-	.loc 6 559 13
+	.loc 6 564 13
 	movs	r3, #0
 	str	r3, [sp, #60]
-	.loc 6 565 24
+	.loc 6 570 24
 	movs	r1, #40
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
-	.loc 6 565 15
+	.loc 6 570 15
 	str	r3, [sp, #60]
-	.loc 6 566 15
+	.loc 6 571 15
 	ldr	r3, [sp, #60]
 	lsls	r3, r3, #8
 	str	r3, [sp, #60]
-	.loc 6 567 25
+	.loc 6 572 25
 	movs	r1, #41
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
-	.loc 6 567 15
+	.loc 6 572 15
 	mov	r2, r3
 	ldr	r3, [sp, #60]
 	orrs	r3, r3, r2
 	str	r3, [sp, #60]
-	.loc 6 568 15
+	.loc 6 573 15
 	ldr	r3, [sp, #60]
 	lsls	r3, r3, #8
 	str	r3, [sp, #60]
-	.loc 6 569 25
+	.loc 6 574 25
 	movs	r1, #42
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
-	.loc 6 569 15
+	.loc 6 574 15
 	mov	r2, r3
 	ldr	r3, [sp, #60]
 	orrs	r3, r3, r2
 	str	r3, [sp, #60]
-	.loc 6 571 19
+	.loc 6 576 19
 	ldr	r3, [sp, #60]
 	and	r3, r3, #524288
-	.loc 6 571 5
+	.loc 6 576 5
 	cmp	r3, #0
-	beq	.L198
-	.loc 6 572 12
+	beq	.L199
+	.loc 6 577 12
 	ldr	r3, [sp, #60]
 	mvn	r3, r3, lsl #12
 	mvn	r3, r3, lsr #12
 	str	r3, [sp, #60]
-.L198:
-	.loc 6 574 13
+.L199:
+	.loc 6 579 13
 	movs	r3, #0
 	str	r3, [sp, #56]
-	.loc 6 575 11
-	ldr	r3, .L201+8
+	.loc 6 580 11
+	ldr	r3, .L202+8
 	add	r4, sp, #12
 	mov	r5, r3
 	ldmia	r5!, {r0, r1, r2, r3}
@@ -3715,62 +3725,62 @@ _ZN7RH_RF9514frequencyErrorEv:
 	stmia	r4!, {r0, r1, r2, r3}
 	ldm	r5, {r0, r1}
 	stm	r4, {r0, r1}
-	.loc 6 576 30
+	.loc 6 581 30
 	movs	r1, #29
 	ldr	r0, [sp, #4]
 	bl	_ZN7RH_RF957spiReadEh
 	mov	r3, r0
-	.loc 6 576 61
+	.loc 6 581 61
 	asrs	r3, r3, #4
-	.loc 6 576 64
+	.loc 6 581 64
 	strb	r3, [sp, #55]
-	.loc 6 577 5
+	.loc 6 582 5
 	ldrb	r3, [sp, #55]	@ zero_extendqisi2
 	cmp	r3, #9
-	bhi	.L199
-	.loc 6 578 10
+	bhi	.L200
+	.loc 6 583 10
 	ldr	r3, [sp, #60]
 	vmov	s15, r3	@ int
 	vcvt.f32.s32	s14, s15
-	.loc 6 578 36
+	.loc 6 583 36
 	ldrb	r3, [sp, #55]	@ zero_extendqisi2
-	.loc 6 578 43
+	.loc 6 583 43
 	lsls	r3, r3, #2
 	add	r2, sp, #64
 	add	r3, r3, r2
 	subs	r3, r3, #52
 	vldr.32	s15, [r3]
-	.loc 6 578 27
+	.loc 6 583 27
 	vmul.f32	s15, s14, s15
 	vmov	r0, s15
 	bl	__aeabi_f2d
 .LVL7:
-	.loc 6 578 45
-	adr	r3, .L201
+	.loc 6 583 45
+	adr	r3, .L202
 	ldrd	r2, [r3]
 	bl	__aeabi_dmul
 .LVL8:
 	mov	r2, r0
 	mov	r3, r1
-	.loc 6 578 8
+	.loc 6 583 8
 	mov	r0, r2
 	mov	r1, r3
 	bl	__aeabi_d2iz
 .LVL9:
 	mov	r3, r0
 	str	r3, [sp, #56]
-.L199:
-	.loc 6 581 12
+.L200:
+	.loc 6 586 12
 	ldr	r3, [sp, #56]
-	.loc 6 582 1
+	.loc 6 587 1
 	mov	r0, r3
 	add	sp, sp, #68
 .LCFI86:
 	@ sp needed
 	pop	{r4, r5, pc}
-.L202:
+.L203:
 	.align	3
-.L201:
+.L202:
 	.word	-412316860
 	.word	1062284811
 	.word	.LC0
@@ -3786,17 +3796,17 @@ _ZN7RH_RF9514frequencyErrorEv:
 	.type	_ZN7RH_RF957lastSNREv, %function
 _ZN7RH_RF957lastSNREv:
 .LFB344:
-	.loc 6 585 1
+	.loc 6 590 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI87:
 	str	r0, [sp, #4]
-	.loc 6 586 12
+	.loc 6 591 12
 	ldr	r3, [sp, #4]
 	ldrsh	r3, [r3, #302]
-	.loc 6 587 1
+	.loc 6 592 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI88:
@@ -3814,17 +3824,17 @@ _ZN7RH_RF957lastSNREv:
 	.type	_ZN7RH_RF958lastRssiEv, %function
 _ZN7RH_RF958lastRssiEv:
 .LFB345:
-	.loc 6 590 1
+	.loc 6 595 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI89:
 	str	r0, [sp, #4]
-	.loc 6 591 12
+	.loc 6 596 12
 	ldr	r3, [sp, #4]
 	ldrsh	r3, [r3, #304]
-	.loc 6 592 1
+	.loc 6 597 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI90:
@@ -3842,7 +3852,7 @@ _ZN7RH_RF958lastRssiEv:
 	.type	_ZN7RH_RF957spiReadEh, %function
 _ZN7RH_RF957spiReadEh:
 .LFB346:
-	.loc 6 595 1
+	.loc 6 600 1
 	@ args = 0, pretend = 0, frame = 24
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -3852,17 +3862,17 @@ _ZN7RH_RF957spiReadEh:
 	str	r0, [sp, #12]
 	mov	r3, r1
 	strb	r3, [sp, #11]
-	.loc 6 599 15
+	.loc 6 604 15
 	ldrb	r3, [sp, #11]
 	strb	r3, [sp, #24]
-	.loc 6 600 15
+	.loc 6 605 15
 	movs	r3, #0
 	strb	r3, [sp, #25]
-	.loc 6 601 18
-	ldr	r3, .L212
+	.loc 6 606 18
+	ldr	r3, .L213
 	movs	r2, #0
 	strb	r2, [r3]
-	.loc 6 602 33
+	.loc 6 607 33
 	ldr	r3, [sp, #12]
 	ldr	r0, [r3, #16]
 	add	r3, sp, #20
@@ -3872,16 +3882,16 @@ _ZN7RH_RF957spiReadEh:
 	movs	r2, #2
 	bl	nrf_drv_spi_transfer
 	str	r0, [sp, #28]
-	.loc 6 603 4
+	.loc 6 608 4
 	ldr	r3, [sp, #28]
 	cmp	r3, #0
-	beq	.L208
-	.loc 6 604 14
+	beq	.L209
+	.loc 6 609 14
 	movs	r3, #0
-	b	.L211
-.L208:
-	.loc 6 606 24
-	ldr	r3, .L212
+	b	.L212
+.L209:
+	.loc 6 611 24
+	ldr	r3, .L213
 	ldrb	r3, [r3]
 	uxtb	r3, r3
 	cmp	r3, #0
@@ -3890,22 +3900,22 @@ _ZN7RH_RF957spiReadEh:
 	movne	r3, #0
 	uxtb	r3, r3
 	cmp	r3, #0
-	beq	.L210
-	.loc 6 606 4
-	b	.L208
-.L210:
-	.loc 6 608 20
-	ldrb	r3, [sp, #21]	@ zero_extendqisi2
+	beq	.L211
+	.loc 6 611 4
+	b	.L209
 .L211:
-	.loc 6 609 1 discriminator 1
+	.loc 6 613 20
+	ldrb	r3, [sp, #21]	@ zero_extendqisi2
+.L212:
+	.loc 6 614 1 discriminator 1
 	mov	r0, r3
 	add	sp, sp, #36
 .LCFI93:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L213:
+.L214:
 	.align	2
-.L212:
+.L213:
 	.word	spi_xfer_done
 .LFE346:
 	.size	_ZN7RH_RF957spiReadEh, .-_ZN7RH_RF957spiReadEh
@@ -3919,7 +3929,7 @@ _ZN7RH_RF957spiReadEh:
 	.type	_ZN7RH_RF957reverseEh, %function
 _ZN7RH_RF957reverseEh:
 .LFB347:
-	.loc 6 612 37
+	.loc 6 617 37
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
@@ -3928,62 +3938,62 @@ _ZN7RH_RF957reverseEh:
 	str	r0, [sp, #4]
 	mov	r3, r1
 	strb	r3, [sp, #3]
-	.loc 6 613 19
+	.loc 6 618 19
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
 	lsrs	r3, r3, #4
 	uxtb	r3, r3
 	sxtb	r2, r3
-	.loc 6 613 29
+	.loc 6 618 29
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
-	.loc 6 613 37
+	.loc 6 618 37
 	lsls	r3, r3, #4
-	.loc 6 613 24
+	.loc 6 618 24
 	sxtb	r3, r3
 	orrs	r3, r3, r2
 	sxtb	r3, r3
-	.loc 6 613 6
+	.loc 6 618 6
 	strb	r3, [sp, #3]
-	.loc 6 614 11
+	.loc 6 619 11
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
-	.loc 6 614 19
+	.loc 6 619 19
 	asrs	r3, r3, #2
 	sxtb	r3, r3
 	and	r3, r3, #51
 	sxtb	r2, r3
-	.loc 6 614 29
+	.loc 6 619 29
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
-	.loc 6 614 37
+	.loc 6 619 37
 	lsls	r3, r3, #2
 	sxtb	r3, r3
 	bic	r3, r3, #51
 	sxtb	r3, r3
-	.loc 6 614 24
+	.loc 6 619 24
 	orrs	r3, r3, r2
 	sxtb	r3, r3
-	.loc 6 614 6
+	.loc 6 619 6
 	strb	r3, [sp, #3]
-	.loc 6 615 11
+	.loc 6 620 11
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
-	.loc 6 615 19
+	.loc 6 620 19
 	asrs	r3, r3, #1
 	sxtb	r3, r3
 	and	r3, r3, #85
 	sxtb	r2, r3
-	.loc 6 615 29
+	.loc 6 620 29
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
-	.loc 6 615 37
+	.loc 6 620 37
 	lsls	r3, r3, #1
 	sxtb	r3, r3
 	bic	r3, r3, #85
 	sxtb	r3, r3
-	.loc 6 615 24
+	.loc 6 620 24
 	orrs	r3, r3, r2
 	sxtb	r3, r3
-	.loc 6 615 6
+	.loc 6 620 6
 	strb	r3, [sp, #3]
-	.loc 6 616 11
+	.loc 6 621 11
 	ldrb	r3, [sp, #3]	@ zero_extendqisi2
-	.loc 6 617 1
+	.loc 6 622 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI95:
@@ -4001,7 +4011,7 @@ _ZN7RH_RF957reverseEh:
 	.type	_ZN7RH_RF958spiWriteEhh, %function
 _ZN7RH_RF958spiWriteEhh:
 .LFB348:
-	.loc 6 620 1
+	.loc 6 625 1
 	@ args = 0, pretend = 0, frame = 24
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -4013,20 +4023,20 @@ _ZN7RH_RF958spiWriteEhh:
 	strb	r3, [sp, #11]
 	mov	r3, r2
 	strb	r3, [sp, #10]
-	.loc 6 625 21
+	.loc 6 630 21
 	ldrb	r3, [sp, #11]
 	orn	r3, r3, #127
 	uxtb	r3, r3
-	.loc 6 625 15
+	.loc 6 630 15
 	strb	r3, [sp, #24]
-	.loc 6 626 15
+	.loc 6 631 15
 	ldrb	r3, [sp, #10]
 	strb	r3, [sp, #25]
-	.loc 6 627 18
-	ldr	r3, .L221
+	.loc 6 632 18
+	ldr	r3, .L222
 	movs	r2, #0
 	strb	r2, [r3]
-	.loc 6 628 33
+	.loc 6 633 33
 	ldr	r3, [sp, #12]
 	ldr	r0, [r3, #16]
 	add	r3, sp, #20
@@ -4036,16 +4046,16 @@ _ZN7RH_RF958spiWriteEhh:
 	movs	r2, #2
 	bl	nrf_drv_spi_transfer
 	str	r0, [sp, #28]
-	.loc 6 629 4
+	.loc 6 634 4
 	ldr	r3, [sp, #28]
 	cmp	r3, #0
-	beq	.L217
-	.loc 6 630 14
+	beq	.L218
+	.loc 6 635 14
 	ldr	r3, [sp, #28]
-	b	.L220
-.L217:
-	.loc 6 631 24
-	ldr	r3, .L221
+	b	.L221
+.L218:
+	.loc 6 636 24
+	ldr	r3, .L222
 	ldrb	r3, [r3]
 	uxtb	r3, r3
 	cmp	r3, #0
@@ -4054,22 +4064,22 @@ _ZN7RH_RF958spiWriteEhh:
 	movne	r3, #0
 	uxtb	r3, r3
 	cmp	r3, #0
-	beq	.L219
-	.loc 6 631 4
-	b	.L217
-.L219:
-	.loc 6 632 11
-	ldr	r3, [sp, #28]
+	beq	.L220
+	.loc 6 636 4
+	b	.L218
 .L220:
-	.loc 6 633 1 discriminator 1
+	.loc 6 637 11
+	ldr	r3, [sp, #28]
+.L221:
+	.loc 6 638 1 discriminator 1
 	mov	r0, r3
 	add	sp, sp, #36
 .LCFI98:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L222:
+.L223:
 	.align	2
-.L221:
+.L222:
 	.word	spi_xfer_done
 .LFE348:
 	.size	_ZN7RH_RF958spiWriteEhh, .-_ZN7RH_RF958spiWriteEhh
@@ -4095,7 +4105,7 @@ _ZZN7RH_RF9512spiBurstReadEhPhhE7rx_byte:
 	.type	_ZN7RH_RF9512spiBurstReadEhPhh, %function
 _ZN7RH_RF9512spiBurstReadEhPhh:
 .LFB349:
-	.loc 6 636 1
+	.loc 6 641 1
 	@ args = 0, pretend = 0, frame = 24
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
@@ -4109,38 +4119,38 @@ _ZN7RH_RF9512spiBurstReadEhPhh:
 	strb	r3, [sp, #19]
 	mov	r3, r2
 	strb	r3, [sp, #18]
-	.loc 6 640 15
-	ldr	r2, .L227
+	.loc 6 645 15
+	ldr	r2, .L228
 	ldrb	r3, [sp, #19]
 	strb	r3, [r2]
-	.loc 6 641 18
-	ldr	r3, .L227+4
+	.loc 6 646 18
+	ldr	r3, .L228+4
 	movs	r2, #0
 	strb	r2, [r3]
-	.loc 6 642 4
+	.loc 6 647 4
 	ldrb	r3, [sp, #18]
 	adds	r3, r3, #1
 	strb	r3, [sp, #18]
-	.loc 6 643 33
+	.loc 6 648 33
 	ldr	r3, [sp, #20]
 	ldr	r0, [r3, #16]
 	ldrb	r2, [sp, #18]	@ zero_extendqisi2
 	ldrb	r3, [sp, #18]	@ zero_extendqisi2
 	str	r3, [sp]
-	ldr	r3, .L227+8
-	ldr	r1, .L227
+	ldr	r3, .L228+8
+	ldr	r1, .L228
 	bl	nrf_drv_spi_transfer
 	str	r0, [sp, #28]
-	.loc 6 644 4
+	.loc 6 649 4
 	ldr	r3, [sp, #28]
 	cmp	r3, #0
-	beq	.L224
-	.loc 6 645 14
+	beq	.L225
+	.loc 6 650 14
 	movs	r3, #0
-	b	.L225
-.L224:
-	.loc 6 646 24
-	ldr	r3, .L227+4
+	b	.L226
+.L225:
+	.loc 6 651 24
+	ldr	r3, .L228+4
 	ldrb	r3, [r3]
 	uxtb	r3, r3
 	cmp	r3, #0
@@ -4149,28 +4159,28 @@ _ZN7RH_RF9512spiBurstReadEhPhh:
 	movne	r3, #0
 	uxtb	r3, r3
 	cmp	r3, #0
-	beq	.L226
-	.loc 6 646 4
-	b	.L224
-.L226:
-	.loc 6 647 10
+	beq	.L227
+	.loc 6 651 4
+	b	.L225
+.L227:
+	.loc 6 652 10
 	ldrb	r3, [sp, #18]	@ zero_extendqisi2
 	mov	r2, r3
-	ldr	r1, .L227+12
+	ldr	r1, .L228+12
 	ldr	r0, [sp, #12]
 	bl	memcpy
-	.loc 6 649 11
+	.loc 6 654 11
 	ldrb	r3, [sp, #18]	@ zero_extendqisi2
-.L225:
-	.loc 6 650 1
+.L226:
+	.loc 6 655 1
 	mov	r0, r3
 	add	sp, sp, #36
 .LCFI101:
 	@ sp needed
 	ldr	pc, [sp], #4
-.L228:
+.L229:
 	.align	2
-.L227:
+.L228:
 	.word	_ZZN7RH_RF9512spiBurstReadEhPhhE7tx_byte
 	.word	spi_xfer_done
 	.word	_ZZN7RH_RF9512spiBurstReadEhPhhE7rx_byte
@@ -4187,7 +4197,7 @@ _ZN7RH_RF9512spiBurstReadEhPhh:
 	.type	_ZN7RH_RF9513spiBurstWriteEhPKhh, %function
 _ZN7RH_RF9513spiBurstWriteEhPKhh:
 .LFB350:
-	.loc 6 653 1
+	.loc 6 658 1
 	@ args = 0, pretend = 0, frame = 536
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, lr}
@@ -4206,15 +4216,15 @@ _ZN7RH_RF9513spiBurstWriteEhPKhh:
 	add	r3, sp, #18
 	mov	r2, r1
 	strb	r2, [r3]
-	.loc 6 657 20
+	.loc 6 662 20
 	add	r3, sp, #19
 	ldrb	r3, [r3]
 	orn	r3, r3, #127
 	uxtb	r2, r3
-	.loc 6 657 14
+	.loc 6 662 14
 	add	r3, sp, #284
 	strb	r2, [r3]
-	.loc 6 658 9
+	.loc 6 663 9
 	add	r3, sp, #18
 	ldrb	r1, [r3]	@ zero_extendqisi2
 	add	r3, sp, #12
@@ -4223,11 +4233,11 @@ _ZN7RH_RF9513spiBurstWriteEhPKhh:
 	mov	r2, r1
 	ldr	r1, [r3]
 	bl	memcpy
-	.loc 6 659 17
-	ldr	r3, .L234
+	.loc 6 664 17
+	ldr	r3, .L235
 	movs	r2, #0
 	strb	r2, [r3]
-	.loc 6 660 32
+	.loc 6 665 32
 	add	r3, sp, #20
 	ldr	r3, [r3]
 	ldr	r0, [r3, #16]
@@ -4245,16 +4255,16 @@ _ZN7RH_RF9513spiBurstWriteEhPKhh:
 	mov	r3, r4
 	bl	nrf_drv_spi_transfer
 	str	r0, [sp, #540]
-	.loc 6 661 3
+	.loc 6 666 3
 	ldr	r3, [sp, #540]
 	cmp	r3, #0
-	beq	.L230
-	.loc 6 662 12
+	beq	.L231
+	.loc 6 667 12
 	movs	r3, #0
-	b	.L233
-.L230:
-	.loc 6 664 23
-	ldr	r3, .L234
+	b	.L234
+.L231:
+	.loc 6 669 23
+	ldr	r3, .L235
 	ldrb	r3, [r3]
 	uxtb	r3, r3
 	cmp	r3, #0
@@ -4263,23 +4273,23 @@ _ZN7RH_RF9513spiBurstWriteEhPKhh:
 	movne	r3, #0
 	uxtb	r3, r3
 	cmp	r3, #0
-	beq	.L232
-	.loc 6 664 3
-	b	.L230
-.L232:
-	.loc 6 665 10
+	beq	.L233
+	.loc 6 669 3
+	b	.L231
+.L233:
+	.loc 6 670 10
 	add	r3, sp, #18
 	ldrb	r3, [r3]	@ zero_extendqisi2
-.L233:
-	.loc 6 666 1 discriminator 1
+.L234:
+	.loc 6 671 1 discriminator 1
 	mov	r0, r3
 	add	sp, sp, #544
 .LCFI104:
 	@ sp needed
 	pop	{r4, pc}
-.L235:
+.L236:
 	.align	2
-.L234:
+.L235:
 	.word	spi_xfer_done
 .LFE350:
 	.size	_ZN7RH_RF9513spiBurstWriteEhPKhh, .-_ZN7RH_RF9513spiBurstWriteEhPKhh
@@ -4293,18 +4303,18 @@ _ZN7RH_RF9513spiBurstWriteEhPKhh:
 	.type	_ZN7RH_RF954modeEv, %function
 _ZN7RH_RF954modeEv:
 .LFB351:
-	.loc 6 669 1
+	.loc 6 674 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI105:
 	str	r0, [sp, #4]
-	.loc 6 670 12
+	.loc 6 675 12
 	ldr	r3, [sp, #4]
 	ldrb	r3, [r3, #32]
 	uxtb	r3, r3
-	.loc 6 671 1
+	.loc 6 676 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI106:
@@ -4322,7 +4332,7 @@ _ZN7RH_RF954modeEv:
 	.type	_ZN7RH_RF957setModeENS_6RHModeE, %function
 _ZN7RH_RF957setModeENS_6RHModeE:
 .LFB352:
-	.loc 6 674 1
+	.loc 6 679 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
@@ -4331,11 +4341,11 @@ _ZN7RH_RF957setModeENS_6RHModeE:
 	str	r0, [sp, #4]
 	mov	r3, r1
 	strb	r3, [sp, #3]
-	.loc 6 675 11
+	.loc 6 680 11
 	ldr	r3, [sp, #4]
 	ldrb	r2, [sp, #3]
 	strb	r2, [r3, #32]
-	.loc 6 676 1
+	.loc 6 681 1
 	nop
 	add	sp, sp, #8
 .LCFI108:
@@ -4353,18 +4363,18 @@ _ZN7RH_RF957setModeENS_6RHModeE:
 	.type	_ZN7RH_RF955rxBadEv, %function
 _ZN7RH_RF955rxBadEv:
 .LFB353:
-	.loc 6 679 1
+	.loc 6 684 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI109:
 	str	r0, [sp, #4]
-	.loc 6 680 12
+	.loc 6 685 12
 	ldr	r3, [sp, #4]
 	ldrh	r3, [r3, #20]	@ movhi
 	uxth	r3, r3
-	.loc 6 681 1
+	.loc 6 686 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI110:
@@ -4382,18 +4392,18 @@ _ZN7RH_RF955rxBadEv:
 	.type	_ZN7RH_RF956rxGoodEv, %function
 _ZN7RH_RF956rxGoodEv:
 .LFB354:
-	.loc 6 684 1
+	.loc 6 689 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI111:
 	str	r0, [sp, #4]
-	.loc 6 685 12
+	.loc 6 690 12
 	ldr	r3, [sp, #4]
 	ldrh	r3, [r3, #22]	@ movhi
 	uxth	r3, r3
-	.loc 6 686 1
+	.loc 6 691 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI112:
@@ -4411,18 +4421,18 @@ _ZN7RH_RF956rxGoodEv:
 	.type	_ZN7RH_RF956txGoodEv, %function
 _ZN7RH_RF956txGoodEv:
 .LFB355:
-	.loc 6 689 1
+	.loc 6 694 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	sub	sp, sp, #8
 .LCFI113:
 	str	r0, [sp, #4]
-	.loc 6 690 12
+	.loc 6 695 12
 	ldr	r3, [sp, #4]
 	ldrh	r3, [r3, #24]	@ movhi
 	uxth	r3, r3
-	.loc 6 691 1
+	.loc 6 696 1
 	mov	r0, r3
 	add	sp, sp, #8
 .LCFI114:
@@ -4440,7 +4450,7 @@ _ZN7RH_RF956txGoodEv:
 	.type	_ZN7RH_RF9513setCADTimeoutEm, %function
 _ZN7RH_RF9513setCADTimeoutEm:
 .LFB356:
-	.loc 6 694 1
+	.loc 6 699 1
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
@@ -4448,11 +4458,11 @@ _ZN7RH_RF9513setCADTimeoutEm:
 .LCFI115:
 	str	r0, [sp, #4]
 	str	r1, [sp]
-	.loc 6 695 18
+	.loc 6 700 18
 	ldr	r3, [sp, #4]
 	ldr	r2, [sp]
 	str	r2, [r3, #28]
-	.loc 6 696 1
+	.loc 6 701 1
 	nop
 	add	sp, sp, #8
 .LCFI116:
@@ -8756,7 +8766,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12550
 	.byte	0x6
-	.2byte	0x252
+	.2byte	0x257
 	.byte	0x9
 	.4byte	.LASF12552
 	.4byte	0x3c
@@ -8771,7 +8781,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12551
 	.byte	0x6
-	.2byte	0x26b
+	.2byte	0x270
 	.byte	0xa
 	.4byte	.LASF12553
 	.4byte	0xa6
@@ -8788,7 +8798,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12554
 	.byte	0x6
-	.2byte	0x27b
+	.2byte	0x280
 	.byte	0x9
 	.4byte	.LASF12555
 	.4byte	0x3c
@@ -8807,7 +8817,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12556
 	.byte	0x6
-	.2byte	0x28c
+	.2byte	0x291
 	.byte	0x9
 	.4byte	.LASF12557
 	.4byte	0x3c
@@ -8845,7 +8855,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12561
 	.byte	0x6
-	.2byte	0x178
+	.2byte	0x17d
 	.byte	0x6
 	.4byte	.LASF12562
 	.4byte	0x147a
@@ -8858,7 +8868,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12573
 	.byte	0x6
-	.2byte	0x1f5
+	.2byte	0x1fa
 	.byte	0x6
 	.4byte	.LASF12575
 	.byte	0x1
@@ -8879,7 +8889,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12563
 	.byte	0x6
-	.2byte	0x201
+	.2byte	0x206
 	.byte	0x6
 	.4byte	.LASF12564
 	.4byte	0x147a
@@ -8901,7 +8911,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12567
 	.byte	0x6
-	.2byte	0x116
+	.2byte	0x11b
 	.byte	0x6
 	.4byte	.LASF12568
 	.4byte	0x147a
@@ -8914,7 +8924,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12569
 	.byte	0x6
-	.2byte	0x127
+	.2byte	0x12c
 	.byte	0x6
 	.4byte	.LASF12570
 	.4byte	0x147a
@@ -8931,7 +8941,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12571
 	.byte	0x6
-	.2byte	0x160
+	.2byte	0x165
 	.byte	0x6
 	.4byte	.LASF12572
 	.4byte	0x147a
@@ -8948,7 +8958,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12574
 	.byte	0x6
-	.2byte	0x20d
+	.2byte	0x212
 	.byte	0x6
 	.4byte	.LASF12576
 	.byte	0x1
@@ -8962,7 +8972,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x32
 	.4byte	.LASF12587
 	.byte	0x6
-	.2byte	0x188
+	.2byte	0x18d
 	.byte	0x9
 	.4byte	.LASF12589
 	.4byte	0x3c
@@ -8980,7 +8990,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12577
 	.byte	0x6
-	.2byte	0x18d
+	.2byte	0x192
 	.byte	0x6
 	.4byte	.LASF12578
 	.4byte	0x147a
@@ -8995,7 +9005,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12579
 	.byte	0x6
-	.2byte	0x19d
+	.2byte	0x1a2
 	.byte	0x6
 	.4byte	.LASF12580
 	.byte	0x1
@@ -9007,7 +9017,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12581
 	.byte	0x6
-	.2byte	0x1b1
+	.2byte	0x1b6
 	.byte	0x6
 	.4byte	.LASF12582
 	.byte	0x1
@@ -9019,7 +9029,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12583
 	.byte	0x6
-	.2byte	0x1bd
+	.2byte	0x1c2
 	.byte	0x6
 	.4byte	.LASF12584
 	.byte	0x1
@@ -9031,7 +9041,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12585
 	.byte	0x6
-	.2byte	0x1c9
+	.2byte	0x1ce
 	.byte	0x6
 	.4byte	.LASF12586
 	.byte	0x1
@@ -9047,7 +9057,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x32
 	.4byte	.LASF12588
 	.byte	0x6
-	.2byte	0x1a7
+	.2byte	0x1ac
 	.byte	0x6
 	.4byte	.LASF12590
 	.4byte	0x147a
@@ -9065,7 +9075,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x32
 	.4byte	.LASF12591
 	.byte	0x6
-	.2byte	0x213
+	.2byte	0x218
 	.byte	0x6
 	.4byte	.LASF12592
 	.4byte	0x147a
@@ -9083,7 +9093,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12593
 	.byte	0x6
-	.2byte	0x222
+	.2byte	0x227
 	.byte	0x6
 	.4byte	.LASF12594
 	.byte	0x1
@@ -9095,7 +9105,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12595
 	.byte	0x6
-	.2byte	0x22d
+	.2byte	0x232
 	.byte	0x9
 	.4byte	.LASF12596
 	.4byte	0x8e
@@ -9108,7 +9118,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12597
 	.byte	0x6
-	.2byte	0x248
+	.2byte	0x24d
 	.byte	0x9
 	.4byte	.LASF12598
 	.4byte	0x5e
@@ -9121,7 +9131,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12599
 	.byte	0x6
-	.2byte	0x24d
+	.2byte	0x252
 	.byte	0x9
 	.4byte	.LASF12600
 	.4byte	0x5e
@@ -9134,7 +9144,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12601
 	.byte	0x6
-	.2byte	0x143
+	.2byte	0x148
 	.byte	0x6
 	.4byte	.LASF12602
 	.4byte	0x147a
@@ -9147,7 +9157,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12603
 	.byte	0x6
-	.2byte	0x14a
+	.2byte	0x14f
 	.byte	0x6
 	.4byte	.LASF12604
 	.4byte	0x147a
@@ -9160,7 +9170,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12605
 	.byte	0x6
-	.2byte	0x152
+	.2byte	0x157
 	.byte	0x6
 	.4byte	.LASF12606
 	.4byte	0x147a
@@ -9173,7 +9183,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12607
 	.byte	0x6
-	.2byte	0x29c
+	.2byte	0x2a1
 	.byte	0x9
 	.4byte	.LASF12608
 	.4byte	0x3c
@@ -9186,7 +9196,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12609
 	.byte	0x6
-	.2byte	0x2a1
+	.2byte	0x2a6
 	.byte	0x6
 	.4byte	.LASF12610
 	.byte	0x1
@@ -9209,7 +9219,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12612
 	.byte	0x6
-	.2byte	0x2a6
+	.2byte	0x2ab
 	.byte	0xa
 	.4byte	.LASF12613
 	.4byte	0x71
@@ -9222,7 +9232,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12614
 	.byte	0x6
-	.2byte	0x2ab
+	.2byte	0x2b0
 	.byte	0xa
 	.4byte	.LASF12615
 	.4byte	0x71
@@ -9235,7 +9245,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12616
 	.byte	0x6
-	.2byte	0x2b0
+	.2byte	0x2b5
 	.byte	0xa
 	.4byte	.LASF12617
 	.4byte	0x71
@@ -9248,7 +9258,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12618
 	.byte	0x6
-	.2byte	0x2b5
+	.2byte	0x2ba
 	.byte	0x6
 	.4byte	.LASF12619
 	.byte	0x1
@@ -9342,7 +9352,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x34
 	.4byte	.LASF12630
 	.byte	0x6
-	.byte	0xb3
+	.byte	0xb8
 	.byte	0x6
 	.4byte	.LASF12791
 	.byte	0x1
@@ -9375,7 +9385,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x2f
 	.4byte	.LASF12634
 	.byte	0x6
-	.2byte	0x264
+	.2byte	0x269
 	.byte	0x9
 	.4byte	.LASF12635
 	.4byte	0x3c
@@ -9416,7 +9426,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12640
 	.byte	0x6
-	.2byte	0x102
+	.2byte	0x107
 	.byte	0x6
 	.4byte	.LASF12641
 	.byte	0x2
@@ -9428,7 +9438,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x30
 	.4byte	.LASF12642
 	.byte	0x6
-	.2byte	0x121
+	.2byte	0x126
 	.byte	0x6
 	.4byte	.LASF12643
 	.byte	0x2
@@ -9634,7 +9644,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12661
 	.byte	0x6
-	.2byte	0x2b5
+	.2byte	0x2ba
 	.byte	0x2b
 	.4byte	0x1f88
 	.uleb128 0x2
@@ -9703,7 +9713,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12607
 	.byte	0x6
-	.2byte	0x2a1
+	.2byte	0x2a6
 	.byte	0x1e
 	.4byte	0x1c29
 	.uleb128 0x2
@@ -9742,7 +9752,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"reg\000"
 	.byte	0x6
-	.2byte	0x28c
+	.2byte	0x291
 	.byte	0x28
 	.4byte	0x3c
 	.uleb128 0x3
@@ -9751,7 +9761,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"src\000"
 	.byte	0x6
-	.2byte	0x28c
+	.2byte	0x291
 	.byte	0x3c
 	.4byte	0x13ba
 	.uleb128 0x3
@@ -9760,7 +9770,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"len\000"
 	.byte	0x6
-	.2byte	0x28c
+	.2byte	0x291
 	.byte	0x49
 	.4byte	0x3c
 	.uleb128 0x3
@@ -9769,7 +9779,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12663
 	.byte	0x6
-	.2byte	0x28e
+	.2byte	0x293
 	.byte	0xc
 	.4byte	0xa6
 	.uleb128 0x2
@@ -9778,7 +9788,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12664
 	.byte	0x6
-	.2byte	0x28f
+	.2byte	0x294
 	.byte	0xb
 	.4byte	0x1f95
 	.uleb128 0x3
@@ -9787,7 +9797,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12665
 	.byte	0x6
-	.2byte	0x28f
+	.2byte	0x294
 	.byte	0x19
 	.4byte	0x1f95
 	.uleb128 0x3
@@ -9811,7 +9821,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"reg\000"
 	.byte	0x6
-	.2byte	0x27b
+	.2byte	0x280
 	.byte	0x27
 	.4byte	0x3c
 	.uleb128 0x2
@@ -9820,7 +9830,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12666
 	.byte	0x6
-	.2byte	0x27b
+	.2byte	0x280
 	.byte	0x35
 	.4byte	0xf65
 	.uleb128 0x2
@@ -9829,7 +9839,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"len\000"
 	.byte	0x6
-	.2byte	0x27b
+	.2byte	0x280
 	.byte	0x43
 	.4byte	0x3c
 	.uleb128 0x2
@@ -9838,7 +9848,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12663
 	.byte	0x6
-	.2byte	0x27d
+	.2byte	0x282
 	.byte	0xd
 	.4byte	0xa6
 	.uleb128 0x2
@@ -9847,7 +9857,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12664
 	.byte	0x6
-	.2byte	0x27e
+	.2byte	0x283
 	.byte	0x13
 	.4byte	0x1f95
 	.uleb128 0x5
@@ -9856,7 +9866,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12665
 	.byte	0x6
-	.2byte	0x27e
+	.2byte	0x283
 	.byte	0x21
 	.4byte	0x1f95
 	.uleb128 0x5
@@ -9880,7 +9890,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"reg\000"
 	.byte	0x6
-	.2byte	0x26b
+	.2byte	0x270
 	.byte	0x24
 	.4byte	0x3c
 	.uleb128 0x2
@@ -9889,7 +9899,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"val\000"
 	.byte	0x6
-	.2byte	0x26b
+	.2byte	0x270
 	.byte	0x31
 	.4byte	0x3c
 	.uleb128 0x2
@@ -9898,7 +9908,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12663
 	.byte	0x6
-	.2byte	0x26e
+	.2byte	0x273
 	.byte	0xd
 	.4byte	0xa6
 	.uleb128 0x2
@@ -9907,7 +9917,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12664
 	.byte	0x6
-	.2byte	0x26f
+	.2byte	0x274
 	.byte	0xc
 	.4byte	0xf55
 	.uleb128 0x2
@@ -9916,7 +9926,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12665
 	.byte	0x6
-	.2byte	0x26f
+	.2byte	0x274
 	.byte	0x18
 	.4byte	0xf55
 	.uleb128 0x2
@@ -9940,7 +9950,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"b\000"
 	.byte	0x6
-	.2byte	0x264
+	.2byte	0x269
 	.byte	0x22
 	.4byte	0x3c
 	.uleb128 0x2
@@ -9964,7 +9974,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"reg\000"
 	.byte	0x6
-	.2byte	0x252
+	.2byte	0x257
 	.byte	0x22
 	.4byte	0x3c
 	.uleb128 0x2
@@ -9973,7 +9983,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12663
 	.byte	0x6
-	.2byte	0x254
+	.2byte	0x259
 	.byte	0xd
 	.4byte	0xa6
 	.uleb128 0x2
@@ -9982,7 +9992,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12664
 	.byte	0x6
-	.2byte	0x255
+	.2byte	0x25a
 	.byte	0xc
 	.4byte	0xf55
 	.uleb128 0x2
@@ -9991,7 +10001,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12665
 	.byte	0x6
-	.2byte	0x255
+	.2byte	0x25a
 	.byte	0x18
 	.4byte	0xf55
 	.uleb128 0x2
@@ -10045,7 +10055,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12667
 	.byte	0x6
-	.2byte	0x22f
+	.2byte	0x234
 	.byte	0xd
 	.4byte	0x8e
 	.uleb128 0x2
@@ -10054,7 +10064,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12668
 	.byte	0x6
-	.2byte	0x23e
+	.2byte	0x243
 	.byte	0xd
 	.4byte	0x8e
 	.uleb128 0x2
@@ -10063,7 +10073,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12669
 	.byte	0x6
-	.2byte	0x23f
+	.2byte	0x244
 	.byte	0xb
 	.4byte	0x2369
 	.uleb128 0x3
@@ -10072,7 +10082,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3f
 	.4byte	.LASF12670
 	.byte	0x6
-	.2byte	0x240
+	.2byte	0x245
 	.byte	0xd
 	.4byte	0x3c
 	.uleb128 0x2
@@ -10133,7 +10143,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12671
 	.byte	0x6
-	.2byte	0x20d
+	.2byte	0x212
 	.byte	0x2a
 	.4byte	0x71
 	.uleb128 0x2
@@ -10157,7 +10167,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12672
 	.byte	0x6
-	.2byte	0x201
+	.2byte	0x206
 	.byte	0x30
 	.4byte	0x1952
 	.uleb128 0x2
@@ -10166,7 +10176,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x40
 	.ascii	"cfg\000"
 	.byte	0x6
-	.2byte	0x206
+	.2byte	0x20b
 	.byte	0x11
 	.4byte	0x191f
 	.uleb128 0x2
@@ -10190,7 +10200,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12673
 	.byte	0x6
-	.2byte	0x1f5
+	.2byte	0x1fa
 	.byte	0x34
 	.4byte	0x1f7b
 	.uleb128 0x2
@@ -10214,7 +10224,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12674
 	.byte	0x6
-	.2byte	0x1c9
+	.2byte	0x1ce
 	.byte	0x21
 	.4byte	0x29
 	.uleb128 0x2
@@ -10223,7 +10233,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12675
 	.byte	0x6
-	.2byte	0x1c9
+	.2byte	0x1ce
 	.byte	0x2d
 	.4byte	0x147a
 	.uleb128 0x2
@@ -10247,7 +10257,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x41
 	.4byte	.LASF12677
 	.byte	0x6
-	.2byte	0x1bf
+	.2byte	0x1c4
 	.byte	0xd
 	.4byte	0x3c
 	.byte	0
@@ -10313,7 +10323,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12676
 	.byte	0x6
-	.2byte	0x18d
+	.2byte	0x192
 	.byte	0x22
 	.4byte	0x1f81
 	.uleb128 0x2
@@ -10322,7 +10332,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x40
 	.ascii	"frf\000"
 	.byte	0x6
-	.2byte	0x190
+	.2byte	0x195
 	.byte	0xe
 	.4byte	0xa6
 	.uleb128 0x2
@@ -10376,7 +10386,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3c
 	.4byte	.LASF12265
 	.byte	0x6
-	.2byte	0x160
+	.2byte	0x165
 	.byte	0x23
 	.4byte	0x13ba
 	.uleb128 0x2
@@ -10385,7 +10395,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"len\000"
 	.byte	0x6
-	.2byte	0x160
+	.2byte	0x165
 	.byte	0x31
 	.4byte	0x3c
 	.uleb128 0x2
@@ -10454,7 +10464,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"buf\000"
 	.byte	0x6
-	.2byte	0x127
+	.2byte	0x12c
 	.byte	0x1d
 	.4byte	0xf65
 	.uleb128 0x2
@@ -10463,7 +10473,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x3e
 	.ascii	"len\000"
 	.byte	0x6
-	.2byte	0x127
+	.2byte	0x12c
 	.byte	0x2b
 	.4byte	0xf65
 	.uleb128 0x2
@@ -10472,7 +10482,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x42
 	.ascii	"i\000"
 	.byte	0x6
-	.2byte	0x12b
+	.2byte	0x130
 	.byte	0xe
 	.4byte	0x71
 	.byte	0
@@ -10508,7 +10518,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x41
 	.4byte	.LASF12607
 	.byte	0x6
-	.2byte	0x118
+	.2byte	0x11d
 	.byte	0xd
 	.4byte	0x3c
 	.byte	0
@@ -10544,13 +10554,13 @@ _ZTV7RH_RF95:
 	.uleb128 0x43
 	.ascii	"i\000"
 	.byte	0x6
-	.byte	0xb6
+	.byte	0xbb
 	.byte	0xd
 	.4byte	0x3c
 	.uleb128 0x35
 	.4byte	.LASF12678
 	.byte	0x6
-	.byte	0xb8
+	.byte	0xbd
 	.byte	0xd
 	.4byte	0x3c
 	.uleb128 0x2
@@ -10559,7 +10569,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x35
 	.4byte	.LASF12679
 	.byte	0x6
-	.byte	0xbb
+	.byte	0xc0
 	.byte	0xd
 	.4byte	0x3c
 	.uleb128 0x2
@@ -10571,7 +10581,7 @@ _ZTV7RH_RF95:
 	.uleb128 0x45
 	.ascii	"len\000"
 	.byte	0x6
-	.byte	0xc8
+	.byte	0xcd
 	.byte	0xa
 	.4byte	0x3c
 	.uleb128 0x2
@@ -14031,7 +14041,7 @@ _ZTV7RH_RF95:
 	.byte	0x5
 	.uleb128 0x2a
 	.4byte	.LASF504
-	.file 26 "C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h"
+	.file 26 "C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade/sdk_config.h"
 	.byte	0x3
 	.uleb128 0x2d
 	.uleb128 0x1a
@@ -14496,7 +14506,7 @@ _ZTV7RH_RF95:
 	.4byte	.Ldebug_macro54
 	.byte	0x4
 	.byte	0x5
-	.uleb128 0x101
+	.uleb128 0x106
 	.4byte	.LASF12201
 	.byte	0x4
 	.byte	0
@@ -74736,9 +74746,6 @@ _ZTV7RH_RF95:
 	.ascii	"I2S_PSEL_SDOUT_CONNECT_Pos (31UL)\000"
 .LASF6235:
 	.ascii	"GPIO_DIRCLR_PIN18_Input (0UL)\000"
-.LASF12789:
-	.ascii	"C:\\Users\\Purvesh\\Documents\\GitHub\\TrackFW_FCC\\"
-	.ascii	"fcc_jade_1\000"
 .LASF6497:
 	.ascii	"PDM_INTEN_STARTED_Msk (0x1UL << PDM_INTEN_STARTED_P"
 	.ascii	"os)\000"
@@ -78985,6 +78992,9 @@ _ZTV7RH_RF95:
 	.ascii	"PPI_CHG1_CH14_Msk PPI_CHG_CH14_Msk\000"
 .LASF6923:
 	.ascii	"PPI_CHENSET_CH23_Enabled (1UL)\000"
+.LASF12789:
+	.ascii	"C:\\Users\\Purvesh\\Documents\\GitHub\\TrackFW_FCC\\"
+	.ascii	"fcc_jade\000"
 .LASF3737:
 	.ascii	"GPIOTE_INTENCLR_IN3_Clear (1UL)\000"
 .LASF8707:

@@ -115,7 +115,7 @@ bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin, uint8_t bw_select)
     //Idle mode is standby, not sleep
     setModeIdle();
 
-    if(bw_select == 1)
+    if(bw_select == 3)
     {
         setModemConfig(Bw500Cr45Sf128); // Radio default
     }
@@ -123,9 +123,14 @@ bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin, uint8_t bw_select)
     {
         setModemConfig(Bw250Cr45Sf128); // Radio default
     }
-    else if(bw_select == 3)
+    else if(bw_select == 1)
     {
         setModemConfig(Bw125Cr45Sf128); // Radio default
+    }
+
+    else if(bw_select == 0)
+    {
+        setModemConfig(Bw500Cr45Sf128); // Radio default
     }
 
     // Set up default configuration

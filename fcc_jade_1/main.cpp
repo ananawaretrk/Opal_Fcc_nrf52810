@@ -138,7 +138,7 @@ long output_max = 20;
 int8_t loratxlevel = 0;
 //float lorafrequency = 915.0f;
 int lorafrequency = 915;
-uint8_t bw_selection = 1; // 1=500Khz, 2=250Khz, 3=125Khz
+uint8_t bw_selection = 2; // 3=500Khz, 2=250Khz, 1=125Khz, 0=500Khz
 
 
 #define UD_SER
@@ -1661,6 +1661,7 @@ void setConfig(int setTime)
     loratxlevel = (int8_t)power_map(txlevel, input_min, input_max, output_min, output_max);
     //lorafrequency = 900 + channel;
     lorafrequency = channel;
+    bw_selection = lora_frequency_bandwidth;
     
     printf("OTA: %d\n",           OTA);
     printf("advTime: %d\n",       advTime);
@@ -2137,7 +2138,7 @@ sm_state soc_init()
     init_timer();
     init_timer2();
 
-    ble_adv_stack_init();
+    //ble_adv_stack_init();
 
     return STATE_BOARD_INIT;
 }
@@ -2146,11 +2147,11 @@ sm_state board_init()
 {
     init_spi_for_lora();
 
-    //return STATE_GATT_SERVER;
+    return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
     //return STATE_LORA_RANDOM_FREQUENCY_HOPPING;
-    return STATE_LORA_FIXED_FREQUENCY_HOPPING;
+    //return STATE_LORA_FIXED_FREQUENCY_HOPPING;
 }
 
 sm_state start_gatt_server()
