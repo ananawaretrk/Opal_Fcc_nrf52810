@@ -76,7 +76,9 @@
       <file file_name="../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/ses_startup_nrf52.s" />
     </folder>
     <folder Name="Board Definition">
-      <file file_name="../3rd_party/nRF5_SDK_16/components/boards/boards.c" />
+      <file file_name="../3rd_party/nRF5_SDK_16/components/boards/boards.c">
+        <configuration Name="Debug" build_exclude_from_build="No" />
+      </file>
     </folder>
     <folder Name="nRF_Drivers">
       <file file_name="../3rd_party/nRF5_SDK_16/integration/nrfx/legacy/nrf_drv_clock.c" />

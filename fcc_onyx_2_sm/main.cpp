@@ -54,6 +54,9 @@
 #include "TCA9535.h"
 #include "LIS3DH.h"
 
+//#define ONYX_2
+#define RIM_1_2
+
 // States
 typedef enum {
   STATE_SOC_INIT,
@@ -106,7 +109,7 @@ bool acc_flag = false;
 volatile int sustain_count = 0; 
 
 // HALL effect
-#define HALL_INT 17
+
 APP_TIMER_DEF(timer_id_8); 
 volatile bool hallTimer = false;
 volatile uint8_t hallCounter = 0;
@@ -125,11 +128,38 @@ uint8_t hallState = 0;
 #define DBG_RESET   "\x1b[0m"
 //#define test_print
 
-// Murata pins Sensor defines
+#ifdef ONYX_2
+// For Onyx 2.8
+#define CELL_ENABLE_PIN_O        29
+#define CELL_TX                  15
+#define CELL_RX                  16
+#define GPS_BK_EN                13
+#define SENSOR_EN                 3
+#define LIS3_INT                  2 // lis3dh Interrupt pin
 #define MBN_INT                  20 // TCA EXP interrupt
 #define I2C_SCL                  7 // Onyx i2c scl 7
 #define I2C_SDA                  8 // Onyx i2c scl 8
 #define I2C_PRIORITY             2
+#define HALL_INT 17
+#endif // ONYX_2
+
+#ifdef RIM_1_2
+// For Rim V1.2.X
+#define CELL_ENABLE_PIN_O        29
+#define CELL_TX                  15
+#define CELL_RX                  16
+#define OPAL_LED_PIN             17
+
+#define I2C_SCL                  25   // Not used
+#define I2C_SDA                  26   // Not used
+#define I2C_PRIORITY             2    // Not used
+#define HALL_INT                 8    // Not used
+#define GPS_BK_EN                16   // Not used
+#define SENSOR_EN                3    // Not used
+#define LIS3_INT                 24   // Not used
+#define MBN_INT                  20   // Not used
+#endif // RIM_1_2
+
 I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
 TwoWire Wire(i2c_wrapper.GetI2CInstance());
 void print_temperature_sensor_data(void);
@@ -141,13 +171,7 @@ static nbiot nbiot_instance;
 //#define CELL_RX                  NRF_GPIO_PIN_MAP(0, 27)
 
 
-// For Onyx 2.8
-#define CELL_ENABLE_PIN_O        29
-#define CELL_TX                  15
-#define CELL_RX                  16
-#define GPS_BK_EN                13
-#define SENSOR_EN                 3
-#define LIS3_INT                  2 // lis3dh Interrupt pin
+
 volatile int cell_timer_flag           = 0;
 
 // tca
@@ -2364,6 +2388,14 @@ void config_hall_sensor() {
 sm_state soc_init()
 {
     ret_code_t err_code;
+    
+    #ifdef ONYX_2
+    printf("RIM_V_1_2_2_1\n");
+    #endif // ONYX_2 
+    
+    #ifdef RIM_1_2
+    printf("RIM_V_1_2_2_1\n");
+    #endif // RIM_1_2 
 
     config_init();
     get_ble_mac();
@@ -2382,6 +2414,7 @@ sm_state soc_init()
 }
 sm_state board_init()
 {
+#ifdef ONYX_2
     hall_gpio_init();
     config_hall_sensor();
 
@@ -2392,7 +2425,7 @@ sm_state board_init()
 
     nrf_gpio_cfg_output(SENSOR_EN);
     nrf_delay_ms(500);
-    //nrf_gpio_pin_clear(SENSOR_EN);
+    // nrf_gpio_pin_clear(SENSOR_EN);
     nrf_gpio_pin_set(SENSOR_EN);
 
     nrf_gpio_cfg_output(GPS_BK_EN);
@@ -2400,16 +2433,31 @@ sm_state board_init()
     nrf_gpio_pin_clear(GPS_BK_EN);
 
     nrf_gpio_cfg_input(MBN_INT, NRF_GPIO_PIN_NOPULL);
-     
-     i2c_wrapper.InitializeI2C();
-     TCAInitialize();
-     TCATest();
-     //i2c_wrapper.DeInitializeI2C();
 
-    //return STATE_GATT_SERVER;
+    i2c_wrapper.InitializeI2C();
+    TCAInitialize();
+    TCATest();
+// i2c_wrapper.DeInitializeI2C();
+#endif // ONYX_2
+
+#ifdef RIM_1_2
+    nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
+    nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
+    nrf_delay_ms(1000);
+    
+    nrf_gpio_cfg_output(OPAL_LED_PIN);
+    for(int i=0; i<5; i++){
+    nrf_gpio_pin_set(OPAL_LED_PIN);
+    nrf_delay_ms(200);
+    nrf_gpio_pin_clear(OPAL_LED_PIN);
+    nrf_delay_ms(200);
+    }
+#endif // RIM_1_2
+
+    return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
-    return STATE_ACCELERATION_AIRPLANE_MODE;
+    //return STATE_ACCELERATION_AIRPLANE_MODE;
     //return STATE_PRESSURE_AIRPLANE_MODE;
     //return STATE_MODEM_NETWORK_CONFIG;
 }
