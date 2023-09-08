@@ -145,10 +145,10 @@ uint8_t hallState = 0;
 
 #ifdef RIM_1_2
 // For Rim V1.2.X
-#define CELL_ENABLE_PIN_O        29
-#define CELL_TX                  15
-#define CELL_RX                  16
-#define OPAL_LED_PIN             17
+#define CELL_ENABLE_PIN_O        5
+#define CELL_TX                  6
+#define CELL_RX                  7
+#define RIM_LED_PIN             17
 
 #define I2C_SCL                  25   // Not used
 #define I2C_SDA                  26   // Not used
@@ -2445,11 +2445,11 @@ sm_state board_init()
     nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
     nrf_delay_ms(1000);
     
-    nrf_gpio_cfg_output(OPAL_LED_PIN);
+    nrf_gpio_cfg_output(RIM_LED_PIN);
     for(int i=0; i<5; i++){
-    nrf_gpio_pin_set(OPAL_LED_PIN);
+    nrf_gpio_pin_set(RIM_LED_PIN);
     nrf_delay_ms(200);
-    nrf_gpio_pin_clear(OPAL_LED_PIN);
+    nrf_gpio_pin_clear(RIM_LED_PIN);
     nrf_delay_ms(200);
     }
 #endif // RIM_1_2
