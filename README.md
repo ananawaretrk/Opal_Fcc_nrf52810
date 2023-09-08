@@ -26,3 +26,11 @@ There are in general four modes of operation:
 1. [Android App Arguments for Garnet and Jade](https://docs.google.com/spreadsheets/d/1HP615XFYZt2STN2pi8A0y3Usc1Xs2-M48XEhPg5eEbU/edit?usp=sharing) - Details arguments vs behaviour of the radio. 
 2. [Android App Arguments for Onyx](https://docs.google.com/spreadsheets/d/1EHz_Uu7MBMxNY85WKWDVzoMsf-hqcWa8d0k8Y2omyeA/edit?usp=sharing) - Details arguments vs behaviour of the radio.
 
+
+## Firmware:
+---
+1. Jade     :   fcc_jade_1
+2. Onyx 2   :   fcc_onyx_2_sm
+3. Onyx 3   :   fcc_onyx_3_sm
+4. Garnet   :   fcc_garnet
+
