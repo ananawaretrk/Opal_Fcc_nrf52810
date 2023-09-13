@@ -1,3 +1,6 @@
+/*
+Firmware: Opal_fcc_v1.0
+*/
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
