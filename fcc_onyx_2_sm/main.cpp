@@ -55,7 +55,7 @@
 #include "LIS3DH.h"
 
 //#define ONYX_2
-#define RIM_1_2
+#define RIM_1_2 // Added support to run on RIM V1.2.0 also
 
 // States
 typedef enum {
