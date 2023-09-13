@@ -20,6 +20,8 @@ There are in general four modes of operation:
 2. Jade V2.3.0
 3. Onyx V3.3.x
 4. Onyx V2.5.5
+5. Opal V1.2.X
+6. Rim  V1.2.x
 
 # Links
 --- 
@@ -33,4 +35,5 @@ There are in general four modes of operation:
 2. Onyx 2   :   fcc_onyx_2_sm
 3. Onyx 3   :   fcc_onyx_3_sm
 4. Garnet   :   fcc_garnet
-
+5. Opal     :   fcc_opal_1
+6. Rim      :   fcc_onyx_2_sm (Update the preprocessor directive at the top of the main to change the configuration from Onyx_2 to Rim V1.2)
