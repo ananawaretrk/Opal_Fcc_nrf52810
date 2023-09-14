@@ -65,7 +65,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="3046" useTextEdit="1" useBinaryEdit="0" left="0" path="main.cpp" selected="1" top="3023" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="15" y="57" useTextEdit="1" useBinaryEdit="0" left="0" path="main.cpp" selected="1" top="40" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../I2CFiles/eventflag_and_errors.h" selected="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="99" useTextEdit="1" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/components/libraries/util/app_error_weak.c" selected="0" top="79" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="514" useTextEdit="1" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/src/nrfx_gpiote.c" selected="0" top="492" codecName="Default"/>
@@ -80,6 +80,7 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="72" useTextEdit="1" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/external/segger_rtt/SEGGER_RTT_Syscalls_SES.c" selected="0" top="36" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="55" useTextEdit="1" useBinaryEdit="0" left="0" path="C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.40/include/stdint.h" selected="0" top="34" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="193" useTextEdit="1" useBinaryEdit="0" left="0" path="../4gSIM/4gSIM.cpp" selected="0" top="185" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="396" useTextEdit="1" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/cmsis_gcc.h" selected="0" top="380" codecName=""/>
  </Files>
- <ARMCrossStudioWindow activeProject="fcc_onyx_2" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_onyx_2_airplace_mode/timer_wrapper" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <ARMCrossStudioWindow activeProject="fcc_onyx_2" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_onyx_2_airplace_mode/timer_wrapper" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

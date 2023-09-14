@@ -55,7 +55,8 @@
 #include "LIS3DH.h"
 
 //#define ONYX_2
-#define RIM_1_2 // Added support to run on RIM V1.2.0 also
+//#define RIM_1_2 // Added support to run on RIM V1.2.0 also
+#define OPAL_1_1_X
 
 // States
 typedef enum {
@@ -159,6 +160,22 @@ uint8_t hallState = 0;
 #define LIS3_INT                 24   // Not used
 #define MBN_INT                  20   // Not used
 #endif // RIM_1_2
+
+#ifdef OPAL_1_1_X
+#define CELL_ENABLE_PIN_O        2
+#define CELL_TX                  6
+#define CELL_RX                  7
+#define OPAL_LED_PIN             25 // Sink the LED to turn ON
+
+#define I2C_SCL                  20   // Not used
+#define I2C_SDA                  19   // Not used
+#define I2C_PRIORITY             2    // Not used
+#define HALL_INT                 8    // Not available
+#define GPS_BK_EN                30   // Not backup used to turn ON LNA for nrf9160 GPS
+#define SENSOR_EN                3    // Not used
+#define LIS3_INT                 24   // Not used LIS3_INT1
+#define MBN_INT                  23   // Not used LIS3_INT2
+#endif // OPAL_1_1_X
 
 I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
 TwoWire Wire(i2c_wrapper.GetI2CInstance());
@@ -2280,8 +2297,9 @@ sm_state modem_network_config()
     nrf_gpio_pin_set(CELL_ENABLE_PIN_O);
     nrf_delay_ms(2000);
     init_Modem();
-    //nbiot_instance.SetConfig(false); // LTE-M or NB-IOT no preference
-    nbiot_instance.SetConfig(true); // NB-IOT Only
+    //nbiot_instance.SetConfig(1); // LTE-M or NB-IOT no preference
+    //nbiot_instance.SetConfig(2); // NB-IOT Only
+    nbiot_instance.SetConfig(3); // LTE-M Only
     nbiot_instance.GetConfig();
     while(1)
     {
@@ -2454,12 +2472,26 @@ sm_state board_init()
     }
 #endif // RIM_1_2
 
-    return STATE_GATT_SERVER;
+#ifdef OPAL_1_1_X
+    nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
+    nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
+    nrf_delay_ms(1000);
+    
+    nrf_gpio_cfg_output(OPAL_LED_PIN);
+    for(int i=0; i<5; i++){
+    nrf_gpio_pin_clear(OPAL_LED_PIN);
+    nrf_delay_ms(200);
+    nrf_gpio_pin_set(OPAL_LED_PIN);
+    nrf_delay_ms(200);  
+    }
+#endif // OPAL_1_1_X
+
+    //return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
     //return STATE_ACCELERATION_AIRPLANE_MODE;
     //return STATE_PRESSURE_AIRPLANE_MODE;
-    //return STATE_MODEM_NETWORK_CONFIG;
+    return STATE_MODEM_NETWORK_CONFIG;
 }
 
 void ble_radio_setup()
@@ -3206,7 +3238,7 @@ int main(void)
                  break;
              
              case STATE_MODEM_NETWORK_CONFIG:
-                  printf("STATE_MODEM_NETWORK_CONFIG");
+                  printf("STATE_MODEM_NETWORK_CONFIG\n");
                   state = modem_network_config();
                   break;
 
