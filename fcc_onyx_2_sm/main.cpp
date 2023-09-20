@@ -81,6 +81,7 @@ typedef enum {
   STATE_ACCELERATION_AIRPLANE_MODE,
   STATE_PRESSURE_AIRPLANE_MODE,
   STATE_MODEM_NETWORK_CONFIG,
+  STATE_BEACON,
   STATE_DEBUG
 } sm_state;
 
@@ -108,6 +109,8 @@ LIS3DH lis3dh_accel = LIS3DH();
 
 bool acc_flag = false;
 volatile int sustain_count = 0; 
+
+uint8_t my_count = 0;
 
 // HALL effect
 
@@ -2491,7 +2494,8 @@ sm_state board_init()
     //return STATE_SLEEP;
     //return STATE_ACCELERATION_AIRPLANE_MODE;
     //return STATE_PRESSURE_AIRPLANE_MODE;
-    return STATE_MODEM_NETWORK_CONFIG;
+    //return STATE_MODEM_NETWORK_CONFIG;
+    return STATE_BEACON;
 }
 
 void ble_radio_setup()
@@ -3122,6 +3126,34 @@ void TCATest(){
   //i2c_wrapper.DeInitializeI2C();
 }
 
+void custom_advertiser()
+{  
+    advertising_stop();
+    memset(m_beacon_info, 0, sizeof(m_beacon_info));
+    m_beacon_info[0] = 0x49;   // I
+    m_beacon_info[1] = 0x54;   // T
+    m_beacon_info[2] = 0X12; // T
+    m_beacon_info[3] = 0X34;
+    m_beacon_info[4] = 0X56;
+    m_beacon_info[5] = 0X78;
+    m_beacon_info[6] =(uint8_t)my_count;
+    advertising_init();
+    sd_ble_gap_tx_power_set(BLE_GAP_TX_POWER_ROLE_ADV, NULL, TX_POWER[8]);
+    advertising_start();
+    nrf_delay_ms(1000);
+    my_count++;
+}
+
+sm_state beacon()
+{
+    printf("beacon function\n");
+    ble_adv_stack_init();
+    while(1){
+    custom_advertiser();
+    }
+
+}
+
 int main(void) 
 {
     ret_code_t err_code;
@@ -3241,6 +3273,11 @@ int main(void)
                   printf("STATE_MODEM_NETWORK_CONFIG\n");
                   state = modem_network_config();
                   break;
+
+             case STATE_BEACON:
+                   printf("STATE_BEACON\n");
+                   state = beacon();
+                   break;
 
             default:
                 printf("DEFAULT: STATE_SLEEP\n");
