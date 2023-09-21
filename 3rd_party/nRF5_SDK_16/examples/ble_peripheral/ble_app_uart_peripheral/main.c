@@ -47,8 +47,8 @@
  * This file contains the source code for a sample application that uses the Nordic UART service.
  * This application uses the @ref srvlib_conn_params module.
  */
-//#define  SENDER
-#define  RECEIVER
+#define  SENDER
+//#define  RECEIVER
 
 #include <stdint.h>
 #include <string.h>
@@ -70,12 +70,16 @@
 #include "bsp_btn_ble.h"
 #include "nrf_pwr_mgmt.h"
 
+#include "nrf_delay.h"
+
 #if defined (UART_PRESENT)
 #include "nrf_uart.h"
 #endif
 #if defined (UARTE_PRESENT)
 #include "nrf_uarte.h"
 #endif
+
+
 
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
@@ -104,6 +108,10 @@
 
 #define UART_TX_BUF_SIZE                256                                         /**< UART TX buffer size. */
 #define UART_RX_BUF_SIZE                256                                         /**< UART RX buffer size. */
+
+uint8_t byte_received;
+static uint8_t my_data_array[UART_RX_BUF_SIZE];
+static uint8_t index = 0;
 
 
 BLE_NUS_DEF(m_nus, NRF_SDH_BLE_TOTAL_LINK_COUNT);                                   /**< BLE NUS service instance. */
@@ -529,35 +537,35 @@ void uart_event_handle(app_uart_evt_t * p_event)
 
     switch (p_event->evt_type)
     {
-        case APP_UART_DATA_READY:
-            UNUSED_VARIABLE(app_uart_get(&data_array[index]));
-            index++;
-
-            if ((data_array[index - 1] == '\n') ||
-                (data_array[index - 1] == '\r') ||
-                (index >= m_ble_nus_max_data_len))
-            {
-                if (index > 1)
-                {
-                    NRF_LOG_DEBUG("Ready to send data over BLE NUS");
-                    NRF_LOG_HEXDUMP_DEBUG(data_array, index);
-
-                    do
-                    {
-                        uint16_t length = (uint16_t)index;
-                        err_code = ble_nus_data_send(&m_nus, data_array, &length, m_conn_handle);
-                        if ((err_code != NRF_ERROR_INVALID_STATE) &&
-                            (err_code != NRF_ERROR_RESOURCES) &&
-                            (err_code != NRF_ERROR_NOT_FOUND))
-                        {
-                            APP_ERROR_CHECK(err_code);
-                        }
-                    } while (err_code == NRF_ERROR_RESOURCES);
-                }
-
-                index = 0;
-            }
-            break;
+//        case APP_UART_DATA_READY:
+//            UNUSED_VARIABLE(app_uart_get(&data_array[index]));
+//            index++;
+//
+//            if ((data_array[index - 1] == '\n') ||
+//                (data_array[index - 1] == '\r') ||
+//                (index >= m_ble_nus_max_data_len))
+//            {
+//                if (index > 1)
+//                {
+//                    NRF_LOG_DEBUG("Ready to send data over BLE NUS");
+//                    NRF_LOG_HEXDUMP_DEBUG(data_array, index);
+//
+//                    do
+//                    {
+//                        uint16_t length = (uint16_t)index;
+//                        err_code = ble_nus_data_send(&m_nus, data_array, &length, m_conn_handle);
+//                        if ((err_code != NRF_ERROR_INVALID_STATE) &&
+//                            (err_code != NRF_ERROR_RESOURCES) &&
+//                            (err_code != NRF_ERROR_NOT_FOUND))
+//                        {
+//                            APP_ERROR_CHECK(err_code);
+//                        }
+//                    } while (err_code == NRF_ERROR_RESOURCES);
+//                }
+//
+//                index = 0;
+//            }
+//            break;
 
         case APP_UART_COMMUNICATION_ERROR:
             APP_ERROR_HANDLER(p_event->data.error_communication);
@@ -695,12 +703,73 @@ static void advertising_start(void)
     APP_ERROR_CHECK(err_code);
 }
 
+void read_uart_until_newline_or_cr(void)
+{
+    
+    while (true)
+    {
+        uint32_t err_code = app_uart_get(&byte_received);
+        if (err_code == NRF_SUCCESS)
+        {
+            if (byte_received == '\n' || byte_received == '\r')
+            {
+                my_data_array[index] = '\0';  // Null-terminate the string
+                index = 0;  // Reset index for next read
+                break;  // Exit the loop
+            }
+            else if (index < UART_RX_BUF_SIZE - 1)  // -1 to leave space for null terminator
+            {
+                my_data_array[index++] = byte_received;
+            }
+            else
+            {
+                // Buffer overflow, you can handle it as needed
+                index = 0;  // Reset index
+            }
+        }
+    }
+}
+
+int read_uart_and_get_integer(void)
+{
+    uint8_t byte_received;
+    static uint8_t data_array[UART_RX_BUF_SIZE];
+    while (true)
+    {
+        uint32_t err_code = app_uart_get(&byte_received);
+        if (err_code == NRF_SUCCESS)
+        {
+            if (byte_received == '\n' || byte_received == '\r')
+            {
+                data_array[index] = '\0';  // Null-terminate the string
+                int received_integer = atoi((char*)data_array);  // Convert string to integer
+                index = 0;  // Reset index for next read
+                return received_integer;
+            }
+            else if (index < UART_RX_BUF_SIZE - 1)  // -1 to leave space for null terminator
+            {
+                data_array[index++] = byte_received;
+            }
+            else
+            {
+                // Buffer overflow, you can handle it as needed
+                index = 0;  // Reset index
+            }
+        }
+    }
+}
+
 
 /**@brief Application main function.
  */
 int main(void)
 {
     bool erase_bonds;
+    uint32_t err_code;
+    char buffer[50];
+    int i=0;
+    int times = 5;
+    int send_frequency = 5000; // milliseconds
 
     // Initialize.
     uart_init();
@@ -716,16 +785,48 @@ int main(void)
     conn_params_init();
 
     // Start execution.
-    #ifdef SENDER
-    printf("\r\nSender\r\n");
-    #endif //SENDER
 
-    #ifdef RECEIVER
+
+#ifdef RECEIVER
     printf("\r\RECEIVER\r\n");
-    #endif //RECEIVER
+#endif // RECEIVER
 
     NRF_LOG_INFO("Debug logging for UART over RTT started.");
     advertising_start();
+
+#ifdef SENDER
+    printf("\r\nSender\r\n");
+    printf("\r\nType in your payload\r\n");
+    read_uart_until_newline_or_cr();
+    printf("Your payload is: %s\r\n", my_data_array);
+
+    printf("\r\n");
+
+    printf("Type in how many time you want to send\r\n");
+    times = read_uart_and_get_integer();
+    printf("%d times\r\n", times);
+
+    printf("\r\n");
+
+    printf("How frequently you want to send? (milliseconds)\r\n");
+    send_frequency = read_uart_and_get_integer();
+    printf("%d milliseconds\r\n", send_frequency);
+
+    
+    for (int j = 0; j < times; j++)
+    {
+        snprintf(buffer, 50, "%s, %d\r\n", my_data_array, i);
+        uint16_t length = (uint16_t)strlen(buffer);
+        err_code = ble_nus_data_send(&m_nus, buffer, &length, m_conn_handle);
+        if ((err_code != NRF_ERROR_INVALID_STATE) && (err_code != NRF_ERROR_RESOURCES) &&
+            (err_code != NRF_ERROR_NOT_FOUND))
+        {
+            APP_ERROR_CHECK(err_code);
+        }
+        nrf_delay_ms(send_frequency);
+        i++;
+    }
+#endif // SENDER
 
     // Enter main loop.
     for (;;)
