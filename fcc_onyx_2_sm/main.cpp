@@ -173,12 +173,12 @@ uint8_t hallState = 0;
 #define CELL_RX                  7
 #define OPAL_LED_PIN             25 // Sink the LED to turn ON
 
-#define I2C_SCL                  20   // Not used
-#define I2C_SDA                  19   // Not used
+#define I2C_SCL                  20   //
+#define I2C_SDA                  19   // 
 #define I2C_PRIORITY             2    // Not used
 #define HALL_INT                 8    // Not available
 #define GPS_BK_EN                30   // Not backup used to turn ON LNA for nrf9160 GPS
-#define SENSOR_EN                3    // Not used
+#define SENSOR_EN                3    // 
 #define LIS3_INT                 24   // Not used LIS3_INT1
 #define MBN_INT                  23   // Not used LIS3_INT2
 #endif // OPAL_1_1_X
@@ -741,7 +741,7 @@ void on_adv_report(ble_gap_evt_adv_report_t const *p_adv_report)
     adv_len = (uint16_t)p_adv_report->data.len;
     //printf("\nFROM: %02x:%02x:%02x:%02x:%02x:%02x %d\n", adv_address[0], adv_address[1], adv_address[2], adv_address[3], adv_address[4], adv_address[5], p_adv_report->rssi);
     
-    if(adv_address[0] == 0xAB && adv_address[1] == 0xD0)
+    if(adv_address[0] == 0xAB && adv_address[1] == 0xD0) // Specific MAC address
     {
       printf("before equalizing: old_byte: %02x, adv_data[13]: %02x\n", old_byte, adv_data[13]);
       //printf("adv_data[7]:%02x,\n adv_data[8]:%02x,\n adv_data[9]:%02x,\n adv_data[10]:%02x\n", adv_data[7], adv_data[8], adv_data[9], adv_data[10]);
@@ -2505,16 +2505,26 @@ sm_state board_init()
     nrf_gpio_pin_set(OPAL_LED_PIN);
     nrf_delay_ms(200);  
     }
+
+    nrf_gpio_cfg_output(SENSOR_EN);
+    nrf_delay_ms(500);
+    // nrf_gpio_pin_clear(SENSOR_EN);
+    nrf_gpio_pin_set(SENSOR_EN);
+
+    i2c_wrapper.InitializeI2C();
+    nrf_delay_ms(1000);
+
 #endif // OPAL_1_1_X
 
+    //while(1);
     //return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
-    //return STATE_ACCELERATION_AIRPLANE_MODE;
+    return STATE_ACCELERATION_AIRPLANE_MODE;
     //return STATE_PRESSURE_AIRPLANE_MODE;
     //return STATE_MODEM_NETWORK_CONFIG;
     //return STATE_BEACON;
-    return STATE_SCAN;
+    //return STATE_SCAN;
 }
 
 void ble_radio_setup()
@@ -2961,8 +2971,15 @@ sm_state acceleration_airplane_mode()
         SetErrorMask(ACC_ERROR_MASK);
     }
 
-    //TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-    //TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+#ifdef ONYX_2
+    // TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+    // TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+#endif // ONYX_2
+
+#ifdef OPAL_1_1_X
+//nrf_gpio_pin_clear(OPAL_LED_PIN); // Clear turns ON
+//nrf_gpio_pin_set(OPAL_LED_PIN); // Set turns OFF
+#endif //OPAL_1_1_X
 
     while (1)
     {
@@ -2987,8 +3004,15 @@ sm_state acceleration_airplane_mode()
         }
         if (acc_flag)
         {
+            #ifdef ONYX_2
             TCA.writePin(TCA_LED_PIN_O, TCA.ON);
             TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+            #endif // ONYX_2
+
+            #ifdef OPAL_1_1_X
+            nrf_gpio_pin_clear(OPAL_LED_PIN); // // Clear turns ON
+            //nrf_gpio_pin_set(OPAL_LED_PIN); // Set turns OFF
+            #endif //OPAL_1_1_X
         }
     }
     return STATE_SLEEP;
