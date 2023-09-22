@@ -2222,10 +2222,17 @@ void print_pressure_sensor_data()
 sm_state pressure_airplane_mode()
 {
     dps_pressure_sensor.begin(Wire, 0x76);
-
+#ifdef ONYX_2
 //    TCA.writePin(TCA_LED_PIN_O, TCA.ON);
 //    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-//    pressure_airplane_flag = true;
+#endif // ONYX_2
+
+#ifdef OPAL_1_1_X
+    // nrf_gpio_pin_clear(OPAL_LED_PIN);
+    // nrf_gpio_pin_set(OPAL_LED_PIN);
+#endif // OPAL_1_1_X
+
+    //    pressure_airplane_flag = true;
 
     while(1)
     {
@@ -2260,13 +2267,27 @@ sm_state pressure_airplane_mode()
         
         if(pressure_airplane_flag)
         {
-            TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-            TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+            #ifdef ONYX_2
+            //TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+            //TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+            #endif // ONYX_2
+
+            #ifdef OPAL_1_1_X
+            nrf_gpio_pin_clear(OPAL_LED_PIN);
+            //nrf_gpio_pin_set(OPAL_LED_PIN);
+            #endif //OPAL_1_1_X
         }
         else
         {
+            #ifdef ONYX_2
             TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
             TCA.writePin(TCA_LED_PIN_O2, TCA.OFF);
+            #endif // ONYX_2
+            
+            #ifdef OPAL_1_1_X
+            //nrf_gpio_pin_clear(OPAL_LED_PIN);
+            nrf_gpio_pin_set(OPAL_LED_PIN);
+            #endif //OPAL_1_1_X
         }
         
 
@@ -2520,8 +2541,8 @@ sm_state board_init()
     //return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
-    return STATE_ACCELERATION_AIRPLANE_MODE;
-    //return STATE_PRESSURE_AIRPLANE_MODE;
+    //return STATE_ACCELERATION_AIRPLANE_MODE;
+    return STATE_PRESSURE_AIRPLANE_MODE;
     //return STATE_MODEM_NETWORK_CONFIG;
     //return STATE_BEACON;
     //return STATE_SCAN;
