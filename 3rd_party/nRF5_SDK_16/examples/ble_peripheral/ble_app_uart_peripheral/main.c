@@ -795,27 +795,30 @@ int main(void)
     advertising_start();
 
 #ifdef SENDER
+while(1)
+{
     printf("\r\nSender\r\n");
-    printf("\r\nType in your payload\r\n");
+    printf("\r\n1. TYPE IN YOUR PAYLOAD:\r\n");
     read_uart_until_newline_or_cr();
     printf("Your payload is: %s\r\n", my_data_array);
 
     printf("\r\n");
 
-    printf("Type in how many time you want to send\r\n");
+    printf("2. TYPE IN NUMBER OF TIMES TO SEND THE PAYLOAD\r\n");
     times = read_uart_and_get_integer();
     printf("%d times\r\n", times);
 
     printf("\r\n");
 
-    printf("How frequently you want to send? (milliseconds)\r\n");
+    printf("3. TYPE IN THE FREQUENCY AT WHICH TO SEND THE PAYLOAD (milliseconds)\r\n");
     send_frequency = read_uart_and_get_integer();
     printf("%d milliseconds\r\n", send_frequency);
 
     
     for (int j = 0; j < times; j++)
     {
-        snprintf(buffer, 50, "%s, %d\r\n", my_data_array, i);
+        snprintf(buffer, UART_TX_BUF_SIZE, "%s, %d\r\n", my_data_array, i);
+        printf("Sending data: %s\r\n", buffer);
         uint16_t length = (uint16_t)strlen(buffer);
         err_code = ble_nus_data_send(&m_nus, buffer, &length, m_conn_handle);
         if ((err_code != NRF_ERROR_INVALID_STATE) && (err_code != NRF_ERROR_RESOURCES) &&
@@ -826,6 +829,8 @@ int main(void)
         nrf_delay_ms(send_frequency);
         i++;
     }
+    i=0;
+ }
 #endif // SENDER
 
     // Enter main loop.
