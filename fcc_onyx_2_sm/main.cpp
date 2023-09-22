@@ -90,14 +90,14 @@ sm_state state = STATE_SOC_INIT;
 // -- States 
 #define MAX_CONSECUTIVE_READINGS 6
 Dps310 dps_pressure_sensor = Dps310();
-int y1 = -85.95;  // Land lower limit meters
-int y2 = 1676.4; // Land upper limit meters
-int x1 = 3048;  // Take-off lower limit meters
-int x2 = 15240;  // Take-off upper limit meters
-//int x1 = -50;  // Take-off lower limit meters
-//int x2 = 20; // Take-off lower limit meters
-//int y1 = -25;  // Land lower limit meters
-//int y2 = 1;  // Land upper limit meters
+//int y1 = -85.95;  // Land lower limit meters
+//int y2 = 1676.4; // Land upper limit meters
+//int x1 = 3048;  // Take-off lower limit meters
+//int x2 = 15240;  // Take-off upper limit meters
+int x1 = -50;  // Take-off lower limit meters
+int x2 = 20000; // Take-off lower limit meters
+int y1 = 20000;  // Land lower limit meters
+int y2 = 30000;  // Land upper limit meters
 int consecutive_x = 0;
 int consecutive_y = 0;
 double altitude = 0;
@@ -114,6 +114,9 @@ volatile int sustain_count = 0;
 uint8_t my_count = 0;
 
 static uint8_t old_byte = 0;
+
+bool five_min_flag = false;
+int min_counter = 0;
 
 // HALL effect
 
@@ -2272,10 +2275,21 @@ sm_state pressure_airplane_mode()
             //TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
             #endif // ONYX_2
 
+            while(!five_min_flag)
+            {
+              nrf_delay_ms(60*1000);
+              min_counter++;
+              if(min_counter >=5)
+              {
+                five_min_flag = true;
+              }
+            }
+
             #ifdef OPAL_1_1_X
             nrf_gpio_pin_clear(OPAL_LED_PIN);
             //nrf_gpio_pin_set(OPAL_LED_PIN);
             #endif //OPAL_1_1_X
+
         }
         else
         {
@@ -2283,6 +2297,16 @@ sm_state pressure_airplane_mode()
             TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
             TCA.writePin(TCA_LED_PIN_O2, TCA.OFF);
             #endif // ONYX_2
+
+            while(!five_min_flag)
+            {
+              nrf_delay_ms(60*1000);
+              min_counter++;
+              if(min_counter >=5)
+              {
+                five_min_flag = true;
+              }
+            }
             
             #ifdef OPAL_1_1_X
             //nrf_gpio_pin_clear(OPAL_LED_PIN);
@@ -2291,7 +2315,8 @@ sm_state pressure_airplane_mode()
         }
         
 
-        nrf_delay_ms(10000);
+        //nrf_delay_ms(10000);
+        nrf_delay_ms(1000);
 
     }
 
