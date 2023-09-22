@@ -82,6 +82,7 @@ typedef enum {
   STATE_PRESSURE_AIRPLANE_MODE,
   STATE_MODEM_NETWORK_CONFIG,
   STATE_BEACON,
+  STATE_SCAN,
   STATE_DEBUG
 } sm_state;
 
@@ -111,6 +112,8 @@ bool acc_flag = false;
 volatile int sustain_count = 0; 
 
 uint8_t my_count = 0;
+
+static uint8_t old_byte = 0;
 
 // HALL effect
 
@@ -737,70 +740,85 @@ void on_adv_report(ble_gap_evt_adv_report_t const *p_adv_report)
     adv_data = (uint8_t *)p_adv_report->data.p_data;
     adv_len = (uint16_t)p_adv_report->data.len;
     //printf("\nFROM: %02x:%02x:%02x:%02x:%02x:%02x %d\n", adv_address[0], adv_address[1], adv_address[2], adv_address[3], adv_address[4], adv_address[5], p_adv_report->rssi);
-
-    if(!debugMode)
+    
+    if(adv_address[0] == 0xAB && adv_address[1] == 0xD0)
     {
-        if (adv_data[SIGH] == Ble_Scn_SIG_ext[0] && adv_data[SIGL] == Ble_Scn_SIG_ext[1])
-        {
-            if (adv_data[7] == Ble_Scn_UUID[0] && adv_data[8] == Ble_Scn_UUID[1] && adv_len == data_len)
-            {
-                status = -1;
-
-                if (status == -1)
-                {
-                    clearFlag = false;
-                    printf("\nFROM: %02x:%02x:%02x:%02x:%02x:%02x %d\n", adv_address[0], adv_address[1], adv_address[2], adv_address[3], adv_address[4], adv_address[5], p_adv_report->rssi);
-                    //Copy Address
-                    for (int i = 5; i >= 0; i--)
-                    {
-                        TapeLog[0].scanLog[records].addr[i] = adv_address[i];
-                    }
-
-                    setBit(records);
-                    TapeLog[0].scanLog[records].rssi = adv_data[9];
-
-                    printf("Rssi:%d\n",TapeLog[0].scanLog[records].rssi);
-                    //Copy Battery
-                    TapeLog[0].scanLog[records].subBat = (float)(adv_data[10]);;
-                    printf("BATT:%f\n",TapeLog[0].scanLog[records].subBat);
-
-                    records = (records + 1) % NUMBER_OF_TAGS;
-                }
-                else
-                {
-                    setBit(status);
-                    for(int j=records; j<NUMBER_OF_TAGS;j++)
-                    {
-                        TapeLog[0].scanLog[j].counter = 0;
-                    }
-                }
-            }
-        }
+      printf("before equalizing: old_byte: %02x, adv_data[13]: %02x\n", old_byte, adv_data[13]);
+      //printf("adv_data[7]:%02x,\n adv_data[8]:%02x,\n adv_data[9]:%02x,\n adv_data[10]:%02x\n", adv_data[7], adv_data[8], adv_data[9], adv_data[10]);
+      if (adv_data[13] != old_byte)
+      {
+          for (int i = 7; i < 14; i++)
+          {
+              printf("adv_data[%d]:%02x\n", i, adv_data[i]);
+          }
+          old_byte = adv_data[13];
+          printf("after equalizing: old_byte: %02x, adv_data[13]: %02x\n", old_byte, adv_data[13]);
+          printf("\n");
+      }
     }
-    else
-    {
-        if (adv_data[7] == Ble_Scn_UUID[0] && adv_data[8] == Ble_Scn_UUID[1])
-        {
-            if(checkIdInLog(adv_address, 0) == -1)
-            {
-                printf("\nFROM: %02x:%02x:%02x:%02x:%02x:%02x %d\n", adv_address[0], adv_address[1], adv_address[2], adv_address[3], adv_address[4], adv_address[5], p_adv_report->rssi);
-                //Copy Address
-                for (int i = 5; i >= 0; i--)
-                    TapeLog[0].scanLog[records].addr[i] = adv_address[i];
-
-                //Copy Rssi
-                TapeLog[0].scanLog[records].rssi = p_adv_report->rssi;
-                printf("Rssi:%d\n",TapeLog[0].scanLog[records].rssi);
-
-                //Copy Battery
-                TapeLog[0].scanLog[records].subBat = (float)(adv_data[10]);;
-                printf("BATT:%f\n",TapeLog[0].scanLog[records].subBat);
-
-                records = (records + 1) % NUMBER_OF_TAGS;
-
-            }
-        }
-    }
+//    if(!debugMode)
+//    {
+//        if (adv_data[SIGH] == Ble_Scn_SIG_ext[0] && adv_data[SIGL] == Ble_Scn_SIG_ext[1])
+//        {
+//            if (adv_data[7] == Ble_Scn_UUID[0] && adv_data[8] == Ble_Scn_UUID[1] && adv_len == data_len)
+//            {
+//                status = -1;
+//
+//                if (status == -1)
+//                {
+//                    clearFlag = false;
+//                    printf("\nFROM: %02x:%02x:%02x:%02x:%02x:%02x %d\n", adv_address[0], adv_address[1], adv_address[2], adv_address[3], adv_address[4], adv_address[5], p_adv_report->rssi);
+//                    //Copy Address
+//                    for (int i = 5; i >= 0; i--)
+//                    {
+//                        TapeLog[0].scanLog[records].addr[i] = adv_address[i];
+//                    }
+//
+//                    setBit(records);
+//                    TapeLog[0].scanLog[records].rssi = adv_data[9];
+//
+//                    printf("Rssi:%d\n",TapeLog[0].scanLog[records].rssi);
+//                    //Copy Battery
+//                    TapeLog[0].scanLog[records].subBat = (float)(adv_data[10]);;
+//                    printf("BATT:%f\n",TapeLog[0].scanLog[records].subBat);
+//
+//                    records = (records + 1) % NUMBER_OF_TAGS;
+//                }
+//                else
+//                {
+//                    setBit(status);
+//                    for(int j=records; j<NUMBER_OF_TAGS;j++)
+//                    {
+//                        TapeLog[0].scanLog[j].counter = 0;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    else
+//    {
+//        if (adv_data[7] == Ble_Scn_UUID[0] && adv_data[8] == Ble_Scn_UUID[1])
+//        {
+//            if(checkIdInLog(adv_address, 0) == -1)
+//            {
+//                printf("\nFROM: %02x:%02x:%02x:%02x:%02x:%02x %d\n", adv_address[0], adv_address[1], adv_address[2], adv_address[3], adv_address[4], adv_address[5], p_adv_report->rssi);
+//                //Copy Address
+//                for (int i = 5; i >= 0; i--)
+//                    TapeLog[0].scanLog[records].addr[i] = adv_address[i];
+//
+//                //Copy Rssi
+//                TapeLog[0].scanLog[records].rssi = p_adv_report->rssi;
+//                printf("Rssi:%d\n",TapeLog[0].scanLog[records].rssi);
+//
+//                //Copy Battery
+//                TapeLog[0].scanLog[records].subBat = (float)(adv_data[10]);;
+//                printf("BATT:%f\n",TapeLog[0].scanLog[records].subBat);
+//
+//                records = (records + 1) % NUMBER_OF_TAGS;
+//
+//            }
+//        }
+//    }
 
     scan_start();
     return;
@@ -2495,7 +2513,8 @@ sm_state board_init()
     //return STATE_ACCELERATION_AIRPLANE_MODE;
     //return STATE_PRESSURE_AIRPLANE_MODE;
     //return STATE_MODEM_NETWORK_CONFIG;
-    return STATE_BEACON;
+    //return STATE_BEACON;
+    return STATE_SCAN;
 }
 
 void ble_radio_setup()
@@ -3152,6 +3171,17 @@ sm_state beacon()
     custom_advertiser();
     }
 
+    return STATE_SLEEP;
+}
+
+sm_state scan()
+{
+    printf("Scan function\n");
+    while(1){
+    bleScan(60000);
+    }
+
+    return STATE_SLEEP;
 }
 
 int main(void) 
@@ -3278,6 +3308,11 @@ int main(void)
                    printf("STATE_BEACON\n");
                    state = beacon();
                    break;
+             
+             case STATE_SCAN:
+                  printf("STATE_SCAN");
+                  state = scan();
+                  break;
 
             default:
                 printf("DEFAULT: STATE_SLEEP\n");
@@ -3496,7 +3531,8 @@ void bleScan(int timeOutMillis)
     oxy_scanned = false;
     ble_scanner_init();
     start_timer(timeOutMillis);
-    while (!timerFlag && (records < NUMBER_OF_TAGS))
+    //while (!timerFlag && (records < NUMBER_OF_TAGS))
+    while (!timerFlag)
         nrf_pwr_mgmt_run();
     scan_stop();
     stop_timer();
