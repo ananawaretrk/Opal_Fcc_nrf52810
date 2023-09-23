@@ -2274,16 +2274,6 @@ sm_state pressure_airplane_mode()
             //TCA.writePin(TCA_LED_PIN_O, TCA.ON);
             //TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
             #endif // ONYX_2
-// Temporary
-//            while(!five_min_flag)
-//            {
-//              nrf_delay_ms(60*1000);
-//              min_counter++;
-//              if(min_counter >=5)
-//              {
-//                five_min_flag = true;
-//              }
-//            }
 
             #ifdef OPAL_1_1_X
             nrf_gpio_pin_clear(OPAL_LED_PIN);
@@ -2297,16 +2287,6 @@ sm_state pressure_airplane_mode()
             TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
             TCA.writePin(TCA_LED_PIN_O2, TCA.OFF);
             #endif // ONYX_2
-// Temporary
-//            while(!five_min_flag)
-//            {
-//              nrf_delay_ms(60*1000);
-//              min_counter++;
-//              if(min_counter >=5)
-//              {
-//                five_min_flag = true;
-//              }
-//            }
             
             #ifdef OPAL_1_1_X
             //nrf_gpio_pin_clear(OPAL_LED_PIN);
@@ -2316,7 +2296,7 @@ sm_state pressure_airplane_mode()
         
 
         //nrf_delay_ms(10000);
-        nrf_delay_ms(60000);
+        nrf_delay_ms(60000); // 1 min x MAX_CONSECUTIVE_READINGS
 
     }
 
