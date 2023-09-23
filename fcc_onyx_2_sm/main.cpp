@@ -54,9 +54,16 @@
 #include "TCA9535.h"
 #include "LIS3DH.h"
 
+// ---------------------------------- Board Defines------------------------------------------------------
 //#define ONYX_2
-//#define RIM_1_2 // Added support to run on RIM V1.2.0 also
-#define OPAL_1_1_X
+#define RIM_1_2 // Added support to run on RIM V1.2.0 also
+//#define OPAL_1_1_X
+
+// ---------------------------------- Sub-Board Defines------------------------------------------------------
+#ifdef RIM_1_2
+#define RIM_1_2_ACCELEROMETER
+//#define RIM_1_2_PRESSURE
+#endif //(RIM_1_2)
 
 // States
 typedef enum {
@@ -138,6 +145,7 @@ uint8_t hallState = 0;
 #define DBG_RESET   "\x1b[0m"
 //#define test_print
 
+// ----------------------------------------------ONYX_2-----------------------------------------------------------
 #ifdef ONYX_2
 // For Onyx 2.8
 #define CELL_ENABLE_PIN_O        29
@@ -152,7 +160,9 @@ uint8_t hallState = 0;
 #define I2C_PRIORITY             2
 #define HALL_INT 17
 #endif // ONYX_2
+// ----------------------------------------------ONYX_2-----------------------------------------------------------
 
+// ----------------------------------------------RIM_1_2----------------------------------------------------------
 #ifdef RIM_1_2
 // For Rim V1.2.X
 #define CELL_ENABLE_PIN_O        5
@@ -160,16 +170,27 @@ uint8_t hallState = 0;
 #define CELL_RX                  7
 #define RIM_LED_PIN             17
 
-#define I2C_SCL                  25   // Not used
-#define I2C_SDA                  26   // Not used
-#define I2C_PRIORITY             2    // Not used
+#ifdef RIM_1_2_ACCELEROMETER
+#define I2C_SCL                  25   // SCL-M
+#define I2C_SDA                  26   // SDA-M
+#define I2C_PRIORITY             2    
+#endif // RIM_1_2_ACCELEROMETER
+
+#ifdef RIM_1_2_PRESSURE
+#define I2C_SCL                  11   // SCL
+#define I2C_SDA                  12   // SDA
+#define I2C_PRIORITY             2    
+#endif // RIM_1_2_PRESSURE
+
 #define HALL_INT                 8    // Not used
 #define GPS_BK_EN                16   // Not used
-#define SENSOR_EN                3    // Not used
+#define SENSOR_EN                3    
 #define LIS3_INT                 24   // Not used
 #define MBN_INT                  20   // Not used
 #endif // RIM_1_2
+// ----------------------------------------------RIM_1_2----------------------------------------------------------
 
+// ----------------------------------------------OPAL_1_1_X-------------------------------------------------------
 #ifdef OPAL_1_1_X
 #define CELL_ENABLE_PIN_O        2
 #define CELL_TX                  6
@@ -178,15 +199,16 @@ uint8_t hallState = 0;
 
 #define I2C_SCL                  20   //
 #define I2C_SDA                  19   // 
-#define I2C_PRIORITY             2    // Not used
+#define I2C_PRIORITY             2    
 #define HALL_INT                 8    // Not available
 #define GPS_BK_EN                30   // Not backup used to turn ON LNA for nrf9160 GPS
 #define SENSOR_EN                3    // 
 #define LIS3_INT                 24   // Not used LIS3_INT1
 #define MBN_INT                  23   // Not used LIS3_INT2
 #endif // OPAL_1_1_X
-
+// ----------------------------------------------OPAL_1_1_X-------------------------------------------------------
 I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
+
 TwoWire Wire(i2c_wrapper.GetI2CInstance());
 void print_temperature_sensor_data(void);
 
@@ -2235,6 +2257,11 @@ sm_state pressure_airplane_mode()
     // nrf_gpio_pin_set(OPAL_LED_PIN);
 #endif // OPAL_1_1_X
 
+#ifdef RIM_1_2
+    //nrf_gpio_pin_set(RIM_LED_PIN);
+    //nrf_gpio_pin_clear(RIM_LED_PIN);
+#endif // RIM_1_2
+
     //    pressure_airplane_flag = true;
 
     while(1)
@@ -2280,6 +2307,9 @@ sm_state pressure_airplane_mode()
             //nrf_gpio_pin_set(OPAL_LED_PIN);
             #endif //OPAL_1_1_X
 
+            #ifdef RIM_1_2
+            nrf_gpio_pin_set(RIM_LED_PIN);
+            #endif // RIM_1_2
         }
         else
         {
@@ -2292,11 +2322,15 @@ sm_state pressure_airplane_mode()
             //nrf_gpio_pin_clear(OPAL_LED_PIN);
             nrf_gpio_pin_set(OPAL_LED_PIN);
             #endif //OPAL_1_1_X
+
+            #ifdef RIM_1_2
+            nrf_gpio_pin_clear(RIM_LED_PIN);
+            #endif // RIM_1_2
         }
         
 
-        //nrf_delay_ms(10000);
-        nrf_delay_ms(60000); // 1 min x MAX_CONSECUTIVE_READINGS
+        nrf_delay_ms(10000);
+        //nrf_delay_ms(60000); // 1 min x MAX_CONSECUTIVE_READINGS
 
     }
 
@@ -2455,8 +2489,12 @@ sm_state soc_init()
     ret_code_t err_code;
     
     #ifdef ONYX_2
-    printf("RIM_V_1_2_2_1\n");
+    printf("ONYX_2\n");
     #endif // ONYX_2 
+
+    #ifdef OPAL_1_1_X
+    printf("OPAL_1_1_X\n");
+    #endif // OPAL_1_1_X
     
     #ifdef RIM_1_2
     printf("RIM_V_1_2_2_1\n");
@@ -2517,6 +2555,14 @@ sm_state board_init()
     nrf_gpio_pin_clear(RIM_LED_PIN);
     nrf_delay_ms(200);
     }
+
+    nrf_gpio_cfg_output(SENSOR_EN);
+    nrf_delay_ms(500);
+    // nrf_gpio_pin_clear(SENSOR_EN);
+    nrf_gpio_pin_set(SENSOR_EN);
+
+    i2c_wrapper.InitializeI2C();
+    nrf_delay_ms(1000);
 #endif // RIM_1_2
 
 #ifdef OPAL_1_1_X
@@ -3003,9 +3049,14 @@ sm_state acceleration_airplane_mode()
 #endif // ONYX_2
 
 #ifdef OPAL_1_1_X
-//nrf_gpio_pin_clear(OPAL_LED_PIN); // Clear turns ON
-//nrf_gpio_pin_set(OPAL_LED_PIN); // Set turns OFF
-#endif //OPAL_1_1_X
+// nrf_gpio_pin_clear(OPAL_LED_PIN); // Clear turns ON
+// nrf_gpio_pin_set(OPAL_LED_PIN); // Set turns OFF
+#endif // OPAL_1_1_X
+
+#ifdef RIM_1_2
+    //nrf_gpio_pin_set(RIM_LED_PIN);
+    //nrf_gpio_pin_clear(RIM_LED_PIN);
+#endif // RIM_1_2
 
     while (1)
     {
@@ -3039,6 +3090,10 @@ sm_state acceleration_airplane_mode()
             nrf_gpio_pin_clear(OPAL_LED_PIN); // // Clear turns ON
             //nrf_gpio_pin_set(OPAL_LED_PIN); // Set turns OFF
             #endif //OPAL_1_1_X
+
+            #ifdef RIM_1_2
+            nrf_gpio_pin_set(RIM_LED_PIN);
+            #endif // RIM_1_2
         }
     }
     return STATE_SLEEP;
