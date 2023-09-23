@@ -88,7 +88,7 @@ typedef enum {
 
 sm_state state = STATE_SOC_INIT;
 // -- States 
-#define MAX_CONSECUTIVE_READINGS 6
+#define MAX_CONSECUTIVE_READINGS 5
 Dps310 dps_pressure_sensor = Dps310();
 //int y1 = -85.95;  // Land lower limit meters
 //int y2 = 1676.4; // Land upper limit meters
@@ -2274,16 +2274,16 @@ sm_state pressure_airplane_mode()
             //TCA.writePin(TCA_LED_PIN_O, TCA.ON);
             //TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
             #endif // ONYX_2
-
-            while(!five_min_flag)
-            {
-              nrf_delay_ms(60*1000);
-              min_counter++;
-              if(min_counter >=5)
-              {
-                five_min_flag = true;
-              }
-            }
+// Temporary
+//            while(!five_min_flag)
+//            {
+//              nrf_delay_ms(60*1000);
+//              min_counter++;
+//              if(min_counter >=5)
+//              {
+//                five_min_flag = true;
+//              }
+//            }
 
             #ifdef OPAL_1_1_X
             nrf_gpio_pin_clear(OPAL_LED_PIN);
@@ -2297,16 +2297,16 @@ sm_state pressure_airplane_mode()
             TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
             TCA.writePin(TCA_LED_PIN_O2, TCA.OFF);
             #endif // ONYX_2
-
-            while(!five_min_flag)
-            {
-              nrf_delay_ms(60*1000);
-              min_counter++;
-              if(min_counter >=5)
-              {
-                five_min_flag = true;
-              }
-            }
+// Temporary
+//            while(!five_min_flag)
+//            {
+//              nrf_delay_ms(60*1000);
+//              min_counter++;
+//              if(min_counter >=5)
+//              {
+//                five_min_flag = true;
+//              }
+//            }
             
             #ifdef OPAL_1_1_X
             //nrf_gpio_pin_clear(OPAL_LED_PIN);
@@ -2316,7 +2316,7 @@ sm_state pressure_airplane_mode()
         
 
         //nrf_delay_ms(10000);
-        nrf_delay_ms(1000);
+        nrf_delay_ms(60000);
 
     }
 
