@@ -2546,8 +2546,8 @@ sm_state board_init()
     //return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
-    //return STATE_ACCELERATION_AIRPLANE_MODE;
-    return STATE_PRESSURE_AIRPLANE_MODE;
+    return STATE_ACCELERATION_AIRPLANE_MODE;
+    //return STATE_PRESSURE_AIRPLANE_MODE;
     //return STATE_MODEM_NETWORK_CONFIG;
     //return STATE_BEACON;
     //return STATE_SCAN;
