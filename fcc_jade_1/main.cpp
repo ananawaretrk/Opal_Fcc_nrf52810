@@ -71,6 +71,7 @@ typedef enum {
   STATE_LORA_INT_RX,
   STATE_LORA_RANDOM_FREQUENCY_HOPPING,
   STATE_LORA_FIXED_FREQUENCY_HOPPING,
+  STATE_BLE_RANDOM_FREQUENCY_HOPPING,
   STATE_DEBUG
 } sm_state;
 
@@ -1864,6 +1865,42 @@ float my_rn()
   return f_random_number + 920;
 }
 
+
+uint8_t ble_random_frequency_generate()
+{ 
+  uint8_t num_rand_bytes_available;
+  uint8_t old_rand_number;
+ 
+  int err = sd_rand_application_bytes_available_get(&num_rand_bytes_available);
+  //uint8_t rand_number[2] = {0};
+  if(num_rand_bytes_available > 0){
+    sd_rand_application_vector_get(&rand_number[0], 2);
+  }
+
+  if (rand_number[0] == old_rand_number)
+  {
+      int err = sd_rand_application_bytes_available_get(&num_rand_bytes_available);
+      if (num_rand_bytes_available > 0)
+      {
+          sd_rand_application_vector_get(&rand_number[0], 2);
+      }
+  }
+
+  //rand_number[0] = rand_min + rand_number[0] % (rand_max - rand_min + 1);
+  rand_number[0] = (rand_number[0] % 41) * 2;
+  
+  if(rand_number[0] == 0)
+  {
+    rand_number[0] = 2;
+  }  
+  //printf("My number = %d\n", rand_number[0]);
+  
+  old_rand_number = rand_number[0];
+  
+  return rand_number[0];
+  
+}
+
 //LoRa
 
 void lora_cw_transmit_5seconds()
@@ -2149,7 +2186,9 @@ sm_state board_init()
 {
     init_spi_for_lora();
 
-    return STATE_GATT_SERVER;
+    //return STATE_GATT_SERVER;
+    return STATE_BLE_RANDOM_FREQUENCY_HOPPING;
+    //return STATE_BLE_CONT_CW_TX;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
     //return STATE_LORA_RANDOM_FREQUENCY_HOPPING;
@@ -2697,6 +2736,47 @@ sm_state debug_function()
     return STATE_SLEEP;
 }
 
+void print_rn()
+{
+      while (1)
+    {      
+        ble_channel = ble_random_frequency_generate();
+        printf(DBG_BLUE "ble channel: %d\n" DBG_RESET, ble_channel);
+        nrf_delay_ms(250);
+        //radio_function();
+    }
+}
+
+sm_state ble_random_frequency_hopping()
+{
+    
+    // Set adv params
+    advTime = 350;
+    txlevel = 7;
+
+    ble_radio_setup();
+
+    //print_rn();
+
+    printf(DBG_BLUE "ble txlevel(d): %d\n" DBG_RESET, txlevel);
+    printf(DBG_BLUE "ble channel: %d\n" DBG_RESET, ble_channel);
+
+    while (1)
+    {
+        ble_channel = ble_random_frequency_generate();
+        printf(DBG_BLUE "ble channel: %d\n" DBG_RESET, ble_channel);
+        //nrf_delay_ms(340);
+        radio_disable();
+        //printf(DBG_BLUE "-------------------------- here 1\n" DBG_RESET);
+        modulation();
+        nrf_delay_ms(advTime);
+        radio_disable();
+    }
+    return STATE_SLEEP;
+}
+
+
+
 int main(void)
 {
     ret_code_t err_code;
@@ -2804,6 +2884,11 @@ int main(void)
             case STATE_LORA_FIXED_FREQUENCY_HOPPING:
                 printf("STATE_LORA_FIXED_FREQUENCY_HOPPING\n");
                 state = lora_fixed_frequency_hopping();
+                break;
+
+            case STATE_BLE_RANDOM_FREQUENCY_HOPPING:
+                printf("STATE_BLE_RANDOM_FREQUENCY_HOPPING\n");
+                state = ble_random_frequency_hopping();
                 break;
 
             case STATE_DEBUG:
