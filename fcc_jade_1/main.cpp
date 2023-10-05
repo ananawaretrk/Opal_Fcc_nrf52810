@@ -47,6 +47,7 @@
 #include "i2c_wrapper.h"
 #include "eventflag_and_errors.h"
 #include "boards.h"
+#include "nrf_drv_rng.h"
 //#define temperature_sensor
 
 // States
@@ -84,6 +85,8 @@ float lora_frequency_set [32] = {0};
 // Random number variable
 uint8_t rand_number[3] = {0};
 float f_random_number;
+uint8_t random_byte;
+uint8_t old_random_byte;
 
 
 //UART COLOR DEFINE
@@ -1869,7 +1872,7 @@ float my_rn()
 uint8_t ble_random_frequency_generate()
 { 
   uint8_t num_rand_bytes_available;
-  uint8_t old_rand_number;
+  static uint8_t old_rand_number;
  
   int err = sd_rand_application_bytes_available_get(&num_rand_bytes_available);
   //uint8_t rand_number[2] = {0};
@@ -2177,6 +2180,8 @@ sm_state soc_init()
     init_timer();
     init_timer2();
 
+    err_code = nrf_drv_rng_init(NULL);
+
     //ble_adv_stack_init();
 
     return STATE_BOARD_INIT;
@@ -2294,7 +2299,7 @@ void ble_radio_setup()
     NRF_RNG->TASKS_START = 1;
     NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
     NRF_CLOCK->TASKS_HFCLKSTART        = 1;
-    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0){ } // Do nothing.
+    //while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0){ } // Do nothing.
 
     // Disable Radio
     NRF_RADIO->SHORTS = 0;
@@ -2736,6 +2741,40 @@ sm_state debug_function()
     return STATE_SLEEP;
 }
 
+static uint8_t rng_num()
+{
+   uint32_t err_code;
+   
+   uint8_t available;
+   
+   nrf_drv_rng_bytes_available(&available);
+   while(available = 0){printf("Didnt get random number\n");}
+
+   err_code = nrf_drv_rng_rand(&random_byte, 1);
+    //APP_ERROR_CHECK(err_code);
+
+   if (random_byte == old_random_byte)
+   {
+       nrf_drv_rng_bytes_available(&available);
+       while (available = 0)
+       {
+           printf("Didnt get random number\n");
+       }
+       err_code = nrf_drv_rng_rand(&random_byte, 1);
+   }
+
+   old_random_byte = random_byte;
+
+   random_byte = (random_byte % 41) * 2;
+  
+  if(random_byte == 0)
+  {
+    random_byte = 2;
+  }
+
+    return random_byte;
+}
+
 void print_rn()
 {
       while (1)
@@ -2754,7 +2793,22 @@ sm_state ble_random_frequency_hopping()
     advTime = 350;
     txlevel = 7;
 
-    ble_radio_setup();
+    nrf_delay_ms(500);
+    ble_adv_stack_init();
+    nrf_delay_ms(500);
+
+    //ble_radio_setup();
+    nrf_sdh_disable_request();
+    // Configure HFCLK
+    NRF_RNG->TASKS_START = 1;
+    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+    NRF_CLOCK->TASKS_HFCLKSTART        = 1;
+    //while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0){ } // Do nothing.
+
+//    // Required to enable sdh for rng
+//    nrf_delay_ms(500);
+//    ble_adv_stack_init();
+//    nrf_delay_ms(500);
 
     //print_rn();
 
@@ -2763,11 +2817,9 @@ sm_state ble_random_frequency_hopping()
 
     while (1)
     {
-        ble_channel = ble_random_frequency_generate();
+        ble_channel = rng_num();
         printf(DBG_BLUE "ble channel: %d\n" DBG_RESET, ble_channel);
-        //nrf_delay_ms(340);
         radio_disable();
-        //printf(DBG_BLUE "-------------------------- here 1\n" DBG_RESET);
         modulation();
         nrf_delay_ms(advTime);
         radio_disable();

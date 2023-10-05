@@ -143,4 +143,7 @@ Output/Debug//main.o: \
  ../TMP117/TMP117_REG.h ../I2CFiles/i2c_wrapper.h \
  ../I2CFiles/eventflag_and_errors.h \
  ../3rd_party/nRF5_SDK_16/components/boards/boards.h \
- ../3rd_party/nRF5_SDK_16/components/boards/pca10100.h
+ ../3rd_party/nRF5_SDK_16/components/boards/pca10100.h \
+ ../3rd_party/nRF5_SDK_16/integration/nrfx/legacy/nrf_drv_rng.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_rng.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_rng.h
