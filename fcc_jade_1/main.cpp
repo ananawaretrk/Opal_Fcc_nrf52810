@@ -126,7 +126,7 @@ bool loraInit();
 void init_spi_for_lora();
 void lora_continuous_cw_transmit();
 void lora_cw_transmit_5seconds();
-void lora_continuous_transmit();
+void lora_continuous_transmit(bool flag);
 void lora_continuous_receive();
 void lora_interval_transmit(int localadvTime);
 void lora_interval_transmit1(int localadvTime);
@@ -301,6 +301,7 @@ int configTime          = 5000;
 //------------------------------------------------------
 int relayTime[4]       = {2000,4000,8000,16000};
 int advTime            = 1000;
+int short_advTime      = 0;
 int sleepTime          = 6000;
 int scanTime[3]        = { 750, 500, 1000 };
 int scanTimeVer        = 0;
@@ -889,7 +890,16 @@ void nus_data_handler(ble_nus_evt_t * p_evt)
         memcpy(&my_frequency, &received_frequency, sizeof(my_frequency));
         ble_channel = (int)my_frequency;
         channel = (float)my_frequency;
-        
+
+        // Byte-15
+        short_advTime = (int)((int)(p_evt->params.rx_data.p_data[15]));
+        if(short_advTime == 99){
+        advTime = 300;
+        }
+        else{
+        advTime = (int)((int)(p_evt->params.rx_data.p_data[6])*1000);
+        }
+
         // Byte-16
         lora_frequency_bandwidth = (int)(p_evt->params.rx_data.p_data[16]);
         
@@ -1551,7 +1561,7 @@ void radio_with_data1(bool flag)
         if (lora_selected)
         {
             printf(DBG_GREEN "LoRa Radio Transmit\n" DBG_RESET);
-            lora_continuous_transmit();
+            lora_continuous_transmit(true);
         }
         else
         {
@@ -1671,6 +1681,7 @@ void setConfig(int setTime)
     
     printf("OTA: %d\n",           OTA);
     printf("advTime: %d\n",       advTime);
+    printf("short_advTime: %d\n",       short_advTime);
     printf("bletxlevel(d): %d\n", txlevel);
     printf("loratxlevel(d): %d\n", loratxlevel);
     printf("sleepTime: %d\n",     sleepTime);
@@ -1679,6 +1690,7 @@ void setConfig(int setTime)
     printf(DBG_BLUE "channel: %d\n" DBG_RESET, ble_channel);
     printf(DBG_GREEN "channel: %.2f\n" DBG_RESET, lorafrequency);
     printf("Radio: %d\n",         lora_selected);
+    
 
     if(OTA)
     {
@@ -1947,7 +1959,7 @@ void lora_cw_transmit_5seconds()
  
 void lora_continuous_cw_transmit()
 {
-  printf(DBG_GREEN "LoRa Continuous CW Transmit\n" DBG_RESET);
+  //printf(DBG_GREEN "LoRa Continuous CW Transmit\n" DBG_RESET);
   
   // Modem config FSK
   rf95.sleep();
@@ -2024,10 +2036,11 @@ void init_spi_for_lora(void)
   return true;
  }
 
-void lora_continuous_transmit()
+void lora_continuous_transmit(bool flag)
 {
   printf(DBG_GREEN "LoRa Continuous Transmit\n" DBG_RESET);
   int counter = 0;
+
   while (0)
     {
         memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
@@ -2042,13 +2055,25 @@ void lora_continuous_transmit()
 
 //   memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
 //   sprintf(loraSendBuf, "id=%s-----hello: Counter: %d", idString, counter);
-    while (1)
+    //while (1)
+    if (!flag)
     {
         memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
         sprintf(loraSendBuf, "id=%s-----hello: Counter: %d", idString, counter);
         rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
         while (!rf95.waitPacketSent()){}
         counter++;
+    }
+    else if (flag)
+    {
+        while(1)
+        {
+            memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
+            sprintf(loraSendBuf, "id=%s-----hello: Counter: %d", idString, counter);
+            rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
+            while (!rf95.waitPacketSent()){}
+            counter++;
+        }
     }
 }
 
@@ -2191,8 +2216,8 @@ sm_state board_init()
 {
     init_spi_for_lora();
 
-    //return STATE_GATT_SERVER;
-    return STATE_BLE_RANDOM_FREQUENCY_HOPPING;
+    return STATE_GATT_SERVER;
+    //return STATE_BLE_RANDOM_FREQUENCY_HOPPING;
     //return STATE_BLE_CONT_CW_TX;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
@@ -2525,7 +2550,7 @@ sm_state lora_cont_mcw_tx()
     loraInit();
     nrf_delay_ms(1000);
     
-    lora_continuous_transmit();
+    lora_continuous_transmit(true);
 
     return STATE_SLEEP;
 }
@@ -2598,7 +2623,7 @@ sm_state lora_int_mcw_tx()
     while (1)
     {
         printf(DBG_GREEN "LoRa Radio MCW Transmit\n" DBG_RESET);
-        lora_continuous_transmit();
+        lora_continuous_transmit(false);
 
         start_timer(advTime);
         while (!timerFlag)
@@ -2714,7 +2739,7 @@ sm_state debug_function()
 
     if (1)
     {
-        lora_continuous_transmit();
+        lora_continuous_transmit(true);
     }
 
     if (1)
@@ -2730,7 +2755,7 @@ sm_state debug_function()
     
     //lora_continuous_cw_transmit();
     
-    //lora_continuous_transmit();
+    //lora_continuous_transmit(true);
     
     //nrf_delay_ms(5000);
     
