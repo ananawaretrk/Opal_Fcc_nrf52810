@@ -72,6 +72,7 @@ typedef enum {
   STATE_LORA_INT_RX,
   STATE_LORA_RANDOM_FREQUENCY_HOPPING,
   STATE_LORA_FIXED_FREQUENCY_HOPPING,
+  STATE_LORA_FIXED1_FREQUENCY_HOPPING,
   STATE_BLE_RANDOM_FREQUENCY_HOPPING,
   STATE_DEBUG
 } sm_state;
@@ -87,6 +88,7 @@ uint8_t rand_number[3] = {0};
 float f_random_number;
 uint8_t random_byte;
 uint8_t old_random_byte;
+static uint8_t rng_num1();
 
 
 //UART COLOR DEFINE
@@ -1851,7 +1853,8 @@ float my_rn()
   //rand_number[0] = rand_min + rand_number[0] % (rand_max - rand_min + 1);
   rand_number[0] = (rand_number[0] % 5);
   rand_number[1] = (rand_number[1] % 110);
-  rand_number[2] = (rand_number[2] % 32);
+  //rand_number[2] = (rand_number[2] % 32); // uncomment when using lora_fixed_frequency_hopping
+  rand_number[2] = (rand_number[2] % 52); // uncomment when using lora_fixed1_frequency_hopping
  
   // Create floating number using two bytes
   f_random_number = rand_number[0] + (rand_number[1] * 0.01);
@@ -2036,10 +2039,24 @@ void init_spi_for_lora(void)
   return true;
  }
 
+void lora_mcw_transmit(int dwell_time)
+{
+  printf(DBG_GREEN "LoRa Continuous Transmit\n" DBG_RESET);
+  static int counter1 = 0;
+
+  {
+      memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
+      sprintf(loraSendBuf, "id=%s-----hello: Counter: %d", 8, counter1);
+      rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
+      while (!rf95.waitPacketSent()){}
+      counter1++;
+  }
+}
+
 void lora_continuous_transmit(bool flag)
 {
   printf(DBG_GREEN "LoRa Continuous Transmit\n" DBG_RESET);
-  int counter = 0;
+  static int counter = 0;
 
   while (0)
     {
@@ -2059,10 +2076,11 @@ void lora_continuous_transmit(bool flag)
     if (!flag)
     {
         memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
-        sprintf(loraSendBuf, "id=%s-----hello: Counter: %d", idString, counter);
+        //sprintf(loraSendBuf, "id=%s-----hello: Counter: %d", idString, counter);
+        sprintf(loraSendBuf, "3jDh8zLQpXoW6yB7vNk9uYs2lAaT5mRbE1gF4cZ0xVfJwKqPdIiHrGtUeMnOoCfVbSgDhXjZkYlApQoWmE2tR3uI4vB5xN6sC7yF8zL9pU0aTqSdJwKfLgHhXiYjZkVlAmBnOpQpRtEsDuFvGwIxJyKzLbMcNdOePfQgRhSiTjUkVlWmXnY");
         rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
         while (!rf95.waitPacketSent()){}
-        counter++;
+        //counter++;
     }
     else if (flag)
     {
@@ -2217,6 +2235,8 @@ sm_state board_init()
     init_spi_for_lora();
 
     return STATE_GATT_SERVER;
+    //return STATE_LORA_CONT_MCW_TX;
+    //return STATE_LORA_FIXED1_FREQUENCY_HOPPING;
     //return STATE_BLE_RANDOM_FREQUENCY_HOPPING;
     //return STATE_BLE_CONT_CW_TX;
     //return STATE_DEBUG;
@@ -2547,10 +2567,12 @@ sm_state lora_cont_mcw_tx()
 {
     // Init LoRa
     printf(DBG_GREEN "LoRa Radio MCW Transmit\n" DBG_RESET);
+    bw_selection = 1;
     loraInit();
     nrf_delay_ms(1000);
     
     lora_continuous_transmit(true);
+    //lora_continuous_transmit(false);
 
     return STATE_SLEEP;
 }
@@ -2650,7 +2672,6 @@ sm_state lora_random_frequency_hopping()
 {
     // Hopping code here
     loratxlevel = 20;
-
     loraInit();
     rf95.setFrequency(922.5);
     lora_continuous_cw_transmit();
@@ -2692,7 +2713,7 @@ sm_state lora_fixed_frequency_hopping()
     }
 
     loratxlevel = 20;
-
+    bw_selection = 1;
     loraInit();
     rf95.setFrequency(lora_frequency_set[0]);
     lora_continuous_cw_transmit();
@@ -2703,6 +2724,52 @@ sm_state lora_fixed_frequency_hopping()
         rf95.setFrequency(lora_frequency_set[rand_number[2]]);
         lora_continuous_cw_transmit();
         start_timer(200);
+
+        while (!timerFlag)
+        {
+            nrf_pwr_mgmt_run();
+        }
+
+        stop_timer();
+        lora_disable();
+    }
+
+
+    return STATE_SLEEP;
+}
+
+sm_state lora_fixed1_frequency_hopping()
+{
+    // Hopping code here
+    printf(DBG_GREEN "lora_fixed1_frequency_hoppin\n" DBG_RESET);
+    // Create array of the fixed frequency
+    lora_frequency_set[0] = 902.5;
+    for(int i=0; i<51; i++)
+    {
+      lora_frequency_set[i+1] = lora_frequency_set[i] + 0.5;
+    }
+    for(int i=0; i<51; i++)
+    {
+        printf("lora_frequency_set[%d] = %.1f\n", i, lora_frequency_set[i]);
+        nrf_delay_ms(10);
+        //printf("lora_frequency_set[0] = %.1f, lora_frequency_set[32] = %.1f\n", lora_frequency_set[0], lora_frequency_set[32]);
+    }
+
+    loratxlevel = 20;
+    bw_selection = 1;
+    loraInit();
+    rf95.setFrequency(919.5);
+    lora_continuous_transmit(false);
+    lora_disable();
+   
+
+    while (1)
+    {
+        //my_rn();
+        //rf95.setFrequency(lora_frequency_set[rand_number[2]]);
+        rf95.setFrequency(lora_frequency_set[rng_num1()]);
+        lora_continuous_transmit(false);
+        start_timer(50);
 
         while (!timerFlag)
         {
@@ -2791,6 +2858,40 @@ static uint8_t rng_num()
    old_random_byte = random_byte;
 
    random_byte = (random_byte % 41) * 2;
+  
+  if(random_byte == 0)
+  {
+    random_byte = 2;
+  }
+
+    return random_byte;
+}
+
+static uint8_t rng_num1()
+{
+   uint32_t err_code;
+   
+   uint8_t available;
+   
+   nrf_drv_rng_bytes_available(&available);
+   while(available = 0){printf("Didnt get random number\n");}
+
+   err_code = nrf_drv_rng_rand(&random_byte, 1);
+    //APP_ERROR_CHECK(err_code);
+
+   if (random_byte == old_random_byte)
+   {
+       nrf_drv_rng_bytes_available(&available);
+       while (available = 0)
+       {
+           printf("Didnt get random number\n");
+       }
+       err_code = nrf_drv_rng_rand(&random_byte, 1);
+   }
+
+   old_random_byte = random_byte;
+
+   random_byte = (random_byte % 52);
   
   if(random_byte == 0)
   {
@@ -2961,6 +3062,11 @@ int main(void)
             case STATE_LORA_FIXED_FREQUENCY_HOPPING:
                 printf("STATE_LORA_FIXED_FREQUENCY_HOPPING\n");
                 state = lora_fixed_frequency_hopping();
+                break;
+
+            case STATE_LORA_FIXED1_FREQUENCY_HOPPING:
+                printf("STATE_LORA_FIXED1_FREQUENCY_HOPPING\n");
+                state = lora_fixed1_frequency_hopping();
                 break;
 
             case STATE_BLE_RANDOM_FREQUENCY_HOPPING:

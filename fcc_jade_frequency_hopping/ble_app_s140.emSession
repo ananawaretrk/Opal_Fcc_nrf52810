@@ -58,7 +58,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="51" y="2016" useTextEdit="1" useBinaryEdit="0" left="0" path="main.cpp" selected="1" top="2001" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="2016" useTextEdit="1" useBinaryEdit="0" left="0" path="main.cpp" selected="1" top="2001" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="527" useTextEdit="1" useBinaryEdit="0" left="0" path="../sx1261/RH_SX126x.cpp" selected="0" top="512" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/components/boards/boards.c" selected="0" top="39" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="71" useTextEdit="1" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_gpio.h" selected="0" top="55" codecName="Default"/>
