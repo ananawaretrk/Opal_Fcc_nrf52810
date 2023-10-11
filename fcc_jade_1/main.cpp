@@ -2058,26 +2058,22 @@ void lora_continuous_transmit(bool flag)
   printf(DBG_GREEN "LoRa Continuous Transmit\n" DBG_RESET);
   static int counter = 0;
 
-  while (0)
-    {
-        memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
-        sprintf(loraSendBuf, "id=%s-----hello", idString);
-        rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
-        printf("%s\n", loraSendBuf);
-        rf95.waitPacketSent();
-        nrf_delay_ms(700);
-        rf95.sleep();
-    }
-
-
-//   memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
-//   sprintf(loraSendBuf, "id=%s-----hello: Counter: %d", idString, counter);
-    //while (1)
     if (!flag)
     {
         memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
         //sprintf(loraSendBuf, "id=%s-----hello: Counter: %d", idString, counter);
+        // 125Khz, BW Dwell time = 300ms
+        if(bw_selection == 1){
         sprintf(loraSendBuf, "3jDh8zLQpXoW6yB7vNk9uYs2lAaT5mRbE1gF4cZ0xVfJwKqPdIiHrGtUeMnOoCfVbSgDhXjZkYlApQoWmE2tR3uI4vB5xN6sC7yF8zL9pU0aTqSdJwKfLgHhXiYjZkVlAmBnOpQpRtEsDuFvGwIxJyKzLbMcNdOePfQgRhSiTjUkVlWmXnY");
+        }
+        // 250Khz BW, BW Dwell time < 200ms
+        else if(bw_selection == 2){
+        sprintf(loraSendBuf, "3jDh8zLQpXoW6yB7vNk9uYs2lAaT5mRbE1gF4cZ0xVfJwKqPdIiHrGtUeMnOoCfVbSgDhXjZkYlApQoWmE2tR3uI4vB5xN6sC7yF8zL9pU0aTqSdJwKfLgHhXiYjZkVlAmBnOpQpRtEsDuFvGwIxJyKzLbMcNdOePfQgRhSiTjUkVlWmXnYttttttttttttt");
+        }
+        // 500Khz BW, BW Dwell time < 100ms
+        else if(bw_selection == 3){
+        sprintf(loraSendBuf, "3jDh8zLQpXoW6yB7vNk9uYs2lAaT5mRbE1gF4cZ0xVfJwKqPdIiHrGtUeMnOoCfVbSgDhXjZkYlApQoWmE2tR3uI4vB5xN6sC7yF8zL9pU0aTqSdJwKfLgHhXiYjZkVlAmBnOpQpRtEsDuFvGwIxJyKzLbMcNdOePfQgRhSiTjUkVlWmXnYttttttttttttttttttttttttttttttt");
+        }
         rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
         while (!rf95.waitPacketSent()){}
         //counter++;
@@ -2567,7 +2563,6 @@ sm_state lora_cont_mcw_tx()
 {
     // Init LoRa
     printf(DBG_GREEN "LoRa Radio MCW Transmit\n" DBG_RESET);
-    bw_selection = 1;
     loraInit();
     nrf_delay_ms(1000);
     
