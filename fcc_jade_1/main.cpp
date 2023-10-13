@@ -82,6 +82,7 @@ sm_state state = STATE_SOC_INIT;
 
 int lora_frequency_bandwidth = 0;
 float lora_frequency_set [32] = {0};
+float lora_frequency_set1 [52] = {0};
 
 // Random number variable
 uint8_t rand_number[3] = {0};
@@ -2230,9 +2231,9 @@ sm_state board_init()
 {
     init_spi_for_lora();
 
-    return STATE_GATT_SERVER;
+    //return STATE_GATT_SERVER;
     //return STATE_LORA_CONT_MCW_TX;
-    //return STATE_LORA_FIXED1_FREQUENCY_HOPPING;
+    return STATE_LORA_FIXED1_FREQUENCY_HOPPING;
     //return STATE_BLE_RANDOM_FREQUENCY_HOPPING;
     //return STATE_BLE_CONT_CW_TX;
     //return STATE_DEBUG;
@@ -2738,31 +2739,31 @@ sm_state lora_fixed1_frequency_hopping()
     // Hopping code here
     printf(DBG_GREEN "lora_fixed1_frequency_hoppin\n" DBG_RESET);
     // Create array of the fixed frequency
-    lora_frequency_set[0] = 902.5;
+    lora_frequency_set1[0] = 902.5;
     for(int i=0; i<51; i++)
     {
-      lora_frequency_set[i+1] = lora_frequency_set[i] + 0.5;
+      lora_frequency_set1[i+1] = lora_frequency_set1[i] + 0.5;
     }
     for(int i=0; i<51; i++)
     {
-        printf("lora_frequency_set[%d] = %.1f\n", i, lora_frequency_set[i]);
+        printf("lora_frequency_set1[%d] = %.1f\n", i, lora_frequency_set1[i]);
         nrf_delay_ms(10);
-        //printf("lora_frequency_set[0] = %.1f, lora_frequency_set[32] = %.1f\n", lora_frequency_set[0], lora_frequency_set[32]);
+        //printf("lora_frequency_set1[0] = %.1f, lora_frequency_set1[32] = %.1f\n", lora_frequency_set1[0], lora_frequency_set1[32]);
     }
 
     loratxlevel = 20;
     bw_selection = 1;
     loraInit();
-    rf95.setFrequency(919.5);
-    lora_continuous_transmit(false);
-    lora_disable();
+//    rf95.setFrequency(919.5);
+//    lora_continuous_transmit(false);
+//    lora_disable();
    
 
     while (1)
     {
         //my_rn();
-        //rf95.setFrequency(lora_frequency_set[rand_number[2]]);
-        rf95.setFrequency(lora_frequency_set[rng_num1()]);
+        //rf95.setFrequency(lora_frequency_set1[rand_number[2]]);
+        rf95.setFrequency(lora_frequency_set1[rng_num1()]);
         lora_continuous_transmit(false);
         start_timer(50);
 
@@ -2888,10 +2889,10 @@ static uint8_t rng_num1()
 
    random_byte = (random_byte % 52);
   
-  if(random_byte == 0)
-  {
-    random_byte = 2;
-  }
+//  if(random_byte == 0)
+//  {
+//    random_byte = 2;
+//  }
 
     return random_byte;
 }
