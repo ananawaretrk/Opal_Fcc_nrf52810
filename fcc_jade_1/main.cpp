@@ -304,7 +304,7 @@ int configTime          = 5000;
 //------------------------------------------------------
 int relayTime[4]       = {2000,4000,8000,16000};
 int advTime            = 1000;
-int short_advTime      = 0;
+int special_mode      = 0;
 int sleepTime          = 6000;
 int scanTime[3]        = { 750, 500, 1000 };
 int scanTimeVer        = 0;
@@ -895,8 +895,8 @@ void nus_data_handler(ble_nus_evt_t * p_evt)
         channel = (float)my_frequency;
 
         // Byte-15
-        short_advTime = (int)((int)(p_evt->params.rx_data.p_data[15]));
-        if(short_advTime == 99){
+        special_mode = (int)((int)(p_evt->params.rx_data.p_data[15]));
+        if(special_mode == 99){
         advTime = 300;
         }
         else{
@@ -1684,7 +1684,7 @@ void setConfig(int setTime)
     
     printf("OTA: %d\n",           OTA);
     printf("advTime: %d\n",       advTime);
-    printf("short_advTime: %d\n",       short_advTime);
+    printf("special_mode: %d\n",       special_mode);
     printf("bletxlevel(d): %d\n", txlevel);
     printf("loratxlevel(d): %d\n", loratxlevel);
     printf("sleepTime: %d\n",     sleepTime);
@@ -2231,9 +2231,9 @@ sm_state board_init()
 {
     init_spi_for_lora();
 
-    //return STATE_GATT_SERVER;
+    return STATE_GATT_SERVER;
     //return STATE_LORA_CONT_MCW_TX;
-    return STATE_LORA_FIXED1_FREQUENCY_HOPPING;
+    //return STATE_LORA_FIXED1_FREQUENCY_HOPPING;
     //return STATE_BLE_RANDOM_FREQUENCY_HOPPING;
     //return STATE_BLE_CONT_CW_TX;
     //return STATE_DEBUG;
@@ -2291,33 +2291,37 @@ sm_state start_gatt_server()
     }
 //--------------------------------------------------------------------------------------------------------------------------------
     //STATE_LORA_CONT_CW_TX
-    else if(MODE == 2 && lora_selected == 1 && advTime == 0 && scanDuration == 0 && sleepTime == 0){
+    else if(MODE == 2 && lora_selected == 1 && advTime == 0 && scanDuration == 0 && sleepTime == 0 && special_mode == 0){
     return STATE_LORA_CONT_CW_TX;
     }
 
     //STATE_LORA_CONT_MCW_TX
-    else if(MODE == 3 && lora_selected == 1 && advTime == 0 && scanDuration == 0 && sleepTime == 0){
+    else if(MODE == 3 && lora_selected == 1 && advTime == 0 && scanDuration == 0 && sleepTime == 0 && special_mode == 0){
     return STATE_LORA_CONT_MCW_TX;
     }
 
     //STATE_LORA_CONT_RX
-    else if(MODE == 2 && lora_selected == 1 && advTime == 0 && scanDuration > 0 && sleepTime == 0){
+    else if(MODE == 2 && lora_selected == 1 && advTime == 0 && scanDuration > 0 && sleepTime == 0 && special_mode == 0){
     return STATE_LORA_CONT_RX;
     }
 
     //STATE_LORA_INT_CW_TX
-    else if(MODE == 2 && lora_selected == 1 && advTime > 0 && scanDuration == 0 && sleepTime > 0){
+    else if(MODE == 2 && lora_selected == 1 && advTime > 0 && scanDuration == 0 && sleepTime > 0 && special_mode == 0){
     return STATE_LORA_INT_CW_TX;
     }
 
     //STATE_LORA_INT_MCW_TX
-    else if(MODE == 3 && lora_selected == 1 && advTime > 0 && scanDuration == 0 && sleepTime > 0){
+    else if(MODE == 3 && lora_selected == 1 && advTime > 0 && scanDuration == 0 && sleepTime > 0 && (special_mode == 0 || special_mode == 99)){
     return STATE_LORA_INT_MCW_TX;
     }
 
     //STATE_LORA_INT_RX
-    else if(MODE == 2 && lora_selected == 1 && advTime == 0 && scanDuration > 0 && sleepTime > 0){
+    else if(MODE == 2 && lora_selected == 1 && advTime == 0 && scanDuration > 0 && sleepTime > 0 && special_mode == 0){
     return STATE_LORA_INT_RX;
+    }
+
+    else if(MODE == 3 && lora_selected == 1 && advTime == 0 && scanDuration == 0 && sleepTime == 0 && special_mode == 88){
+    return STATE_LORA_FIXED1_FREQUENCY_HOPPING;
     }
     
     //Default
@@ -2641,12 +2645,28 @@ sm_state lora_int_mcw_tx()
     while (1)
     {
         printf(DBG_GREEN "LoRa Radio MCW Transmit\n" DBG_RESET);
-        lora_continuous_transmit(false);
+        if (special_mode == 99)
+        {
+            printf("Special LoRa interval MCW TX\n");
+            lora_continuous_transmit(false);
+        }
+        else
+        {
+            printf("Normal LoRa interval MCW TX\n");
+        }
 
         start_timer(advTime);
         while (!timerFlag)
         {
-            nrf_pwr_mgmt_run();
+            //nrf_pwr_mgmt_run();
+            if (special_mode == 0)
+            {
+                lora_continuous_transmit(false);
+            }
+            else if (special_mode == 99)
+            {
+                nrf_pwr_mgmt_run();
+            }
         }
         stop_timer();
         
@@ -2738,31 +2758,25 @@ sm_state lora_fixed1_frequency_hopping()
 {
     // Hopping code here
     printf(DBG_GREEN "lora_fixed1_frequency_hoppin\n" DBG_RESET);
+
     // Create array of the fixed frequency
     lora_frequency_set1[0] = 902.5;
     for(int i=0; i<51; i++)
     {
       lora_frequency_set1[i+1] = lora_frequency_set1[i] + 0.5;
     }
+    
+    // Print array of the fixed frequency
     for(int i=0; i<51; i++)
     {
         printf("lora_frequency_set1[%d] = %.1f\n", i, lora_frequency_set1[i]);
         nrf_delay_ms(10);
-        //printf("lora_frequency_set1[0] = %.1f, lora_frequency_set1[32] = %.1f\n", lora_frequency_set1[0], lora_frequency_set1[32]);
     }
 
-    loratxlevel = 20;
-    bw_selection = 1;
     loraInit();
-//    rf95.setFrequency(919.5);
-//    lora_continuous_transmit(false);
-//    lora_disable();
-   
 
     while (1)
     {
-        //my_rn();
-        //rf95.setFrequency(lora_frequency_set1[rand_number[2]]);
         rf95.setFrequency(lora_frequency_set1[rng_num1()]);
         lora_continuous_transmit(false);
         start_timer(50);
