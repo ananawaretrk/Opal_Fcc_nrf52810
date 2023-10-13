@@ -82,7 +82,7 @@ sm_state state = STATE_SOC_INIT;
 
 int lora_frequency_bandwidth = 0;
 float lora_frequency_set [32] = {0};
-float lora_frequency_set1 [52] = {0};
+float lora_frequency_set1 [53] = {0};
 
 // Random number variable
 uint8_t rand_number[3] = {0};
@@ -2760,14 +2760,14 @@ sm_state lora_fixed1_frequency_hopping()
     printf(DBG_GREEN "lora_fixed1_frequency_hoppin\n" DBG_RESET);
 
     // Create array of the fixed frequency
-    lora_frequency_set1[0] = 902.5;
-    for(int i=0; i<51; i++)
+    lora_frequency_set1[0] = 902.0;
+    for(int i=0; i<53; i++)
     {
       lora_frequency_set1[i+1] = lora_frequency_set1[i] + 0.5;
     }
     
     // Print array of the fixed frequency
-    for(int i=0; i<51; i++)
+    for(int i=0; i<53; i++)
     {
         printf("lora_frequency_set1[%d] = %.1f\n", i, lora_frequency_set1[i]);
         nrf_delay_ms(10);

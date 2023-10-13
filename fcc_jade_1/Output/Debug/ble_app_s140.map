@@ -17322,7 +17322,7 @@ Linker script and memory map
                 0x0000000000000001                . = ASSERT (((__tdata_run_start__ == __tdata_run_end__) || ((__tdata_run_end__ - __RAM_segment_start__) <= __RAM_segment_size__)), error: .tdata_run is too large to fit in RAM memory segment)
                 0x0000000020002b6c                __bss_load_start__ = ALIGN (__tdata_run_end__, 0x4)
 
-.bss            0x0000000020002b6c     0x16c8
+.bss            0x0000000020002b6c     0x16d0
                 0x0000000020002b6c                __bss_start__ = .
  *(.bss .bss.* .gnu.linkonce.b.*)
  .bss.m_error_data.7462
@@ -17390,219 +17390,219 @@ Linker script and memory map
                 0x0000000020002d90       0x80 Output/Debug//main.o
                 0x0000000020002d90                lora_frequency_set
  .bss.lora_frequency_set1
-                0x0000000020002e10       0xd0 Output/Debug//main.o
+                0x0000000020002e10       0xd4 Output/Debug//main.o
                 0x0000000020002e10                lora_frequency_set1
  .bss.rand_number
-                0x0000000020002ee0        0x3 Output/Debug//main.o
-                0x0000000020002ee0                rand_number
- *fill*         0x0000000020002ee3        0x1 
+                0x0000000020002ee4        0x3 Output/Debug//main.o
+                0x0000000020002ee4                rand_number
+ *fill*         0x0000000020002ee7        0x1 
  .bss.f_random_number
-                0x0000000020002ee4        0x4 Output/Debug//main.o
-                0x0000000020002ee4                f_random_number
+                0x0000000020002ee8        0x4 Output/Debug//main.o
+                0x0000000020002ee8                f_random_number
  .bss.random_byte
-                0x0000000020002ee8        0x1 Output/Debug//main.o
-                0x0000000020002ee8                random_byte
- .bss.old_random_byte
-                0x0000000020002ee9        0x1 Output/Debug//main.o
-                0x0000000020002ee9                old_random_byte
- *fill*         0x0000000020002eea        0x2 
- .bss._ZL10tmp_sensor
                 0x0000000020002eec        0x1 Output/Debug//main.o
- *fill*         0x0000000020002eed        0x3 
+                0x0000000020002eec                random_byte
+ .bss.old_random_byte
+                0x0000000020002eed        0x1 Output/Debug//main.o
+                0x0000000020002eed                old_random_byte
+ *fill*         0x0000000020002eee        0x2 
+ .bss._ZL10tmp_sensor
+                0x0000000020002ef0        0x1 Output/Debug//main.o
+ *fill*         0x0000000020002ef1        0x3 
  .bss.i2c_wrapper
-                0x0000000020002ef0       0x18 Output/Debug//main.o
-                0x0000000020002ef0                i2c_wrapper
- .bss.Wire      0x0000000020002f08       0x54 Output/Debug//main.o
-                0x0000000020002f08                Wire
- .bss.rf95      0x0000000020002f5c      0x134 Output/Debug//main.o
-                0x0000000020002f5c                rf95
- .bss.buff      0x0000000020003090       0xfb Output/Debug//main.o
-                0x0000000020003090                buff
- *fill*         0x000000002000318b        0x1 
+                0x0000000020002ef4       0x18 Output/Debug//main.o
+                0x0000000020002ef4                i2c_wrapper
+ .bss.Wire      0x0000000020002f0c       0x54 Output/Debug//main.o
+                0x0000000020002f0c                Wire
+ .bss.rf95      0x0000000020002f60      0x134 Output/Debug//main.o
+                0x0000000020002f60                rf95
+ .bss.buff      0x0000000020003094       0xfb Output/Debug//main.o
+                0x0000000020003094                buff
+ *fill*         0x000000002000318f        0x1 
  .bss.loraSendBuf
-                0x000000002000318c       0xfb Output/Debug//main.o
-                0x000000002000318c                loraSendBuf
- *fill*         0x0000000020003287        0x1 
+                0x0000000020003190       0xfb Output/Debug//main.o
+                0x0000000020003190                loraSendBuf
+ *fill*         0x000000002000328b        0x1 
  .bss.input_min
-                0x0000000020003288        0x4 Output/Debug//main.o
-                0x0000000020003288                input_min
+                0x000000002000328c        0x4 Output/Debug//main.o
+                0x000000002000328c                input_min
  .bss.loratxlevel
-                0x000000002000328c        0x1 Output/Debug//main.o
-                0x000000002000328c                loratxlevel
- *fill*         0x000000002000328d        0x3 
+                0x0000000020003290        0x1 Output/Debug//main.o
+                0x0000000020003290                loratxlevel
+ *fill*         0x0000000020003291        0x7 
  .bss._ZL13timer_id_data
-                0x0000000020003290       0x20 Output/Debug//main.o
+                0x0000000020003298       0x20 Output/Debug//main.o
  .bss._ZL13clock_id_data
-                0x00000000200032b0       0x20 Output/Debug//main.o
+                0x00000000200032b8       0x20 Output/Debug//main.o
  .bss.millis_counter
-                0x00000000200032d0        0x4 Output/Debug//main.o
-                0x00000000200032d0                millis_counter
+                0x00000000200032d8        0x4 Output/Debug//main.o
+                0x00000000200032d8                millis_counter
  .bss.spi_xfer_done
-                0x00000000200032d4        0x1 Output/Debug//main.o
-                0x00000000200032d4                spi_xfer_done
+                0x00000000200032dc        0x1 Output/Debug//main.o
+                0x00000000200032dc                spi_xfer_done
  .bss.lora_selected
-                0x00000000200032d5        0x1 Output/Debug//main.o
-                0x00000000200032d5                lora_selected
- *fill*         0x00000000200032d6        0x2 
- .bss.sx126x    0x00000000200032d8      0x158 Output/Debug//main.o
-                0x00000000200032d8                sx126x
- .bss.records   0x0000000020003430        0x1 Output/Debug//main.o
-                0x0000000020003430                records
- .bss.BLE_GW    0x0000000020003431        0x1 Output/Debug//main.o
-                0x0000000020003431                BLE_GW
+                0x00000000200032dd        0x1 Output/Debug//main.o
+                0x00000000200032dd                lora_selected
+ *fill*         0x00000000200032de        0x2 
+ .bss.sx126x    0x00000000200032e0      0x158 Output/Debug//main.o
+                0x00000000200032e0                sx126x
+ .bss.records   0x0000000020003438        0x1 Output/Debug//main.o
+                0x0000000020003438                records
+ .bss.BLE_GW    0x0000000020003439        0x1 Output/Debug//main.o
+                0x0000000020003439                BLE_GW
  .bss.Drop_Flag
-                0x0000000020003432        0x1 Output/Debug//main.o
-                0x0000000020003432                Drop_Flag
- .bss.B_gps     0x0000000020003433        0x1 Output/Debug//main.o
-                0x0000000020003433                B_gps
- .bss.B_lora    0x0000000020003434        0x1 Output/Debug//main.o
-                0x0000000020003434                B_lora
- .bss.B_cell    0x0000000020003435        0x1 Output/Debug//main.o
-                0x0000000020003435                B_cell
+                0x000000002000343a        0x1 Output/Debug//main.o
+                0x000000002000343a                Drop_Flag
+ .bss.B_gps     0x000000002000343b        0x1 Output/Debug//main.o
+                0x000000002000343b                B_gps
+ .bss.B_lora    0x000000002000343c        0x1 Output/Debug//main.o
+                0x000000002000343c                B_lora
+ .bss.B_cell    0x000000002000343d        0x1 Output/Debug//main.o
+                0x000000002000343d                B_cell
  .bss.connected
-                0x0000000020003436        0x1 Output/Debug//main.o
-                0x0000000020003436                connected
+                0x000000002000343e        0x1 Output/Debug//main.o
+                0x000000002000343e                connected
  .bss.debugMode
-                0x0000000020003437        0x1 Output/Debug//main.o
-                0x0000000020003437                debugMode
+                0x000000002000343f        0x1 Output/Debug//main.o
+                0x000000002000343f                debugMode
  .bss._ZL36m_nus_link_ctx_storage_ctx_data_pool
-                0x0000000020003438        0x4 Output/Debug//main.o
+                0x0000000020003440        0x4 Output/Debug//main.o
  .bss._ZL6m_gatt
-                0x000000002000343c       0x14 Output/Debug//main.o
+                0x0000000020003444       0x14 Output/Debug//main.o
  .bss._ZL5m_qwr
-                0x0000000020003450        0xc Output/Debug//main.o
+                0x0000000020003458        0xc Output/Debug//main.o
  .bss._ZL13m_advertising
-                0x000000002000345c      0x434 Output/Debug//main.o
+                0x0000000020003464      0x434 Output/Debug//main.o
  .bss.data_array
-                0x0000000020003890       0xf4 Output/Debug//main.o
-                0x0000000020003890                data_array
+                0x0000000020003898       0xf4 Output/Debug//main.o
+                0x0000000020003898                data_array
  .bss.SCAN_INTERVAL
-                0x0000000020003984        0x4 Output/Debug//main.o
-                0x0000000020003984                SCAN_INTERVAL
- .bss.SCAN_DURATION
-                0x0000000020003988        0x4 Output/Debug//main.o
-                0x0000000020003988                SCAN_DURATION
- .bss.special_mode
                 0x000000002000398c        0x4 Output/Debug//main.o
-                0x000000002000398c                special_mode
+                0x000000002000398c                SCAN_INTERVAL
+ .bss.SCAN_DURATION
+                0x0000000020003990        0x4 Output/Debug//main.o
+                0x0000000020003990                SCAN_DURATION
+ .bss.special_mode
+                0x0000000020003994        0x4 Output/Debug//main.o
+                0x0000000020003994                special_mode
  .bss._ZL18m_scan_buffer_data
-                0x0000000020003990       0x1f Output/Debug//main.o
- *fill*         0x00000000200039af        0x1 
+                0x0000000020003998       0x1f Output/Debug//main.o
+ *fill*         0x00000000200039b7        0x1 
  .bss.adv_address
-                0x00000000200039b0        0x4 Output/Debug//main.o
-                0x00000000200039b0                adv_address
- .bss.adv_data  0x00000000200039b4        0x4 Output/Debug//main.o
-                0x00000000200039b4                adv_data
- .bss.adv_len   0x00000000200039b8        0x2 Output/Debug//main.o
-                0x00000000200039b8                adv_len
- *fill*         0x00000000200039ba        0x2 
- .bss.TapeLog   0x00000000200039bc      0x1e0 Output/Debug//main.o
-                0x00000000200039bc                TapeLog
+                0x00000000200039b8        0x4 Output/Debug//main.o
+                0x00000000200039b8                adv_address
+ .bss.adv_data  0x00000000200039bc        0x4 Output/Debug//main.o
+                0x00000000200039bc                adv_data
+ .bss.adv_len   0x00000000200039c0        0x2 Output/Debug//main.o
+                0x00000000200039c0                adv_len
+ *fill*         0x00000000200039c2        0x2 
+ .bss.TapeLog   0x00000000200039c4      0x1e0 Output/Debug//main.o
+                0x00000000200039c4                TapeLog
  .bss._ZL8idString
-                0x0000000020003b9c        0xf Output/Debug//main.o
- *fill*         0x0000000020003bab        0x1 
+                0x0000000020003ba4        0xf Output/Debug//main.o
+ *fill*         0x0000000020003bb3        0x1 
  .bss.timerFlag
-                0x0000000020003bac        0x4 Output/Debug//main.o
-                0x0000000020003bac                timerFlag
- .bss.timeoutFlagb
-                0x0000000020003bb0        0x4 Output/Debug//main.o
-                0x0000000020003bb0                timeoutFlagb
- .bss.sleepflag
                 0x0000000020003bb4        0x4 Output/Debug//main.o
-                0x0000000020003bb4                sleepflag
- .bss.noSendCounter
+                0x0000000020003bb4                timerFlag
+ .bss.timeoutFlagb
                 0x0000000020003bb8        0x4 Output/Debug//main.o
-                0x0000000020003bb8                noSendCounter
- .bss.sendFlag  0x0000000020003bbc        0x1 Output/Debug//main.o
-                0x0000000020003bbc                sendFlag
- .bss.OTA       0x0000000020003bbd        0x1 Output/Debug//main.o
-                0x0000000020003bbd                OTA
- .bss.MODE      0x0000000020003bbe        0x1 Output/Debug//main.o
-                0x0000000020003bbe                MODE
- *fill*         0x0000000020003bbf        0x1 
- .bss.millis_init
+                0x0000000020003bb8                timeoutFlagb
+ .bss.sleepflag
+                0x0000000020003bbc        0x4 Output/Debug//main.o
+                0x0000000020003bbc                sleepflag
+ .bss.noSendCounter
                 0x0000000020003bc0        0x4 Output/Debug//main.o
-                0x0000000020003bc0                millis_init
+                0x0000000020003bc0                noSendCounter
+ .bss.sendFlag  0x0000000020003bc4        0x1 Output/Debug//main.o
+                0x0000000020003bc4                sendFlag
+ .bss.OTA       0x0000000020003bc5        0x1 Output/Debug//main.o
+                0x0000000020003bc5                OTA
+ .bss.MODE      0x0000000020003bc6        0x1 Output/Debug//main.o
+                0x0000000020003bc6                MODE
+ *fill*         0x0000000020003bc7        0x1 
+ .bss.millis_init
+                0x0000000020003bc8        0x4 Output/Debug//main.o
+                0x0000000020003bc8                millis_init
  .bss.oxy_scanned
-                0x0000000020003bc4        0x1 Output/Debug//main.o
-                0x0000000020003bc4                oxy_scanned
- *fill*         0x0000000020003bc5        0x3 
+                0x0000000020003bcc        0x1 Output/Debug//main.o
+                0x0000000020003bcc                oxy_scanned
+ *fill*         0x0000000020003bcd        0x3 
  .bss.m_tx_packet
-                0x0000000020003bc8      0x100 Output/Debug//main.o
-                0x0000000020003bc8                m_tx_packet
- .bss.txpower   0x0000000020003cc8        0x1 Output/Debug//main.o
-                0x0000000020003cc8                txpower
- *fill*         0x0000000020003cc9        0x3 
+                0x0000000020003bd0      0x100 Output/Debug//main.o
+                0x0000000020003bd0                m_tx_packet
+ .bss.txpower   0x0000000020003cd0        0x1 Output/Debug//main.o
+                0x0000000020003cd0                txpower
+ *fill*         0x0000000020003cd1        0x3 
  .bss._ZZ24lora_continuous_transmitbE7counter
-                0x0000000020003ccc        0x4 Output/Debug//main.o
+                0x0000000020003cd4        0x4 Output/Debug//main.o
  .bss._SEGGER_RTT
-                0x0000000020003cd0       0x78 Output/Debug//SEGGER_RTT.o
-                0x0000000020003cd0                _SEGGER_RTT
+                0x0000000020003cd8       0x78 Output/Debug//SEGGER_RTT.o
+                0x0000000020003cd8                _SEGGER_RTT
  .bss._acUpBuffer
-                0x0000000020003d48      0x200 Output/Debug//SEGGER_RTT.o
+                0x0000000020003d50      0x200 Output/Debug//SEGGER_RTT.o
  .bss._acDownBuffer
-                0x0000000020003f48       0x10 Output/Debug//SEGGER_RTT.o
+                0x0000000020003f50       0x10 Output/Debug//SEGGER_RTT.o
  .bss.m_timer_data
-                0x0000000020003f58       0x20 Output/Debug//ble_conn_params.o
+                0x0000000020003f60       0x20 Output/Debug//ble_conn_params.o
  .bss.m_conn_params_instances
-                0x0000000020003f78       0x14 Output/Debug//ble_conn_params.o
+                0x0000000020003f80       0x14 Output/Debug//ble_conn_params.o
  .bss.m_conn_params_config
-                0x0000000020003f8c       0x1c Output/Debug//ble_conn_params.o
+                0x0000000020003f94       0x1c Output/Debug//ble_conn_params.o
  .bss.m_preferred_conn_params
-                0x0000000020003fa8        0x8 Output/Debug//ble_conn_params.o
- .bss.m_bcs     0x0000000020003fb0       0x7c Output/Debug//ble_conn_state.o
+                0x0000000020003fb0        0x8 Output/Debug//ble_conn_params.o
+ .bss.m_bcs     0x0000000020003fb8       0x7c Output/Debug//ble_conn_state.o
  .bss.m_nrf_sdh_enabled
-                0x000000002000402c        0x1 Output/Debug//nrf_sdh.o
+                0x0000000020004034        0x1 Output/Debug//nrf_sdh.o
  .bss.m_nrf_sdh_suspended
-                0x000000002000402d        0x1 Output/Debug//nrf_sdh.o
+                0x0000000020004035        0x1 Output/Debug//nrf_sdh.o
  .bss.m_nrf_sdh_continue
-                0x000000002000402e        0x1 Output/Debug//nrf_sdh.o
+                0x0000000020004036        0x1 Output/Debug//nrf_sdh.o
  .bss.m_stack_is_enabled
-                0x000000002000402f        0x1 Output/Debug//nrf_sdh_ble.o
+                0x0000000020004037        0x1 Output/Debug//nrf_sdh_ble.o
  .bss._ZZN7RH_RF9512spiBurstReadEhPhhE7tx_byte
-                0x0000000020004030       0xff Output/Debug//RH_RF95.o
- *fill*         0x000000002000412f        0x1 
+                0x0000000020004038       0xff Output/Debug//RH_RF95.o
+ *fill*         0x0000000020004137        0x1 
  .bss._ZZN7RH_RF9512spiBurstReadEhPhhE7rx_byte
-                0x0000000020004130       0xff Output/Debug//RH_RF95.o
- *fill*         0x000000002000422f        0x1 
+                0x0000000020004138       0xff Output/Debug//RH_RF95.o
+ *fill*         0x0000000020004237        0x1 
  .bss.libc.__user_format_extender
-                0x0000000020004230        0x4 C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.40/lib/libc_v7em_fpv4_sp_d16_hard_t_le_eabi.a(libc2.o)
-                0x0000000020004230                __user_format_extender
+                0x0000000020004238        0x4 C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.40/lib/libc_v7em_fpv4_sp_d16_hard_t_le_eabi.a(libc2.o)
+                0x0000000020004238                __user_format_extender
  *(COMMON)
-                0x0000000020004234                __bss_end__ = (__bss_start__ + SIZEOF (.bss))
-                0x00000000000016c8                __bss_size__ = SIZEOF (.bss)
-                0x0000000020004234                __bss_load_end__ = __bss_end__
+                0x000000002000423c                __bss_end__ = (__bss_start__ + SIZEOF (.bss))
+                0x00000000000016d0                __bss_size__ = SIZEOF (.bss)
+                0x000000002000423c                __bss_load_end__ = __bss_end__
                 0x0000000000000001                . = ASSERT (((__bss_start__ == __bss_end__) || ((__bss_end__ - __RAM_segment_start__) <= __RAM_segment_size__)), error: .bss is too large to fit in RAM memory segment)
-                0x0000000020004234                __tbss_load_start__ = ALIGN (__bss_end__, 0x4)
+                0x000000002000423c                __tbss_load_start__ = ALIGN (__bss_end__, 0x4)
 
-.tbss           0x0000000020004234        0x4
-                0x0000000020004234                __tbss_start__ = .
+.tbss           0x000000002000423c        0x4
+                0x000000002000423c                __tbss_start__ = .
  *(.tbss .tbss.*)
  .tbss.errno_val
-                0x0000000020004234        0x4 C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.40/lib/libc_v7em_fpv4_sp_d16_hard_t_le_eabi.a(libc2.o)
-                0x0000000020004238                __tbss_end__ = (__tbss_start__ + SIZEOF (.tbss))
+                0x000000002000423c        0x4 C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.40/lib/libc_v7em_fpv4_sp_d16_hard_t_le_eabi.a(libc2.o)
+                0x0000000020004240                __tbss_end__ = (__tbss_start__ + SIZEOF (.tbss))
                 0x0000000000000004                __tbss_size__ = SIZEOF (.tbss)
-                0x0000000020004238                __tbss_load_end__ = __tbss_end__
+                0x0000000020004240                __tbss_load_end__ = __tbss_end__
                 0x0000000000000001                . = ASSERT (((__tbss_start__ == __tbss_end__) || ((__tbss_end__ - __RAM_segment_start__) <= __RAM_segment_size__)), error: .tbss is too large to fit in RAM memory segment)
-                0x0000000020004238                __non_init_load_start__ = ALIGN (__tbss_end__, 0x4)
+                0x0000000020004240                __non_init_load_start__ = ALIGN (__tbss_end__, 0x4)
 
-.non_init       0x0000000020004238        0x0
-                0x0000000020004238                __non_init_start__ = .
+.non_init       0x0000000020004240        0x0
+                0x0000000020004240                __non_init_start__ = .
  *(.non_init .non_init.*)
-                0x0000000020004238                __non_init_end__ = (__non_init_start__ + SIZEOF (.non_init))
+                0x0000000020004240                __non_init_end__ = (__non_init_start__ + SIZEOF (.non_init))
                 0x0000000000000000                __non_init_size__ = SIZEOF (.non_init)
-                0x0000000020004238                __non_init_load_end__ = __non_init_end__
+                0x0000000020004240                __non_init_load_end__ = __non_init_end__
                 0x0000000000000001                . = ASSERT (((__non_init_start__ == __non_init_end__) || ((__non_init_end__ - __RAM_segment_start__) <= __RAM_segment_size__)), error: .non_init is too large to fit in RAM memory segment)
-                0x0000000020004238                __heap_load_start__ = ALIGN (__non_init_end__, 0x4)
+                0x0000000020004240                __heap_load_start__ = ALIGN (__non_init_end__, 0x4)
 
-.heap           0x0000000020004238     0x2000
-                0x0000000020004238                __heap_start__ = .
+.heap           0x0000000020004240     0x2000
+                0x0000000020004240                __heap_start__ = .
  *(.heap .heap.*)
-                0x0000000020006238                . = ALIGN (MAX ((__heap_start__ + __HEAPSIZE__), .), 0x4)
- *fill*         0x0000000020004238     0x2000 
-                0x0000000020006238                __heap_end__ = (__heap_start__ + SIZEOF (.heap))
+                0x0000000020006240                . = ALIGN (MAX ((__heap_start__ + __HEAPSIZE__), .), 0x4)
+ *fill*         0x0000000020004240     0x2000 
+                0x0000000020006240                __heap_end__ = (__heap_start__ + SIZEOF (.heap))
                 0x0000000000002000                __heap_size__ = SIZEOF (.heap)
-                0x0000000020006238                __heap_load_end__ = __heap_end__
+                0x0000000020006240                __heap_load_end__ = __heap_end__
                 0x0000000000000001                . = ASSERT (((__heap_start__ == __heap_end__) || ((__heap_end__ - __RAM_segment_start__) <= __RAM_segment_size__)), error: .heap is too large to fit in RAM memory segment)
                 0x000000002000e000                __stack_load_start__ = (__RAM_segment_start__ + (__RAM_segment_size__ - 0x2000))
 
