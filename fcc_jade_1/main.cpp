@@ -74,6 +74,7 @@ typedef enum {
   STATE_LORA_FIXED_FREQUENCY_HOPPING,
   STATE_LORA_FIXED1_FREQUENCY_HOPPING,
   STATE_BLE_RANDOM_FREQUENCY_HOPPING,
+  STATE_LORA_CARRIER_SENSE_TX,
   STATE_DEBUG
 } sm_state;
 
@@ -2323,6 +2324,10 @@ sm_state start_gatt_server()
     else if(MODE == 3 && lora_selected == 1 && advTime == 0 && scanDuration == 0 && sleepTime == 0 && special_mode == 88){
     return STATE_LORA_FIXED1_FREQUENCY_HOPPING;
     }
+
+    else if(MODE == 3 && lora_selected == 1 && advTime == 0 && scanDuration == 0 && sleepTime == 0 && special_mode == 77){
+    return STATE_LORA_CARRIER_SENSE_TX;
+    }
     
     //Default
     return STATE_SLEEP;
@@ -2963,6 +2968,52 @@ sm_state ble_random_frequency_hopping()
     return STATE_SLEEP;
 }
 
+void lora_impulse_mcw_transmit(int *local_mcw_send_counter)
+{
+  printf(DBG_GREEN "lora_impulse_mcw_transmit\n" DBG_RESET);
+
+  memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
+  sprintf(loraSendBuf, "MAC ID %s sending hello: Counter: %d", idString, *local_mcw_send_counter);
+  rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
+  while (!rf95.waitPacketSent()){}
+  (*local_mcw_send_counter)++;
+}
+
+sm_state lora_carrier_sense_tx()
+{
+    printf(DBG_GREEN "lora_carrier_sense_tx\n" DBG_RESET);
+    loraInit();
+    nrf_delay_ms(1000);
+    int rssi_carrier_sense = 0;
+    int mcw_send_counter = 0;
+
+    while (1)
+    {
+        lora_impulse_mcw_transmit(&mcw_send_counter);
+
+        lora_disable();
+
+        rf95.setModeRx();
+
+        for (int i = 0; i < 2; i++)
+        {
+            rssi_carrier_sense = rf95.spiRead(0x1b);
+            nrf_delay_ms(50);
+            rssi_carrier_sense = -137 + rssi_carrier_sense;
+            printf("%d\n", rssi_carrier_sense);
+            if(rssi_carrier_sense > -85)
+            {
+              lora_disable();
+              return STATE_SLEEP;
+            }
+        }
+
+    }
+
+
+    return STATE_SLEEP;
+}
+
 
 
 int main(void)
@@ -3077,6 +3128,11 @@ int main(void)
             case STATE_LORA_FIXED1_FREQUENCY_HOPPING:
                 printf("STATE_LORA_FIXED1_FREQUENCY_HOPPING\n");
                 state = lora_fixed1_frequency_hopping();
+                break;
+
+            case STATE_LORA_CARRIER_SENSE_TX:
+                printf("STATE_LORA_CARRIER_SENSE_TX\n");
+                state = lora_carrier_sense_tx();
                 break;
 
             case STATE_BLE_RANDOM_FREQUENCY_HOPPING:
