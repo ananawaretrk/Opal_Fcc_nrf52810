@@ -660,7 +660,7 @@ public:
     /// Initialise the Driver transport hardware and software.
     /// Make sure the Driver is properly configured before calling init().
     /// \return true if initialisation succeeded.
-    bool    init(const nrf_drv_spi_t *spi_in, uint32_t pin, uint8_t bw_select);
+    bool    init(const nrf_drv_spi_t *spi_in, uint32_t pin, uint8_t bw_select, bool explicit_header);
 
     /// Prints the value of all chip registers
     /// to the Serial device if RH_HAVE_SERIAL is defined for the current platform

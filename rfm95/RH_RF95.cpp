@@ -48,7 +48,7 @@ uint8_t RH_RF95::modem_Stat()
     return spiRead(RH_RF95_REG_18_MODEM_STAT);
 }
 
-bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin, uint8_t bw_select)
+bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin, uint8_t bw_select, bool explicit_header)
 {
      uint8_t mode;
 
@@ -56,12 +56,25 @@ bool RH_RF95::init(const nrf_drv_spi_t *spi_in, uint32_t pin, uint8_t bw_select)
      _interruptPin = pin;
      _thisAddress = 0x7f;
      _promiscuous = true;
-    _txHeaderTo = 0x7f;
-    _txHeaderFrom = 0xff;
-    _txHeaderId = 0xff;
-    _txHeaderFlags = 0;
+     if (explicit_header == true)
+     {
+         printf("Explicit Header Set\n");
+         _txHeaderTo = 0x7f;
+         _txHeaderFrom = 0xff;
+         _txHeaderId = 0xff;
+         _txHeaderFlags = 0;
+     }
+     //Gateway uses implicit header by default
+     else if (explicit_header == false)
+     {
+         printf("Implicit Header Set\n");
+         _txHeaderTo = 0x01;
+         _txHeaderFrom = 0x01;
+         _txHeaderId = 0x01;
+         _txHeaderFlags = 0x01;
+         _cad_timeout = 0;
+     }
     _cad_timeout = 0;
-
     // Set sleep mode, so we can also set LORA mode:
     if (spiWrite(RH_RF95_REG_01_OP_MODE, RH_RF95_MODE_SLEEP | RH_RF95_LONG_RANGE_MODE) != NRF_SUCCESS)
     {

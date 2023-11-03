@@ -2027,7 +2027,7 @@ void init_spi_for_lora(void)
   
  bool loraInit()
  {
-   if (!rf95.init(&spi, LORA_INT, bw_selection)) {
+   if (!rf95.init(&spi, LORA_INT, bw_selection, false)) { // false = implicit header (GW), true = explicit header (WP)
     printf("LoRa radio init failed\n");
     return false;
   }
@@ -2233,6 +2233,7 @@ sm_state board_init()
     init_spi_for_lora();
 
     return STATE_GATT_SERVER;
+    //return STATE_LORA_CARRIER_SENSE_TX;
     //return STATE_LORA_CONT_MCW_TX;
     //return STATE_LORA_FIXED1_FREQUENCY_HOPPING;
     //return STATE_BLE_RANDOM_FREQUENCY_HOPPING;
@@ -2973,7 +2974,8 @@ void lora_impulse_mcw_transmit(int *local_mcw_send_counter)
   printf(DBG_GREEN "lora_impulse_mcw_transmit\n" DBG_RESET);
 
   memset(loraSendBuf, 0, RH_RF95_MAX_MESSAGE_LEN);
-  sprintf(loraSendBuf, "MAC ID %s sending hello: Counter: %d", idString, *local_mcw_send_counter);
+  //sprintf(loraSendBuf, "Wallplug [%s] sending hello Counter %d", idString, *local_mcw_send_counter);
+  sprintf(loraSendBuf, "Wallplug sending hello Counter %d", *local_mcw_send_counter);
   rf95.send((uint8_t *)loraSendBuf, strlen(loraSendBuf));
   while (!rf95.waitPacketSent()){}
   (*local_mcw_send_counter)++;
@@ -2982,7 +2984,9 @@ void lora_impulse_mcw_transmit(int *local_mcw_send_counter)
 sm_state lora_carrier_sense_tx()
 {
     printf(DBG_GREEN "lora_carrier_sense_tx\n" DBG_RESET);
-    loraInit();
+//    bw_selection = 1;
+//    lorafrequency = 921;
+    loraInit(); 
     nrf_delay_ms(1000);
     int rssi_carrier_sense = 0;
     int mcw_send_counter = 0;
@@ -3409,7 +3413,7 @@ void lora_radio_enable(void)
 //    }
     nrfx_gpiote_in_event_enable(LORA_RST, true);
 
-    if (!rf95.init(&spi, LORA_INT, 1))
+    if (!rf95.init(&spi, LORA_INT, 1, false)) // false = implicit header
     {
         printf("LoRa radio init failed\n");
     }
