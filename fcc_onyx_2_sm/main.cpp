@@ -2066,7 +2066,7 @@ void init_spi_for_lora(void)
   
  bool loraInit()
  {
-   if (!rf95.init(&spi, LORA_INT, 1)) {
+   if (!rf95.init(&spi, LORA_INT, 1, true)) {
     printf("LoRa radio init failed\n");
     return false;
   }
@@ -3684,7 +3684,7 @@ void lora_radio_enable(void)
 //    }
     nrfx_gpiote_in_event_enable(LORA_RST, true);
 
-    if (!rf95.init(&spi, LORA_INT, 1))
+    if (!rf95.init(&spi, LORA_INT, 1, true))
     {
         printf("LoRa radio init failed\n");
     }
