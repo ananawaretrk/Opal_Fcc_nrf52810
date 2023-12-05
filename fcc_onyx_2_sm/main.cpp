@@ -2384,8 +2384,8 @@ sm_state modem_network_config()
     init_Modem();
     nrf_delay_ms(1000);
     
-    //nbiot_instance.SetConfig(1); // LTE-M or NB-IOT no preference
-    nbiot_instance.SetConfig(2); // NB-IOT Only
+    nbiot_instance.SetConfig(1); // LTE-M or NB-IOT no preference
+    //nbiot_instance.SetConfig(2); // NB-IOT Only
     //nbiot_instance.SetConfig(3); // LTE-M Only
     
     #ifdef ESIM_TEST_PROFILE_ENABLE
