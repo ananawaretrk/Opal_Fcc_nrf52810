@@ -144,6 +144,7 @@ public:
     void RecvDataIp(const char *ip, const char *port, const char *len, const char *timeout, char *nbiotbuffer);
     bool GetFullSignalQuality(float *rsrq, float *rsrp);
     int  GetSignalQuality();
+    void nordicSendAtCommand(const char *at_command);
     //Receive data for all nearby cell towers
     //int getMultiTower();
     //int getMultiTower();

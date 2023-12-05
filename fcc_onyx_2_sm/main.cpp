@@ -55,8 +55,8 @@
 #include "LIS3DH.h"
 
 // ---------------------------------- Board Defines------------------------------------------------------
-//#define ONYX_2
-#define RIM_1_2 // Added support to run on RIM V1.2.0 also
+#define ONYX_2
+//#define RIM_1_2 // Added support to run on RIM V1.2.0 also
 //#define OPAL_1_1_X
 
 // ---------------------------------- Sub-Board Defines------------------------------------------------------
@@ -159,6 +159,7 @@ uint8_t hallState = 0;
 #define I2C_SDA                  8 // Onyx i2c scl 8
 #define I2C_PRIORITY             2
 #define HALL_INT 17
+#define ESIM_TEST_PROFILE_ENABLE
 #endif // ONYX_2
 // ----------------------------------------------ONYX_2-----------------------------------------------------------
 
@@ -187,6 +188,7 @@ uint8_t hallState = 0;
 #define SENSOR_EN                3    
 #define LIS3_INT                 24   // Not used
 #define MBN_INT                  20   // Not used
+#define ESIM_TEST_PROFILE_ENABLE
 #endif // RIM_1_2
 // ----------------------------------------------RIM_1_2----------------------------------------------------------
 
@@ -205,6 +207,7 @@ uint8_t hallState = 0;
 #define SENSOR_EN                3    // 
 #define LIS3_INT                 24   // Not used LIS3_INT1
 #define MBN_INT                  23   // Not used LIS3_INT2
+#define ESIM_TEST_PROFILE_ENABLE
 #endif // OPAL_1_1_X
 // ----------------------------------------------OPAL_1_1_X-------------------------------------------------------
 I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
@@ -2377,12 +2380,27 @@ sm_state modem_network_config()
 {
     nrf_gpio_pin_set(CELL_ENABLE_PIN_O);
     nrf_delay_ms(2000);
+    
     init_Modem();
+    nrf_delay_ms(1000);
+    
     //nbiot_instance.SetConfig(1); // LTE-M or NB-IOT no preference
     //nbiot_instance.SetConfig(2); // NB-IOT Only
     nbiot_instance.SetConfig(3); // LTE-M Only
+    
+    #ifdef ESIM_TEST_PROFILE_ENABLE
+    printf("Activating TS.48 test profile on esim\n");
+    nbiot_instance.nordicSendAtCommand("AT+CSIM=16,\"80C2000003E40102\"");
+    printf("Activated\n");
+    #endif //ESIM_TEST_PROFILE_ENABLE
+
+//    printf("Deactivating TS.48 test profile on esim\n");
+//    nbiot_instance.nordicSendAtCommand("AT+CSIM=16,\"80C2000003E40103\"");
+//    printf("Deactivated\n");
+
     nbiot_instance.GetConfig();
     while(1)
+    //for(int i=0; i<5; i++);
     {
         nbiot_instance.CheckConnection();
         nrf_delay_ms(1000);
@@ -2592,9 +2610,9 @@ sm_state board_init()
     //return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
-    return STATE_ACCELERATION_AIRPLANE_MODE;
+    //return STATE_ACCELERATION_AIRPLANE_MODE;
     //return STATE_PRESSURE_AIRPLANE_MODE;
-    //return STATE_MODEM_NETWORK_CONFIG;
+    return STATE_MODEM_NETWORK_CONFIG;
     //return STATE_BEACON;
     //return STATE_SCAN;
 }

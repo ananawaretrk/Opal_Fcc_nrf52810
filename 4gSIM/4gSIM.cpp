@@ -206,6 +206,15 @@ bool nbiot::ConnectTcpServer(const char *tip, const char *tport){
   return true;
 }
 
+void nbiot::nordicSendAtCommand(const char *at_command)
+{
+    printf("sending %s\n", at_command);
+    char temp_data[CELL_BUFFER_SIZE];
+    memset(temp_data, 0, CELL_BUFFER_SIZE);
+    snprintf(temp_data, CELL_BUFFER_SIZE, "%s\r\n", at_command);
+    SendCommand(temp_data);
+    printf("Reply = %s\n", cell_buffer);
+}
 
 void nbiot::SetConfig(uint8_t value){
   
