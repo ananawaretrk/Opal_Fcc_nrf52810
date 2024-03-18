@@ -22,11 +22,12 @@ There are in general four modes of operation:
 4. Onyx V2.5.5
 5. Opal V1.2.X
 6. Rim  V1.2.x
+7. Titanite V1.0.3.1
 
 # Links
 --- 
 1. [Android App Arguments for Garnet and Jade](https://docs.google.com/spreadsheets/d/1HP615XFYZt2STN2pi8A0y3Usc1Xs2-M48XEhPg5eEbU/edit?usp=sharing) - Details arguments vs behaviour of the radio. 
-2. [Android App Arguments for Onyx, Opal and Rim](https://docs.google.com/spreadsheets/d/1EHz_Uu7MBMxNY85WKWDVzoMsf-hqcWa8d0k8Y2omyeA/edit?usp=sharing) - Details arguments vs behaviour of the radio.
+2. [Android App Arguments for Onyx, Opal, Rim and Titanite](https://docs.google.com/spreadsheets/d/1EHz_Uu7MBMxNY85WKWDVzoMsf-hqcWa8d0k8Y2omyeA/edit?usp=sharing) - Details arguments vs behaviour of the radio.
 
 
 ## Firmware:
@@ -37,3 +38,4 @@ There are in general four modes of operation:
 4. Garnet   :   fcc_garnet
 5. Opal     :   fcc_opal_1
 6. Rim      :   fcc_onyx_2_sm (Update the preprocessor directive at the top of the main to change the configuration from Onyx_2 to Rim V1.2)
+7. Titanite :   fcc_titanite (Branch: titanite)
