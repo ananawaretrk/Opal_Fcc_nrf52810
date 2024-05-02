@@ -14,7 +14,7 @@ There are in general four modes of operation:
 4. RX and sleep
 5. TX, sleep and RX (not supported by Onyx LTE-M/NB-IOT radios)
 
-## Supported Hardware:
+## Tested Hardware:
 --- 
 1. Garnet V2.3.7
 2. Jade V2.3.0
@@ -23,10 +23,11 @@ There are in general four modes of operation:
 5. Opal V1.2.X
 6. Rim  V1.2.x
 7. Titanite V1.0.3.1
+8. Jasper V1.0.7.1
 
 # Links
 --- 
-1. [Android App Arguments for Garnet and Jade](https://docs.google.com/spreadsheets/d/1HP615XFYZt2STN2pi8A0y3Usc1Xs2-M48XEhPg5eEbU/edit?usp=sharing) - Details arguments vs behaviour of the radio. 
+1. [Android App Arguments for Garnet, Jade and Jasper](https://docs.google.com/spreadsheets/d/1HP615XFYZt2STN2pi8A0y3Usc1Xs2-M48XEhPg5eEbU/edit?usp=sharing) - Details arguments vs behaviour of the radio. 
 2. [Android App Arguments for Onyx, Opal, Rim and Titanite](https://docs.google.com/spreadsheets/d/1EHz_Uu7MBMxNY85WKWDVzoMsf-hqcWa8d0k8Y2omyeA/edit?usp=sharing) - Details arguments vs behaviour of the radio.
 
 
@@ -39,3 +40,4 @@ There are in general four modes of operation:
 5. Opal     :   fcc_opal_1
 6. Rim      :   fcc_onyx_2_sm (Update the preprocessor directive at the top of the main to change the configuration from Onyx_2 to Rim V1.2)
 7. Titanite :   fcc_titanite (Branch: titanite)
+8. Jasper   :   fcc_jasper (Branch: jasper)
