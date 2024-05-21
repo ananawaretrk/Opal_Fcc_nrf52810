@@ -1,3 +1,4 @@
+// Onyx V3.4.x
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -57,7 +58,8 @@
 // ---------------------------------- Board Defines------------------------------------------------------
 //#define ONYX_2
 //#define RIM_1_2 // Added support to run on RIM V1.2.0 also
-#define OPAL_1_1_X
+//#define OPAL_1_1_X
+#define ONYX_3_X_X
 
 // ---------------------------------- Sub-Board Defines------------------------------------------------------
 #ifdef RIM_1_2
@@ -210,6 +212,25 @@ uint8_t hallState = 0;
 #define ESIM_TEST_PROFILE_ENABLE
 #endif // OPAL_1_1_X
 // ----------------------------------------------OPAL_1_1_X-------------------------------------------------------
+
+// ----------------------------------------------ONYX_3_X_X-------------------------------------------------------
+#ifdef ONYX_3_X_X
+#define CELL_ENABLE_PIN_O        NRF_GPIO_PIN_MAP(1, 6)
+#define CELL_TX                  26
+#define CELL_RX                  27
+#define ONYX_3_X_X_LED_PIN       NRF_GPIO_PIN_MAP(1, 0)
+
+#define I2C_SCL                  24   
+#define I2C_SDA                  23  
+#define I2C_PRIORITY             2    
+#define HALL_INT                 NRF_GPIO_PIN_MAP(1, 7)   
+#define GPS_BK_EN                15   
+#define SENSOR_EN                NRF_GPIO_PIN_MAP(1, 3)     
+#define LIS3_INT                 11 // LIS_INT1 
+#define MBN_INT                  12 // LIS_INT2   
+#define ESIM_TEST_PROFILE_ENABLE
+#endif // ONYX_3_X_X
+// ----------------------------------------------ONYX_3_X_X-------------------------------------------------------
 I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
 
 TwoWire Wire(i2c_wrapper.GetI2CInstance());
@@ -2265,6 +2286,11 @@ sm_state pressure_airplane_mode()
     //nrf_gpio_pin_clear(RIM_LED_PIN);
 #endif // RIM_1_2
 
+#ifdef ONYX_3_X_X
+    //nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
+      nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
+#endif
+
     //    pressure_airplane_flag = true;
 
     while(1)
@@ -2313,6 +2339,11 @@ sm_state pressure_airplane_mode()
             #ifdef RIM_1_2
             nrf_gpio_pin_set(RIM_LED_PIN);
             #endif // RIM_1_2
+
+            #ifdef ONYX_3_X_X
+            nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
+            //nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
+            #endif
         }
         else
         {
@@ -2329,6 +2360,11 @@ sm_state pressure_airplane_mode()
             #ifdef RIM_1_2
             nrf_gpio_pin_clear(RIM_LED_PIN);
             #endif // RIM_1_2
+
+            #ifdef ONYX_3_X_X
+            //nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
+            nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
+            #endif
         }
         
 
@@ -2605,23 +2641,34 @@ sm_state board_init()
 //    nrf_delay_ms(1000);
 
 //#endif // OPAL_1_1_X
-#define ONYX_3_X_X_LED_PIN        NRF_GPIO_PIN_MAP(1, 0)
-nrf_gpio_cfg_output(ONYX_3_X_X_LED_PIN);
-    //for(int i=0; i<5; i++)
-    while(1)
-    {
-    nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
-    nrf_delay_ms(200);
-    nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
-    nrf_delay_ms(200);  
-    }
+#ifdef ONYX_3_X_X
+    nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
+    nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
+    nrf_delay_ms(1000);
 
+    nrf_gpio_cfg_output(SENSOR_EN);
+    nrf_delay_ms(500);
+    // nrf_gpio_pin_clear(SENSOR_EN);
+    nrf_gpio_pin_set(SENSOR_EN);
+
+    nrf_gpio_cfg_output(ONYX_3_X_X_LED_PIN);
+    for(int i=0; i<15; i++)
+    //while (1)
+    {
+        nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
+        nrf_delay_ms(100);
+        nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
+        nrf_delay_ms(100);
+    }
+    i2c_wrapper.InitializeI2C();
+    nrf_delay_ms(1000);
+#endif
     //while(1);
-    return STATE_GATT_SERVER;
+    //return STATE_GATT_SERVER;
     //return STATE_DEBUG;
     //return STATE_SLEEP;
     //return STATE_ACCELERATION_AIRPLANE_MODE;
-    //return STATE_PRESSURE_AIRPLANE_MODE;
+    return STATE_PRESSURE_AIRPLANE_MODE;
     //return STATE_MODEM_NETWORK_CONFIG;
     //return STATE_BEACON;
     //return STATE_SCAN;
@@ -3086,6 +3133,11 @@ sm_state acceleration_airplane_mode()
     //nrf_gpio_pin_clear(RIM_LED_PIN);
 #endif // RIM_1_2
 
+#ifdef ONYX_3_X_X
+    //nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
+    nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
+#endif
+
     while (1)
     {
         lis3dh_accel.read();
@@ -3122,6 +3174,11 @@ sm_state acceleration_airplane_mode()
             #ifdef RIM_1_2
             nrf_gpio_pin_set(RIM_LED_PIN);
             #endif // RIM_1_2
+
+            #ifdef ONYX_3_X_X
+            nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
+            //nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
+            #endif
         }
     }
     return STATE_SLEEP;
