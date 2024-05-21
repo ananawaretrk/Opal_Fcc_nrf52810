@@ -112,7 +112,7 @@ double seaLevelhPa = 1013.25; //hPa
 int current_pressure = 0;
 bool pressure_airplane_flag = false; 
 
-TMP117  tmp_sensor = TMP117();
+//TMP117  tmp_sensor = TMP117();
 LIS3DH lis3dh_accel = LIS3DH();
 
 bool acc_flag = false;
@@ -243,7 +243,7 @@ volatile int cell_timer_flag           = 0;
 #define TCA_LED_PIN_O1          14 // LED - TCA PIN 
 #define TCA_MCP_EN2_O           17 // Alternate path to MCPEN if MCP_PWR_EN is not decided to be used
 volatile bool tca_interrupt_detected    = false;
-TCA9535 TCA = TCA9535();
+//TCA9535 TCA = TCA9535();
 void TCAInitialize();
 void TCATest();
 // --tca
@@ -2202,28 +2202,28 @@ void lora_interval_receive(int rcv_time)
 
 // Temperature Sensor
 
-void print_temperature_sensor_data()
-{
-    int temperature_fail_counter = 0;
-    float temperature_array[5] = {0};
+//void print_temperature_sensor_data()
+//{
+//    int temperature_fail_counter = 0;
+//    float temperature_array[5] = {0};
 
-    //i2c_wrapper.InitializeI2C();
-    tmp_sensor.begin();
-    for (int j = 0; j < 5; j++)
-    {
-        temperature_fail_counter = 0;
-        tmp_sensor.setOneShotMode();
-        while (tmp_sensor.dataReady() == false && temperature_fail_counter < 5)
-        {
-            nrf_delay_ms(110);
-            temperature_fail_counter++;
-        }
-        temperature_array[j] = tmp_sensor.readTempC();
-    }
-    tmp_sensor.setShutdownMode();
-    printf("----> Final TMP117 Temp = %3.2f %C\n", temperature_array[0]);
-    //i2c_wrapper.DeInitializeI2C();
-}
+//    //i2c_wrapper.InitializeI2C();
+//    tmp_sensor.begin();
+//    for (int j = 0; j < 5; j++)
+//    {
+//        temperature_fail_counter = 0;
+//        tmp_sensor.setOneShotMode();
+//        while (tmp_sensor.dataReady() == false && temperature_fail_counter < 5)
+//        {
+//            nrf_delay_ms(110);
+//            temperature_fail_counter++;
+//        }
+//        temperature_array[j] = tmp_sensor.readTempC();
+//    }
+//    tmp_sensor.setShutdownMode();
+//    printf("----> Final TMP117 Temp = %3.2f %C\n", temperature_array[0]);
+//    //i2c_wrapper.DeInitializeI2C();
+//}
 
 // --Temperature Sensor
 
@@ -2605,6 +2605,16 @@ sm_state board_init()
 //    nrf_delay_ms(1000);
 
 //#endif // OPAL_1_1_X
+#define ONYX_3_X_X_LED_PIN        NRF_GPIO_PIN_MAP(1, 0)
+nrf_gpio_cfg_output(ONYX_3_X_X_LED_PIN);
+    //for(int i=0; i<5; i++)
+    while(1)
+    {
+    nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
+    nrf_delay_ms(200);
+    nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
+    nrf_delay_ms(200);  
+    }
 
     //while(1);
     return STATE_GATT_SERVER;
@@ -3119,7 +3129,7 @@ sm_state acceleration_airplane_mode()
 sm_state debug_function()
 {
     i2c_wrapper.InitializeI2C();
-    TCATest();
+    //TCATest();
     nrf_delay_ms(500);
     //print_temperature_sensor_data();
     print_pressure_sensor_data();
@@ -3208,65 +3218,65 @@ void TCAEventHandler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action) {
   tca_interrupt_detected = true;
 }
 
-void TCAInitialize(void) {
-  TCA.begin();
-  nrf_delay_ms(100);
+//void TCAInitialize(void) {
+//  TCA.begin();
+//  nrf_delay_ms(100);
 
-  TCA.setPin(TCA_GPS_STNDBY_PIN_O, TCA.INPUTa);  // Intentionally setting as input to leave in floating state
-  TCA.setPin(TCA_GPS_RST_PIN_O, TCA.INPUTa);
-  TCA.setPin(TCA_GPS_EN_PIN_O, TCA.OUTPUTa);
-  TCA.setPin(TCA_LED_PIN_O, TCA.OUTPUTa);
-  TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
-  TCA.setPin(TCA_UNUSED_P11, TCA.OUTPUTa);
-  TCA.setPin(TCA_LED_PIN_O2, TCA.OUTPUTa);
+//  TCA.setPin(TCA_GPS_STNDBY_PIN_O, TCA.INPUTa);  // Intentionally setting as input to leave in floating state
+//  TCA.setPin(TCA_GPS_RST_PIN_O, TCA.INPUTa);
+//  TCA.setPin(TCA_GPS_EN_PIN_O, TCA.OUTPUTa);
+//  TCA.setPin(TCA_LED_PIN_O, TCA.OUTPUTa);
+//  TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
+//  TCA.setPin(TCA_UNUSED_P11, TCA.OUTPUTa);
+//  TCA.setPin(TCA_LED_PIN_O2, TCA.OUTPUTa);
 
-  TCA.setPin(TCA_MCP_OCAL, TCA.INPUTa);
-  TCA.setPin(TCA_MCP_SCAL, TCA.INPUTa);
+//  TCA.setPin(TCA_MCP_OCAL, TCA.INPUTa);
+//  TCA.setPin(TCA_MCP_SCAL, TCA.INPUTa);
 
-  TCA.setPin(TCA_HDCINT_PIN_I, TCA.INPUTa);
-  TCA.setPin(TCA_OPT_INT_I, TCA.INPUTa);    
-  TCA.setPin(TCA_DPSINT_PIN_I, TCA.INPUTa);
+//  TCA.setPin(TCA_HDCINT_PIN_I, TCA.INPUTa);
+//  TCA.setPin(TCA_OPT_INT_I, TCA.INPUTa);    
+//  TCA.setPin(TCA_DPSINT_PIN_I, TCA.INPUTa);
   
-  TCA.setPin(TCA_LIS_INT2_I, TCA.INPUTa);
-  TCA.writePin(TCA_GPS_EN_PIN_O, TCA.OFF);
+//  TCA.setPin(TCA_LIS_INT2_I, TCA.INPUTa);
+//  TCA.writePin(TCA_GPS_EN_PIN_O, TCA.OFF);
   
-    TCA.setPin(TCA_BATT_ENABLE_PIN_O, TCA.OUTPUTa);
-    TCA.setPin(TCA_LED_PIN_O1, TCA.OUTPUTa);
-    TCA.writePin(TCA_LED_PIN_O1, TCA.OFF);
-    TCA.setPin(TCA_MCP_EN2_O, TCA.INPUTa);
+//    TCA.setPin(TCA_BATT_ENABLE_PIN_O, TCA.OUTPUTa);
+//    TCA.setPin(TCA_LED_PIN_O1, TCA.OUTPUTa);
+//    TCA.writePin(TCA_LED_PIN_O1, TCA.OFF);
+//    TCA.setPin(TCA_MCP_EN2_O, TCA.INPUTa);
 
    
-  nrfx_gpiote_in_config_t config_expander;
-  config_expander.is_watcher = false;
-  config_expander.hi_accuracy = false;
-  config_expander.skip_gpio_setup = false;
-  config_expander.pull = NRF_GPIO_PIN_NOPULL;
-  config_expander.sense = NRF_GPIOTE_POLARITY_HITOLO;
-  if(nrfx_gpiote_in_init(MBN_INT, &config_expander, TCAEventHandler) != NRFX_SUCCESS)
-    printf("gpiote in init failed for TCA\n");
-  nrfx_gpiote_in_event_enable(MBN_INT, true);
-  nrf_delay_ms(50);
-}
+//  nrfx_gpiote_in_config_t config_expander;
+//  config_expander.is_watcher = false;
+//  config_expander.hi_accuracy = false;
+//  config_expander.skip_gpio_setup = false;
+//  config_expander.pull = NRF_GPIO_PIN_NOPULL;
+//  config_expander.sense = NRF_GPIOTE_POLARITY_HITOLO;
+//  if(nrfx_gpiote_in_init(MBN_INT, &config_expander, TCAEventHandler) != NRFX_SUCCESS)
+//    printf("gpiote in init failed for TCA\n");
+//  nrfx_gpiote_in_event_enable(MBN_INT, true);
+//  nrf_delay_ms(50);
+//}
 
-void TCATest(){
-  //i2c_wrapper.InitializeI2C();
-  //TCAInitialize(); 
-  // Pin 14 on TCA is gpio pin 12
-  TCA.setPin(12, TCA.OUTPUTa);
-  TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-    //while(1);
-  for(int i = 0; i < 10; i++){
-  //while(1){
-    TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-    nrf_delay_ms(200);
-    TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
-    TCA.writePin(TCA_LED_PIN_O2, TCA.OFF);
-    nrf_delay_ms(200);
-  }
-  //i2c_wrapper.DeInitializeI2C();
-}
+//void TCATest(){
+//  //i2c_wrapper.InitializeI2C();
+//  //TCAInitialize(); 
+//  // Pin 14 on TCA is gpio pin 12
+//  TCA.setPin(12, TCA.OUTPUTa);
+//  TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+//    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+//    //while(1);
+//  for(int i = 0; i < 10; i++){
+//  //while(1){
+//    TCA.writePin(TCA_LED_PIN_O, TCA.ON);
+//    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
+//    nrf_delay_ms(200);
+//    TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
+//    TCA.writePin(TCA_LED_PIN_O2, TCA.OFF);
+//    nrf_delay_ms(200);
+//  }
+//  //i2c_wrapper.DeInitializeI2C();
+//}
 
 void custom_advertiser()
 {  

@@ -11,17 +11,17 @@ Output/Debug//nrf_memobj.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_util_platform.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf.h \
- ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf52.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf52840.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/core_cm4.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/core_cmInstr.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/cmsis_gcc.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/core_cmFunc.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/core_cmSimd.h \
- ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/system_nrf52.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/system_nrf52840.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/system_nrf.h \
- ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf52_bitfields.h \
- ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf51_to_nrf52.h \
- ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf52_name_change.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf52840_bitfields.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf51_to_nrf52840.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf52_to_nrf52840.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_soc.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_svc.h \
