@@ -1,4 +1,5 @@
-// Onyx V3.4.x
+// Onyx V3.4.x Regular FCC Firmware V1.0
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -147,71 +148,6 @@ uint8_t hallState = 0;
 #define DBG_RESET   "\x1b[0m"
 //#define test_print
 
-// ----------------------------------------------ONYX_2-----------------------------------------------------------
-#ifdef ONYX_2
-// For Onyx 2.8
-#define CELL_ENABLE_PIN_O        29
-#define CELL_TX                  15
-#define CELL_RX                  16
-#define GPS_BK_EN                13
-#define SENSOR_EN                 3
-#define LIS3_INT                  2 // lis3dh Interrupt pin
-#define MBN_INT                  20 // TCA EXP interrupt
-#define I2C_SCL                  7 // Onyx i2c scl 7
-#define I2C_SDA                  8 // Onyx i2c scl 8
-#define I2C_PRIORITY             2
-#define HALL_INT 17
-#define ESIM_TEST_PROFILE_ENABLE
-#endif // ONYX_2
-// ----------------------------------------------ONYX_2-----------------------------------------------------------
-
-// ----------------------------------------------RIM_1_2----------------------------------------------------------
-#ifdef RIM_1_2
-// For Rim V1.2.X
-#define CELL_ENABLE_PIN_O        5
-#define CELL_TX                  6
-#define CELL_RX                  7
-#define RIM_LED_PIN             17
-
-#ifdef RIM_1_2_ACCELEROMETER
-#define I2C_SCL                  25   // SCL-M
-#define I2C_SDA                  26   // SDA-M
-#define I2C_PRIORITY             2    
-#endif // RIM_1_2_ACCELEROMETER
-
-#ifdef RIM_1_2_PRESSURE
-#define I2C_SCL                  11   // SCL
-#define I2C_SDA                  12   // SDA
-#define I2C_PRIORITY             2    
-#endif // RIM_1_2_PRESSURE
-
-#define HALL_INT                 8    // Not used
-#define GPS_BK_EN                16   // Not used
-#define SENSOR_EN                3    
-#define LIS3_INT                 24   // Not used
-#define MBN_INT                  20   // Not used
-#define ESIM_TEST_PROFILE_ENABLE
-#endif // RIM_1_2
-// ----------------------------------------------RIM_1_2----------------------------------------------------------
-
-// ----------------------------------------------OPAL_1_1_X-------------------------------------------------------
-#ifdef OPAL_1_1_X
-#define CELL_ENABLE_PIN_O        2
-#define CELL_TX                  6
-#define CELL_RX                  7
-#define OPAL_LED_PIN             25 // Sink the LED to turn ON
-
-#define I2C_SCL                  20   //
-#define I2C_SDA                  19   // 
-#define I2C_PRIORITY             2    
-#define HALL_INT                 8    // Not available
-#define GPS_BK_EN                30   // Not backup used to turn ON LNA for nrf9160 GPS
-#define SENSOR_EN                3    // 
-#define LIS3_INT                 24   // Not used LIS3_INT1
-#define MBN_INT                  23   // Not used LIS3_INT2
-#define ESIM_TEST_PROFILE_ENABLE
-#endif // OPAL_1_1_X
-// ----------------------------------------------OPAL_1_1_X-------------------------------------------------------
 
 // ----------------------------------------------ONYX_3_X_X-------------------------------------------------------
 #ifdef ONYX_3_X_X
@@ -238,12 +174,6 @@ void print_temperature_sensor_data(void);
 
 //Modem
 static nbiot nbiot_instance;
-//#define CELL_ENABLE_PIN_O        NRF_GPIO_PIN_MAP(1, 6)
-//#define CELL_TX                  NRF_GPIO_PIN_MAP(0, 26)
-//#define CELL_RX                  NRF_GPIO_PIN_MAP(0, 27)
-
-
-
 volatile int cell_timer_flag           = 0;
 
 // tca
@@ -2542,17 +2472,9 @@ sm_state soc_init()
 {
     ret_code_t err_code;
     
-    #ifdef ONYX_2
-    printf("ONYX_2\n");
-    #endif // ONYX_2 
-
-    #ifdef OPAL_1_1_X
-    printf("OPAL_1_1_X\n");
-    #endif // OPAL_1_1_X
-    
-    #ifdef RIM_1_2
-    printf("RIM_V_1_2_2_1\n");
-    #endif // RIM_1_2 
+    #ifdef ONYX_3_X_X
+    printf("ONYX_3_X_X\n");
+    #endif // ONYX_3_X_X 
 
     config_init();
     get_ble_mac();
@@ -2571,76 +2493,6 @@ sm_state soc_init()
 }
 sm_state board_init()
 {
-//#ifdef ONYX_2
-//    hall_gpio_init();
-//    config_hall_sensor();
-
-//    // Turn OFF MODEM
-//    nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
-//    nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
-//    nrf_delay_ms(1000);
-
-//    nrf_gpio_cfg_output(SENSOR_EN);
-//    nrf_delay_ms(500);
-//    // nrf_gpio_pin_clear(SENSOR_EN);
-//    nrf_gpio_pin_set(SENSOR_EN);
-
-//    nrf_gpio_cfg_output(GPS_BK_EN);
-//    nrf_delay_ms(500);
-//    nrf_gpio_pin_clear(GPS_BK_EN);
-
-//    nrf_gpio_cfg_input(MBN_INT, NRF_GPIO_PIN_NOPULL);
-
-//    i2c_wrapper.InitializeI2C();
-//    TCAInitialize();
-//    TCATest();
-//// i2c_wrapper.DeInitializeI2C();
-//#endif // ONYX_2
-
-//#ifdef RIM_1_2
-//    nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
-//    nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
-//    nrf_delay_ms(1000);
-    
-//    nrf_gpio_cfg_output(RIM_LED_PIN);
-//    for(int i=0; i<5; i++){
-//    nrf_gpio_pin_set(RIM_LED_PIN);
-//    nrf_delay_ms(200);
-//    nrf_gpio_pin_clear(RIM_LED_PIN);
-//    nrf_delay_ms(200);
-//    }
-
-//    nrf_gpio_cfg_output(SENSOR_EN);
-//    nrf_delay_ms(500);
-//    // nrf_gpio_pin_clear(SENSOR_EN);
-//    nrf_gpio_pin_set(SENSOR_EN);
-
-//    i2c_wrapper.InitializeI2C();
-//    nrf_delay_ms(1000);
-//#endif // RIM_1_2
-
-//#ifdef OPAL_1_1_X
-//    nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
-//    nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
-//    nrf_delay_ms(1000);
-    
-//    nrf_gpio_cfg_output(OPAL_LED_PIN);
-//    for(int i=0; i<5; i++){
-//    nrf_gpio_pin_clear(OPAL_LED_PIN);
-//    nrf_delay_ms(200);
-//    nrf_gpio_pin_set(OPAL_LED_PIN);
-//    nrf_delay_ms(200);  
-//    }
-
-//    nrf_gpio_cfg_output(SENSOR_EN);
-//    nrf_delay_ms(500);
-//    // nrf_gpio_pin_clear(SENSOR_EN);
-//    nrf_gpio_pin_set(SENSOR_EN);
-
-//    i2c_wrapper.InitializeI2C();
-//    nrf_delay_ms(1000);
-
-//#endif // OPAL_1_1_X
 #ifdef ONYX_3_X_X
     nrf_gpio_cfg_output(CELL_ENABLE_PIN_O);
     nrf_gpio_pin_clear(CELL_ENABLE_PIN_O);
@@ -2652,8 +2504,8 @@ sm_state board_init()
     nrf_gpio_pin_set(SENSOR_EN);
 
     nrf_gpio_cfg_output(ONYX_3_X_X_LED_PIN);
-    for(int i=0; i<15; i++)
-    //while (1)
+    for (int i = 0; i < 5; i++)
+    // while (1)
     {
         nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
         nrf_delay_ms(100);
@@ -2663,15 +2515,15 @@ sm_state board_init()
     i2c_wrapper.InitializeI2C();
     nrf_delay_ms(1000);
 #endif
-    //while(1);
-    //return STATE_GATT_SERVER;
-    //return STATE_DEBUG;
-    //return STATE_SLEEP;
-    //return STATE_ACCELERATION_AIRPLANE_MODE;
-    return STATE_PRESSURE_AIRPLANE_MODE;
-    //return STATE_MODEM_NETWORK_CONFIG;
-    //return STATE_BEACON;
-    //return STATE_SCAN;
+    // while(1);
+    return STATE_GATT_SERVER;
+    // return STATE_DEBUG;
+    // return STATE_SLEEP;
+    // return STATE_ACCELERATION_AIRPLANE_MODE;
+    // return STATE_PRESSURE_AIRPLANE_MODE;
+    // return STATE_MODEM_NETWORK_CONFIG;
+    // return STATE_BEACON;
+    // return STATE_SCAN;
 }
 
 void ble_radio_setup()
@@ -3118,21 +2970,6 @@ sm_state acceleration_airplane_mode()
         SetErrorMask(ACC_ERROR_MASK);
     }
 
-#ifdef ONYX_2
-    // TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-    // TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-#endif // ONYX_2
-
-#ifdef OPAL_1_1_X
-// nrf_gpio_pin_clear(OPAL_LED_PIN); // Clear turns ON
-// nrf_gpio_pin_set(OPAL_LED_PIN); // Set turns OFF
-#endif // OPAL_1_1_X
-
-#ifdef RIM_1_2
-    //nrf_gpio_pin_set(RIM_LED_PIN);
-    //nrf_gpio_pin_clear(RIM_LED_PIN);
-#endif // RIM_1_2
-
 #ifdef ONYX_3_X_X
     //nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
     nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
@@ -3161,20 +2998,6 @@ sm_state acceleration_airplane_mode()
         }
         if (acc_flag)
         {
-            #ifdef ONYX_2
-            TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-            TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-            #endif // ONYX_2
-
-            #ifdef OPAL_1_1_X
-            nrf_gpio_pin_clear(OPAL_LED_PIN); // // Clear turns ON
-            //nrf_gpio_pin_set(OPAL_LED_PIN); // Set turns OFF
-            #endif //OPAL_1_1_X
-
-            #ifdef RIM_1_2
-            nrf_gpio_pin_set(RIM_LED_PIN);
-            #endif // RIM_1_2
-
             #ifdef ONYX_3_X_X
             nrf_gpio_pin_set(ONYX_3_X_X_LED_PIN);
             //nrf_gpio_pin_clear(ONYX_3_X_X_LED_PIN);
@@ -3274,66 +3097,6 @@ void TCAEventHandler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action) {
   printf("TCA Interrupt detected\n");
   tca_interrupt_detected = true;
 }
-
-//void TCAInitialize(void) {
-//  TCA.begin();
-//  nrf_delay_ms(100);
-
-//  TCA.setPin(TCA_GPS_STNDBY_PIN_O, TCA.INPUTa);  // Intentionally setting as input to leave in floating state
-//  TCA.setPin(TCA_GPS_RST_PIN_O, TCA.INPUTa);
-//  TCA.setPin(TCA_GPS_EN_PIN_O, TCA.OUTPUTa);
-//  TCA.setPin(TCA_LED_PIN_O, TCA.OUTPUTa);
-//  TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
-//  TCA.setPin(TCA_UNUSED_P11, TCA.OUTPUTa);
-//  TCA.setPin(TCA_LED_PIN_O2, TCA.OUTPUTa);
-
-//  TCA.setPin(TCA_MCP_OCAL, TCA.INPUTa);
-//  TCA.setPin(TCA_MCP_SCAL, TCA.INPUTa);
-
-//  TCA.setPin(TCA_HDCINT_PIN_I, TCA.INPUTa);
-//  TCA.setPin(TCA_OPT_INT_I, TCA.INPUTa);    
-//  TCA.setPin(TCA_DPSINT_PIN_I, TCA.INPUTa);
-  
-//  TCA.setPin(TCA_LIS_INT2_I, TCA.INPUTa);
-//  TCA.writePin(TCA_GPS_EN_PIN_O, TCA.OFF);
-  
-//    TCA.setPin(TCA_BATT_ENABLE_PIN_O, TCA.OUTPUTa);
-//    TCA.setPin(TCA_LED_PIN_O1, TCA.OUTPUTa);
-//    TCA.writePin(TCA_LED_PIN_O1, TCA.OFF);
-//    TCA.setPin(TCA_MCP_EN2_O, TCA.INPUTa);
-
-   
-//  nrfx_gpiote_in_config_t config_expander;
-//  config_expander.is_watcher = false;
-//  config_expander.hi_accuracy = false;
-//  config_expander.skip_gpio_setup = false;
-//  config_expander.pull = NRF_GPIO_PIN_NOPULL;
-//  config_expander.sense = NRF_GPIOTE_POLARITY_HITOLO;
-//  if(nrfx_gpiote_in_init(MBN_INT, &config_expander, TCAEventHandler) != NRFX_SUCCESS)
-//    printf("gpiote in init failed for TCA\n");
-//  nrfx_gpiote_in_event_enable(MBN_INT, true);
-//  nrf_delay_ms(50);
-//}
-
-//void TCATest(){
-//  //i2c_wrapper.InitializeI2C();
-//  //TCAInitialize(); 
-//  // Pin 14 on TCA is gpio pin 12
-//  TCA.setPin(12, TCA.OUTPUTa);
-//  TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-//    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-//    //while(1);
-//  for(int i = 0; i < 10; i++){
-//  //while(1){
-//    TCA.writePin(TCA_LED_PIN_O, TCA.ON);
-//    TCA.writePin(TCA_LED_PIN_O2, TCA.ON);
-//    nrf_delay_ms(200);
-//    TCA.writePin(TCA_LED_PIN_O, TCA.OFF);
-//    TCA.writePin(TCA_LED_PIN_O2, TCA.OFF);
-//    nrf_delay_ms(200);
-//  }
-//  //i2c_wrapper.DeInitializeI2C();
-//}
 
 void custom_advertiser()
 {  
