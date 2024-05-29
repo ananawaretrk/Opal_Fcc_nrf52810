@@ -1,8 +1,8 @@
 Output/Debug//nrfx_uart.o: \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\drivers\src\nrfx_uart.c \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\drivers\src\nrfx_uart.c \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/nrfx.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_config.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
+ C:/Users/pk/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stddef.h \
@@ -54,7 +54,7 @@ Output/Debug//nrfx_uart.o: \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_errors.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_uart.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_uart.h \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\drivers\src\prs/nrfx_prs.h \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\modules\nrfx\drivers\src\prs/nrfx_prs.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_gpio.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_log.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log.h \

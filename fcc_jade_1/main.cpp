@@ -2351,7 +2351,7 @@ void ble_radio_setup()
     NRF_RNG->TASKS_START = 1;
     NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
     NRF_CLOCK->TASKS_HFCLKSTART        = 1;
-    //while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0){ } // Do nothing.
+    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0){ } // Do nothing.
 
     // Disable Radio
     NRF_RADIO->SHORTS = 0;

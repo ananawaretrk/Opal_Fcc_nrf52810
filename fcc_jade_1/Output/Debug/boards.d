@@ -1,10 +1,10 @@
 Output/Debug//boards.o: \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\boards\boards.c \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\boards\boards.h \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\boards\boards.c \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\boards\boards.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_gpio.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/nrfx.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_config.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
+ C:/Users/pk/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stddef.h \
@@ -54,4 +54,4 @@ Output/Debug//boards.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_resources.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_sd_def.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_errors.h \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\boards\pca10100.h
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\boards\pca10100.h

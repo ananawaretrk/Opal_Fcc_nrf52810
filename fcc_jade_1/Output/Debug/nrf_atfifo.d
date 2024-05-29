@@ -1,5 +1,5 @@
 Output/Debug//nrf_atfifo.o: \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\atomic_fifo\nrf_atfifo.c \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\atomic_fifo\nrf_atfifo.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/string.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/__crossworks.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
@@ -23,8 +23,8 @@ Output/Debug//nrf_atfifo.o: \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf52/nrf_mbr.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_svc.h \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\atomic_fifo\nrf_atfifo.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\atomic_fifo\nrf_atfifo.h \
+ C:/Users/pk/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nrf_assert.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_errors.h \
@@ -32,7 +32,7 @@ Output/Debug//nrf_atfifo.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log_instance.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/experimental_section_vars/nrf_section.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log_types.h \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\atomic_fifo\nrf_atfifo_internal.h \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\atomic_fifo\nrf_atfifo_internal.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/log/nrf_log.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_common.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_os.h \

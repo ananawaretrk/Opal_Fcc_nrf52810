@@ -1,6 +1,6 @@
 Output/Debug//ble_advdata.o: \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_advdata.c \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_advdata.h \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_advdata.c \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_advdata.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/string.h \
@@ -31,7 +31,7 @@ Output/Debug//ble_advdata.o: \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/ble_gatts.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_common.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
+ C:/Users/pk/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_os.h \
@@ -44,7 +44,7 @@ Output/Debug//ble_advdata.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_macros.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nrf_assert.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/ble_gap.h \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_srv_common.h \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\ble\common\ble_srv_common.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/ble_types.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_util.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/ble_gatt.h

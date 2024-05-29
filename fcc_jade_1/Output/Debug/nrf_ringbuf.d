@@ -1,13 +1,13 @@
 Output/Debug//nrf_ringbuf.o: \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\ringbuf\nrf_ringbuf.c \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\ringbuf\nrf_ringbuf.h \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\ringbuf\nrf_ringbuf.c \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\3rd_party\nRF5_SDK_16\components\libraries\ringbuf\nrf_ringbuf.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/atomic/nrf_atomic.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/string.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/__crossworks.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
+ C:/Users/pk/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/compiler_abstraction.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_os.h \

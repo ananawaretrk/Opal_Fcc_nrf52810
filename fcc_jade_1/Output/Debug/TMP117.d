@@ -1,7 +1,7 @@
 Output/Debug//TMP117.o: \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\TMP117\TMP117.cpp \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\TMP117\TMP117_REG.h \
- C:\Users\Purvesh\Documents\GitHub\TrackFW_FCC\TMP117\TMP117.h \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\TMP117\TMP117.cpp \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\TMP117\TMP117_REG.h \
+ C:\Users\pk\Documents\GitHub\TrackFW_FCC\TMP117\TMP117.h \
  ../I2CFiles/Arduino.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stdint.h \
@@ -26,7 +26,7 @@ Output/Debug//TMP117.o: \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twim.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/nrfx.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_config.h \
- C:/Users/Purvesh/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
+ C:/Users/pk/Documents/GitHub/TrackFW_FCC/fcc_jade_1/sdk_config.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.40/include/stddef.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/nrf_peripherals.h \
