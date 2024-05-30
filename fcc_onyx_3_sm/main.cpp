@@ -1,4 +1,4 @@
-// Onyx V3.4.x Regular FCC Firmware V1.0
+// Onyx V3.4.x Regular FCC Firmware V1.2
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -316,7 +316,7 @@ static char ackMessage[2] = "A";
 //BLE SCANNING
 int ADV_W = 250;     // uint millisecond
 int8_t txlevel = 7;
-int TX_POWER[9] = {-40,-30,-20,-16,-12,-8,-4,0,4};
+int TX_POWER[10] = {-40,-30,-20,-16,-12,-8,-4,0,4,8};
 
 uint8_t Ble_Scn_SIG[2] = {0x59, 0x00};
 uint8_t Ble_Scn_SIG_ext[2] = {0x59, 0x00};
@@ -1263,7 +1263,7 @@ void sel_txpower(int tx_level)
         break;
 
         case 8:
-            txpower = RADIO_TXPOWER_TXPOWER_Pos4dBm; /**< Radio output power. */
+            txpower = RADIO_TXPOWER_TXPOWER_Pos8dBm; /**< Radio output power. */
         break;
 
         default:
@@ -2536,12 +2536,15 @@ sm_state board_init()
     nrf_delay_ms(1000);
 #endif
     // while(1);
-    // return STATE_GATT_SERVER;
+    //channel = 2;
+    //txlevel = 8;
+    //return STATE_BLE_CONT_CW_TX;
+     return STATE_GATT_SERVER;
     // return STATE_DEBUG;
     // return STATE_SLEEP;
     // return STATE_ACCELERATION_AIRPLANE_MODE;
     // return STATE_PRESSURE_AIRPLANE_MODE;
-     return STATE_MODEM_NETWORK_CONFIG;
+    // return STATE_MODEM_NETWORK_CONFIG;
     // return STATE_BEACON;
     // return STATE_SCAN;
 }
@@ -3130,7 +3133,7 @@ void custom_advertiser()
     m_beacon_info[5] = 0X78;
     m_beacon_info[6] =(uint8_t)my_count;
     advertising_init();
-    sd_ble_gap_tx_power_set(BLE_GAP_TX_POWER_ROLE_ADV, NULL, TX_POWER[8]);
+    sd_ble_gap_tx_power_set(BLE_GAP_TX_POWER_ROLE_ADV, NULL, TX_POWER[9]);
     advertising_start();
     nrf_delay_ms(1000);
     my_count++;

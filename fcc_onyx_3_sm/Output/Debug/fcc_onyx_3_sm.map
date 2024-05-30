@@ -17256,18 +17256,14 @@ Linker script and memory map
  .data.cellrx_output_max
                 0x0000000020002b44        0x4 Output/Debug//main.o
                 0x0000000020002b44                cellrx_output_max
- .data.cell_network_select
-                0x0000000020002b48        0x1 Output/Debug//main.o
-                0x0000000020002b48                cell_network_select
- *fill*         0x0000000020002b49        0x3 
- .data.ADV_W    0x0000000020002b4c        0x4 Output/Debug//main.o
-                0x0000000020002b4c                ADV_W
- .data.txlevel  0x0000000020002b50        0x1 Output/Debug//main.o
-                0x0000000020002b50                txlevel
- *fill*         0x0000000020002b51        0x3 
+ .data.ADV_W    0x0000000020002b48        0x4 Output/Debug//main.o
+                0x0000000020002b48                ADV_W
+ .data.txlevel  0x0000000020002b4c        0x1 Output/Debug//main.o
+                0x0000000020002b4c                txlevel
+ *fill*         0x0000000020002b4d        0x3 
  .data.TX_POWER
-                0x0000000020002b54       0x24 Output/Debug//main.o
-                0x0000000020002b54                TX_POWER
+                0x0000000020002b50       0x28 Output/Debug//main.o
+                0x0000000020002b50                TX_POWER
  .data._ZL22m_nus_link_ctx_storage
                 0x0000000020002b78        0x8 Output/Debug//main.o
  .data._ZL5m_nus
@@ -17499,7 +17495,9 @@ Linker script and memory map
                 0x000000002000351d                lora_selected
  .bss.celltxrx  0x000000002000351e        0x1 Output/Debug//main.o
                 0x000000002000351e                celltxrx
- *fill*         0x000000002000351f        0x1 
+ .bss.cell_network_select
+                0x000000002000351f        0x1 Output/Debug//main.o
+                0x000000002000351f                cell_network_select
  .bss.sx126x    0x0000000020003520      0x158 Output/Debug//main.o
                 0x0000000020003520                sx126x
  .bss.BLE_GW    0x0000000020003678        0x1 Output/Debug//main.o
