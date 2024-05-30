@@ -164,7 +164,7 @@ uint8_t hallState = 0;
 #define SENSOR_EN                NRF_GPIO_PIN_MAP(1, 3)     
 #define LIS3_INT                 11 // LIS_INT1 
 #define MBN_INT                  12 // LIS_INT2   
-#define ESIM_TEST_PROFILE_ENABLE
+//#define ESIM_TEST_PROFILE_ENABLE
 #endif // ONYX_3_X_X
 // ----------------------------------------------ONYX_3_X_X-------------------------------------------------------
 I2CWrapper i2c_wrapper(I2C_SDA,I2C_SCL,I2C_PRIORITY);
@@ -293,6 +293,7 @@ float   lora_frequency  = 915.0f;
 
 //Modem
 uint8_t celltxrx = 0;
+uint8_t cell_network_select = 0; // Default set to no preference
 
 void lora_radio_enable(void);
 void lora_radio_configure(void);
@@ -975,6 +976,9 @@ void nus_data_handler(ble_nus_evt_t * p_evt)
             printf("%02X:",p_evt->params.rx_data.p_data[i]);
         }
         printf("\n");
+        
+        //0 = no preference, 1 = NBIOT and 2 = LTE-M
+        cell_network_select = p_evt->params.rx_data.p_data[1];
 
         if(p_evt->params.rx_data.p_data[2] == 1)
         {
@@ -2349,8 +2353,24 @@ sm_state modem_network_config()
 
     init_Modem();
     nrf_delay_ms(1000);
-    
-    nbiot_instance.SetConfig(1); // LTE-M or NB-IOT no preference
+
+    switch(cell_network_select)
+    {
+      case 1:
+      printf("No preference on network LTE-M/NB-IOT\n");
+      break;
+
+      case 2:
+      printf("Preference: NB-IOT\n");
+      break;
+
+      case 3:
+      printf("Preference: LTE-M\n");
+      break;
+    }
+
+    nbiot_instance.SetConfig(cell_network_select);
+    //nbiot_instance.SetConfig(1); // LTE-M or NB-IOT no preference
     //nbiot_instance.SetConfig(2); // NB-IOT Only
     //nbiot_instance.SetConfig(3); // LTE-M Only
     
@@ -2516,12 +2536,12 @@ sm_state board_init()
     nrf_delay_ms(1000);
 #endif
     // while(1);
-    return STATE_GATT_SERVER;
+    // return STATE_GATT_SERVER;
     // return STATE_DEBUG;
     // return STATE_SLEEP;
     // return STATE_ACCELERATION_AIRPLANE_MODE;
     // return STATE_PRESSURE_AIRPLANE_MODE;
-    // return STATE_MODEM_NETWORK_CONFIG;
+     return STATE_MODEM_NETWORK_CONFIG;
     // return STATE_BEACON;
     // return STATE_SCAN;
 }
@@ -3137,7 +3157,7 @@ sm_state scan()
     return STATE_SLEEP;
 }
 
-int main(void) 
+int main(void)
 {
     ret_code_t err_code;
 
@@ -3241,31 +3261,31 @@ int main(void)
                 printf("STATE_DEBUG\n");
                 state = debug_function();
                 break;
-            
+
             case STATE_ACCELERATION_AIRPLANE_MODE:
-                 printf("STATE_ACCELERATION_AIRPLANE_MODE\n");
-                 state = acceleration_airplane_mode();
-                 break;
+                printf("STATE_ACCELERATION_AIRPLANE_MODE\n");
+                state = acceleration_airplane_mode();
+                break;
 
-             case STATE_PRESSURE_AIRPLANE_MODE:
-                 printf("STATE_PRESSURE_AIRPLANE_MODE\n");
-                 state = pressure_airplane_mode();
-                 break;
-             
-             case STATE_MODEM_NETWORK_CONFIG:
-                  printf("STATE_MODEM_NETWORK_CONFIG\n");
-                  state = modem_network_config();
-                  break;
+            case STATE_PRESSURE_AIRPLANE_MODE:
+                printf("STATE_PRESSURE_AIRPLANE_MODE\n");
+                state = pressure_airplane_mode();
+                break;
 
-             case STATE_BEACON:
-                   printf("STATE_BEACON\n");
-                   state = beacon();
-                   break;
-             
-             case STATE_SCAN:
-                  printf("STATE_SCAN");
-                  state = scan();
-                  break;
+            case STATE_MODEM_NETWORK_CONFIG:
+                printf("STATE_MODEM_NETWORK_CONFIG\n");
+                state = modem_network_config();
+                break;
+
+            case STATE_BEACON:
+                printf("STATE_BEACON\n");
+                state = beacon();
+                break;
+
+            case STATE_SCAN:
+                printf("STATE_SCAN");
+                state = scan();
+                break;
 
             default:
                 printf("DEFAULT: STATE_SLEEP\n");
