@@ -1,4 +1,4 @@
-// Onyx V3.4.x Regular FCC Firmware V1.2
+// Onyx V3.4.x Regular FCC Firmware V1.3
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -2356,16 +2356,19 @@ sm_state modem_network_config()
 
     switch(cell_network_select)
     {
-      case 1:
+      case 0:
       printf("No preference on network LTE-M/NB-IOT\n");
+      cell_network_select = 1;
+      break;
+
+      case 1:
+      printf("Preference: NB-IOT\n");
+      cell_network_select = 2;
       break;
 
       case 2:
-      printf("Preference: NB-IOT\n");
-      break;
-
-      case 3:
       printf("Preference: LTE-M\n");
+      cell_network_select = 3;
       break;
     }
 
@@ -2655,6 +2658,11 @@ sm_state start_gatt_server()
     //STATE_LTE_INT_RX
     else if(MODE == 2 && celltxrx == 2 && advTime == 0 && scanDuration > 0 && sleepTime > 0){
     return STATE_LTE_INT_RX;
+    }
+
+    //STATE_MODEM_NETWORK_CONFIG
+    else if(MODE == 1 && celltxrx == 0 && advTime == 0 && scanDuration == 0 && sleepTime == 0){
+    return STATE_MODEM_NETWORK_CONFIG;
     }
     
     //Default

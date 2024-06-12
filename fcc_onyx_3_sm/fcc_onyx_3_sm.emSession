@@ -13,6 +13,8 @@
  <Project>
   <ProjectSessionItem path="fcc_onyx_3_sm"/>
   <ProjectSessionItem path="fcc_onyx_3_sm;fcc_onyx_3_sm"/>
+  <ProjectSessionItem path="fcc_onyx_3_sm;fcc_onyx_3_sm;Application"/>
+  <ProjectSessionItem path="fcc_onyx_3_sm;fcc_onyx_3_sm;Radio"/>
  </Project>
  <Register1/>
  <Register2/>
@@ -36,6 +38,9 @@
  <Watch4>
   <Watches active="0" update="Never"/>
  </Watch4>
- <Files/>
+ <Files>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="2575" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="main.cpp" selected="1" top="2550" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="218" useTextEdit="1" openedFrom="C:/Users/pk/Documents/GitHub/TrackFW_FCC/fcc_onyx_3_sm/main.cpp" useBinaryEdit="0" left="0" path="../4gSIM/4gSIM.cpp" selected="0" top="197" codecName="Default"/>
+ </Files>
  <ARMCrossStudioWindow activeProject="fcc_onyx_3_sm" fileDialogDefaultFilter="*.c;*.cpp;*.cxx;*.cc;*.h;*.hpp;*.hxx" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>
