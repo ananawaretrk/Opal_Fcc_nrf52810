@@ -24,6 +24,7 @@ There are in general four modes of operation:
 6. Rim  V1.2.x
 7. Titanite V1.0.3.1
 8. Jasper V1.0.7.1
+9. Jasper V1.4.1.1
 
 # Links
 --- 
@@ -41,3 +42,4 @@ There are in general four modes of operation:
 6. Rim      :   fcc_onyx_2_sm (Update the preprocessor directive at the top of the main to change the configuration from Onyx_2 to Rim V1.2)
 7. Titanite :   fcc_titanite (Branch: titanite)
 8. Jasper   :   fcc_jasper (Branch: jasper)
+9. Jasper   :   fcc_jasper (Branch: jasper_fem) (nrf52833 + nrf21540 OR SX1280. Populate only one for JasperV1.4.1.1_Regular_FCC_Firmware_V2.0)
