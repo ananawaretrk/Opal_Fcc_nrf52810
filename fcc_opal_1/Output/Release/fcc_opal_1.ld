@@ -1,22 +1,22 @@
 MEMORY
 {
   UNPLACED_SECTIONS (wx) : ORIGIN = 0x100000000, LENGTH = 0
-  RAM (wx) : ORIGIN = 0x20000000, LENGTH = 0x00010000
-  FLASH (wx) : ORIGIN = 0x00000000, LENGTH = 0x00080000
+  RAM (wx) : ORIGIN = 0x20000000, LENGTH = 0x00006000
+  FLASH (wx) : ORIGIN = 0x00000000, LENGTH = 0x00030000
 }
 
 SECTIONS
 {
   __RAM_segment_start__ = 0x20000000;
-  __RAM_segment_end__ = 0x20010000;
-  __RAM_segment_size__ = 0x00010000;
+  __RAM_segment_end__ = 0x20006000;
+  __RAM_segment_size__ = 0x00006000;
   __FLASH_segment_start__ = 0x00000000;
-  __FLASH_segment_end__ = 0x00080000;
-  __FLASH_segment_size__ = 0x00080000;
+  __FLASH_segment_end__ = 0x00030000;
+  __FLASH_segment_size__ = 0x00030000;
 
-  __HEAPSIZE__ = 8192;
+  __HEAPSIZE__ = 2048;
   __STACKSIZE_PROCESS__ = 0;
-  __STACKSIZE__ = 8192;
+  __STACKSIZE__ = 2048;
 
   __reserved_ram_load_start__ = 0x20000000;
   .reserved_ram 0x20000000 (NOLOAD) : AT(0x20000000)
@@ -58,12 +58,12 @@ SECTIONS
 
   . = ASSERT(__nrf_sections_run_start__ == __nrf_sections_run_end__ || (__nrf_sections_run_end__ - __RAM_segment_start__) <= __RAM_segment_size__ , "error: .nrf_sections_run is too large to fit in RAM memory segment");
 
-  __reserved_flash_load_start__ = 0x0 ;
-  .reserved_flash 0x0  (NOLOAD) : AT(0x0 )
+  __reserved_flash_load_start__ = 0x0;
+  .reserved_flash 0x0 (NOLOAD) : AT(0x0)
   {
     __reserved_flash_start__ = .;
     *(.reserved_flash .reserved_flash.*)
-    . = MAX(__reserved_flash_start__ + 0x26000-0x0  , .);
+    . = MAX(__reserved_flash_start__ + 0x26000-0x0 , .);
   }
   __reserved_flash_end__ = __reserved_flash_start__ + SIZEOF(.reserved_flash);
   __reserved_flash_size__ = SIZEOF(.reserved_flash);
@@ -578,8 +578,8 @@ SECTIONS
 
   . = ASSERT(__heap_start__ == __heap_end__ || (__heap_end__ - __RAM_segment_start__) <= __RAM_segment_size__ , "error: .heap is too large to fit in RAM memory segment");
 
-  __stack_load_start__ = __RAM_segment_start__ + (__RAM_segment_size__ - 8192);
-  .stack __RAM_segment_start__ + (__RAM_segment_size__ - 8192) (NOLOAD) : AT(__RAM_segment_start__ + (__RAM_segment_size__ - 8192))
+  __stack_load_start__ = __RAM_segment_start__ + (__RAM_segment_size__ - 2048);
+  .stack __RAM_segment_start__ + (__RAM_segment_size__ - 2048) (NOLOAD) : AT(__RAM_segment_start__ + (__RAM_segment_size__ - 2048))
   {
     __stack_start__ = .;
     __StackLimit =   __stack_start__;

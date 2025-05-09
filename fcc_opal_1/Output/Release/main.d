@@ -37,7 +37,7 @@ Output/Release//main.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/nordic_common.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/app_error_weak.h \
  ../3rd_party/nRF5_SDK_16/components/libraries/fifo/app_fifo.h \
- ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twim.h \
+ ../3rd_party/nRF5_SDK_16/integration/nrfx/legacy/nrf_drv_spi.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/nrfx.h \
  ../3rd_party/nRF5_SDK_16/integration/nrfx/nrfx_config.h \
  C:/Users/AditiNanaware/Trackonomy\ Local/FCC_Opal_Code/TrackFW_FCC/fcc_opal_1/sdk_config.h \
@@ -58,9 +58,6 @@ Output/Release//main.o: \
  ../3rd_party/nRF5_SDK_16/components/libraries/util/sdk_resources.h \
  ../3rd_party/nRF5_SDK_16/components/softdevice/s132/headers/nrf_sd_def.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/nrfx_errors.h \
- ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twi_twim.h \
- ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_twim.h \
- ../3rd_party/nRF5_SDK_16/integration/nrfx/legacy/nrf_drv_spi.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_spim.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_spim.h \
  ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_spi.h \
@@ -139,7 +136,10 @@ Output/Release//main.o: \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.64/include/math.h \
  ../3rd_party/nRF5_SDK_16/components/toolchain/cmsis/include/arm_common_tables.h \
  ../sx1261/RH_SX126x.h ../rfm95/RH_RF95.h ../I2CFiles/Wire/Wire.h \
- ../TMP117/TMP117.h ../I2CFiles/Arduino.h ../I2CFiles/wiring_constants.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twim.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/include/nrfx_twi_twim.h \
+ ../3rd_party/nRF5_SDK_16/modules/nrfx/hal/nrf_twim.h ../TMP117/TMP117.h \
+ ../I2CFiles/Arduino.h ../I2CFiles/wiring_constants.h \
  ../TMP117/TMP117_REG.h ../I2CFiles/i2c_wrapper.h \
  ../I2CFiles/eventflag_and_errors.h \
  ../3rd_party/nRF5_SDK_16/components/boards/boards.h \

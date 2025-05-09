@@ -1,0 +1,67 @@
+<!DOCTYPE CrossStudio_Session_File>
+<session>
+ <Bookmarks/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
+ <ExecutionProfileWindow/>
+ <FrameBufferWindow>
+  <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
+ </FrameBufferWindow>
+ <Memory1/>
+ <Memory2/>
+ <Memory3/>
+ <Memory4/>
+ <Project>
+  <ProjectSessionItem path="fcc_opal_1"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;Application"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;Board Definition"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;drivers_external"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;I2C_Files"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;None"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;nRF_BLE"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;nRF_BLE_Services"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;nRF_Drivers"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;nRF_Segger_RTT"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;nRF_SoftDevice"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;Radio"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;Segger Startup Files"/>
+  <ProjectSessionItem path="fcc_opal_1;fcc_opal_1;UTF8/UTF16 converter"/>
+ </Project>
+ <Register1/>
+ <Register2/>
+ <Register3/>
+ <Register4/>
+ <Threads>
+  <ThreadsWindow showLists=""/>
+ </Threads>
+ <TraceWindow>
+  <Trace enabled="Yes"/>
+ </TraceWindow>
+ <Watch1>
+  <Watches active="1" update="Never"/>
+ </Watch1>
+ <Watch2>
+  <Watches active="0" update="Never"/>
+ </Watch2>
+ <Watch3>
+  <Watches active="0" update="Never"/>
+ </Watch3>
+ <Watch4>
+  <Watches active="0" update="Never"/>
+ </Watch4>
+ <Files>
+  <SessionOpenFile windowGroup="DockEditLeft" x="14" y="240" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="main.cpp" selected="0" top="195" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="50" useTextEdit="1" openedFrom="C:/Users/AditiNanaware/Trackonomy Local/FCC_Opal_Code/TrackFW_FCC/fcc_opal_1/main.cpp" useBinaryEdit="0" left="0" path="../rfm95/RH_RF95.cpp" selected="0" top="32" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="16" y="70" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/modules/nrfx/drivers/src/nrfx_clock.c" selected="0" top="87" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="6671" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="sdk_config.h" selected="0" top="11859" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="34" y="21" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/ses_startup_nrf52.s" selected="0" top="329" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/ses_startup_nrf_common.s" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="89" y="22" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../3rd_party/nRF5_SDK_16/modules/nrfx/mdk/system_nrf52.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../I2CFiles/i2c_wrapper.cpp" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 5.64/source/thumb_crt0.s" selected="0" top="379" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="48" y="16178" useTextEdit="0" openedFrom="" useBinaryEdit="0" left="0" path="Output/Release/fcc_opal_1.elf" selected="1" top="16162" codecName=""/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="Output/Release/fcc_opal_1.ld" selected="0" top="553" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="Output/Release/fcc_opal_1.map" selected="0" top="9964" codecName="Default"/>
+ </Files>
+ <ARMCrossStudioWindow activeProject="fcc_opal_1" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
+</session>

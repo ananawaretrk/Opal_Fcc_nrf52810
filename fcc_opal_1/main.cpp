@@ -12,7 +12,7 @@ Firmware: Opal_fcc_v1.0
 #include "app_uart.h"
 #include "app_fifo.h"
 #include "nrf_error.h"
-#include "nrfx_twim.h"
+//#include "nrfx_twim.h"
 #include "nrf_drv_spi.h"
 #include "nrfx_rtc.h"
 #include "nrf_drv_clock.h"
@@ -2950,7 +2950,7 @@ void sleep()
     NVIC_ClearPendingIRQ(SAADC_IRQn);
     NVIC_ClearPendingIRQ(TEMP_IRQn);
     NVIC_ClearPendingIRQ(SPIM2_SPIS2_SPI2_IRQn);
-    NVIC_ClearPendingIRQ(SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQn);
+    //NVIC_ClearPendingIRQ(SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQn);
     NVIC_ClearPendingIRQ(RADIO_IRQn);
     NVIC_ClearPendingIRQ(UARTE0_UART0_IRQn);
     NVIC_ClearPendingIRQ(TIMER0_IRQn);
