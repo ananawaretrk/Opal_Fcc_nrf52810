@@ -1989,7 +1989,7 @@ void init_spi_for_lora(void)
   
  bool loraInit()
  {
-   if (!rf95.init(&spi, LORA_INT, 1)) {
+   if (!rf95.init(&spi, LORA_INT, 1, 1)) {
     printf("LoRa radio init failed\n");
     return false;
   }
@@ -3166,6 +3166,7 @@ int main(void)
                 state = lte_int_rx();
                 break;
 
+            /*
             case STATE_DEBUG:
                 printf("STATE_DEBUG\n");
                 state = debug_function();
@@ -3180,7 +3181,7 @@ int main(void)
                  printf("STATE_PRESSURE_AIRPLANE_MODE\n");
                  state = pressure_airplane_mode();
                  break;
-             
+             */
              case STATE_MODEM_NETWORK_CONFIG:
                   printf("STATE_MODEM_NETWORK_CONFIG");
                   state = modem_network_config();
@@ -3450,7 +3451,7 @@ void lora_radio_enable(void)
 //    }
     nrfx_gpiote_in_event_enable(LORA_RST, true);
 
-    if (!rf95.init(&spi, LORA_INT, 1))
+    if (!rf95.init(&spi, LORA_INT, 1, 1))
     {
         printf("LoRa radio init failed\n");
     }
