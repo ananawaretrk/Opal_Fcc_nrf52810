@@ -3137,7 +3137,7 @@ int main(void)
                 printf("STATE_BLE_INT_MCW_TX_RX\n");
                 state = ble_int_mcw_tx_rx();
                 break;
-            /*
+            
             case STATE_LTE_CONT_CW_TX:
                 printf("STATE_LTE_CONT_CW_TX\n");
                 state = lte_cont_cw_tx();
@@ -3167,7 +3167,7 @@ int main(void)
                 printf("STATE_LTE_INT_RX\n");
                 state = lte_int_rx();
                 break;
-            */
+            
 
             /*
             case STATE_DEBUG:
