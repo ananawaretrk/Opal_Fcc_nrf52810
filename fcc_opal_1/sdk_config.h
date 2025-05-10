@@ -11752,7 +11752,7 @@
 // <h> Clock - SoftDevice clock configuration
 
 //==========================================================
-// <o> NRF_SDH_CLOCK_LF_SRC  - SoftDevice clock source.
+// <o> NRF_SDH_CLOCK_LF_SRCLF_SRC  - SoftDevice clock source.
 
 // <0=> NRF_CLOCK_LF_SRC_RC
 // <1=> NRF_CLOCK_LF_SRC_XTAL
@@ -11791,7 +11791,7 @@
 // <11=> NRF_CLOCK_LF_ACCURACY_1_PPM
 
 #ifndef NRF_SDH_CLOCK_LF_ACCURACY
-#define NRF_SDH_CLOCK_LF_ACCURACY 7
+#define NRF_SDH_CLOCK_LF_ACCURACY 1
 #endif
 
 // </h>

@@ -1807,6 +1807,8 @@ void config_init()
 {
     nrf_drv_clock_init();
     nrf_drv_clock_lfclk_request(NULL);
+    //ret_code_t err_code = nrf_sdh_enable_request();  // ? this starts LFCLK
+    //APP_ERROR_CHECK(err_code);
     nrf_pwr_mgmt_init();
 }
 
@@ -2381,7 +2383,7 @@ sm_state soc_init()
     init_timer();
     init_timer2();
 
-    sd_power_dcdc_mode_set(NRF_POWER_DCDC_ENABLE);
+    //sd_power_dcdc_mode_set(NRF_POWER_DCDC_ENABLE);
 
     if (nrfx_gpiote_init() != NRFX_SUCCESS){
     printf("!!!WARN: NRF gpiote failed to initialize\n");
@@ -3135,7 +3137,7 @@ int main(void)
                 printf("STATE_BLE_INT_MCW_TX_RX\n");
                 state = ble_int_mcw_tx_rx();
                 break;
-
+            /*
             case STATE_LTE_CONT_CW_TX:
                 printf("STATE_LTE_CONT_CW_TX\n");
                 state = lte_cont_cw_tx();
@@ -3165,6 +3167,7 @@ int main(void)
                 printf("STATE_LTE_INT_RX\n");
                 state = lte_int_rx();
                 break;
+            */
 
             /*
             case STATE_DEBUG:
